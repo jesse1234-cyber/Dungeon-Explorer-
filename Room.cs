@@ -27,7 +27,7 @@ namespace DungeonExplorer
             try
             {
                 string line;
-                StreamReader sr = new StreamReader("./dungeons/Descriptions.txt");
+                StreamReader sr = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "//dungeons//Descriptions.txt");
                 line = sr.ReadLine();
 
                 while(line != null)
@@ -58,6 +58,11 @@ namespace DungeonExplorer
         public string GetDescription()
         {
             return description;
+        }
+
+        public string GetTitle()
+        {
+            return roomTitle;
         }
     }
 }
