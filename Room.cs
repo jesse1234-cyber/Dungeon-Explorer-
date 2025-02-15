@@ -64,5 +64,38 @@ namespace DungeonExplorer
         {
             return roomTitle;
         }
+
+        public void RoomInfoMenu()
+        {
+            bool roomMenu = true;
+            string command = "";
+            while (roomMenu)
+            {
+                Console.WriteLine("Room Info Menu:");
+                Console.WriteLine("1) Room Title");
+                Console.WriteLine("2) Room Description");
+                Console.WriteLine("3) Exit Room Info Menu");
+                Console.WriteLine("Choose a command (title, desc, exit): ");
+                Console.Write("> ");
+                command = Console.ReadLine().ToLower();
+
+                if (command == "title")
+                {
+                    Console.WriteLine(GetTitle());
+                }
+                else if (command == "desc")
+                {
+                    Console.WriteLine(GetDescription());
+                }
+                else if (command == "exit")
+                {
+                    roomMenu = false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Command");
+                }
+            }
+        }
     }
 }

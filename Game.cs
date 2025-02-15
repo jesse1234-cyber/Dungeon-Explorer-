@@ -37,8 +37,48 @@ namespace DungeonExplorer
             // Main Game loop
             while (playing)
             {
-                // Code your playing logic here
+                // Main Game Menu
+                string command = "";
+                Console.WriteLine("Commands:");
+                Console.WriteLine("1) Check Inventory");
+                Console.WriteLine("2) Move");
+                Console.WriteLine("3) Room Info Menu");
+                Console.WriteLine("4) Search Room");
+                Console.WriteLine("5) Exit Game");
+                Console.WriteLine("Choose a command (check, move, room, search, exit): ");
+                Console.Write("> ");
+                // Get Main Game Menu Command
+                command = Console.ReadLine().ToLower();
+
+                // Check if main game menu command is valid
+                if (command == "check")
+                {
+                    string inventory = player.InventoryContents();
+                    Console.WriteLine($"Inventory: {inventory}");
+                }
+                else if (command == "Move")
+                {
+                    // Move to a new room
+                }
+                else if (command == "room")
+                {
+                    currentRoom.RoomInfoMenu();
+                }
+                else if (command == "search")
+                {
+                    // Search the room
+                }
+                else if (command == "exit")
+                {
+                    // Exit the game
+                    playing = false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid command");
+                }
             }
         }
+
     }
 }
