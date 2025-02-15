@@ -34,6 +34,9 @@ namespace DungeonExplorer
             //Initalise Starting Room Class
             currentRoom = new Room();
             
+            //Allow Entry into main game Loop
+            playing = true;
+            
             // Main Game loop
             while (playing)
             {
