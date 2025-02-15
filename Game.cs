@@ -81,6 +81,8 @@ namespace DungeonExplorer
                 else
                 {
                     Console.WriteLine("Invalid command");
+                    Console.WriteLine("Press any key to continue");
+                    Console.ReadKey();
                 }
             }
         }

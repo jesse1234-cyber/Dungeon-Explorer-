@@ -29,7 +29,7 @@ namespace DungeonExplorer
             try
             {
                 string line;
-                StreamReader sr = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "//dungeons//Descriptions.txt");
+                StreamReader sr = new StreamReader(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "//dungeons//Descriptions.txt");
                 line = sr.ReadLine();
 
                 while(line != null)
