@@ -62,11 +62,13 @@ namespace DungeonExplorer
                 }
                 else if (command == "room")
                 {
+                    // Room Info Menu
                     currentRoom.RoomInfoMenu();
                 }
                 else if (command == "search")
                 {
                     // Search the room
+                    player = currentRoom.SearchRoom(player);
                 }
                 else if (command == "exit")
                 {

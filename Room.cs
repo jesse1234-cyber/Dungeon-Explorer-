@@ -9,6 +9,7 @@ namespace DungeonExplorer
     {
         private string roomTitle;
         private string description;
+        private bool searched;
 
 
         public Room()
@@ -16,6 +17,7 @@ namespace DungeonExplorer
             List<string> roomInfo = GetNameAndDescription();
             roomTitle = roomInfo[0];
             description = roomInfo[1];
+            searched = false;
         }
 
         private List<string> GetNameAndDescription()
@@ -96,6 +98,34 @@ namespace DungeonExplorer
                     Console.WriteLine("Invalid Command");
                 }
             }
+        }
+        
+        public Player SearchRoom(Player player)
+        {
+            // Check if the room has already been searched
+            if (searched)
+            {
+                Console.WriteLine("You have already searched this room");
+                return player;
+            }
+
+            Random rnd = new Random();
+            int chance = rnd.Next(1, 101);
+
+            if (chance <= 99)
+            {
+                Console.WriteLine("You search the room");
+                Console.WriteLine("You find a health potion");
+                Item healthPotion = new Item(1, "Health Potion", "A potion that restores 5 health");
+                player.PickUpItem(healthPotion);
+            }
+            else
+            {
+                Console.WriteLine("You search the room");
+                Console.WriteLine("You find nothing of interest");
+            }
+            searched = true;
+            return player;
         }
     }
 }

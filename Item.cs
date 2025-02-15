@@ -11,5 +11,12 @@ namespace DungeonExplorer
         private int ItemID { get; set; }
         private string Name { get; set; }
         private string Description { get; set; }
+
+        public Item(int itemID, string name, string description)
+        {
+            ItemID = itemID;
+            Name = name;
+            Description = description;
+        }
     }
 }
