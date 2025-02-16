@@ -37,43 +37,63 @@ namespace DungeonExplorer
             
         }
 
-        public Room changeRoom(Room currentRoom, string direction)
+        public Room changeRoom(Room currentRoom)
         {
+            string direction = "";
             int currentX = currentRoom.GetRoomX();
             int currentY = currentRoom.GetRoomY();
-            if (direction == "right")
+            bool roomMenu = true;
+            while (roomMenu)
             {
-                if (currentX + 1 < width)
+                Console.WriteLine("Change Room Menu: ");
+                Console.WriteLine("Commands:");
+                Console.WriteLine("1) Right");
+                Console.WriteLine("2) Left");
+                Console.WriteLine("3) Up");
+                Console.WriteLine("4) Down");
+                Console.WriteLine("5) Exit");
+                Console.WriteLine("Choose a command (right, left, up, down, exit): ");
+                Console.Write("> ");
+                direction = Console.ReadLine().ToLower();
+                if (direction == "right")
                 {
-                    return roomLayoutArray[currentX + 1, currentY];
+                    if (currentX + 1 < width)
+                    {
+                        return roomLayoutArray[currentX + 1, currentY];
+                    }
                 }
-            }
-            else if (direction == "left")
-            {
-                if (currentX - 1 > 0)
+                else if (direction == "left")
                 {
-                    return roomLayoutArray[currentX - 1, currentY];   
+                    if (currentX - 1 > 0)
+                    {
+                        return roomLayoutArray[currentX - 1, currentY];
+                    }
                 }
-            }
-            else if (direction == "up")
-            {
-                if (currentY - 1 > 0)
+                else if (direction == "up")
                 {
-                    return roomLayoutArray[currentX, currentY - 1];
+                    if (currentY - 1 > 0)
+                    {
+                        return roomLayoutArray[currentX, currentY - 1];
+                    }
                 }
-            }
-            else if (direction == "down")
-            {
-                if (currentY + 1 < height)
+                else if (direction == "down")
                 {
-                    return roomLayoutArray[currentX, currentY + 1];
+                    if (currentY + 1 < height)
+                    {
+                        return roomLayoutArray[currentX, currentY + 1];
+                    }
                 }
+                else if (direction == "exit")
+                {
+                    roomMenu = false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid direction");
+                }
+                Console.WriteLine("There is no door to enter in that direction!");
+                
             }
-            else
-            {
-                Console.WriteLine("Invalid direction");
-            }
-            Console.WriteLine("There is no door to enter in that direction!");
             return currentRoom;
         }
         
