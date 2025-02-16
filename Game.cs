@@ -67,7 +67,7 @@ namespace DungeonExplorer
                 else if (command == "Move")
                 {
                     // Move to a new room
-
+                    currentRoom = map.changeRoom(currentRoom);
                 }
                 else if (command == "room")
                 {
