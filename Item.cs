@@ -14,6 +14,7 @@ namespace DungeonExplorer
 
         public Item(int itemID, string name, string description)
         {
+            // Set the item ID, name and description
             ItemID = itemID;
             Name = name;
             Description = description;
