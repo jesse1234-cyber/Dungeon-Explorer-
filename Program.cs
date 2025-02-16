@@ -10,9 +10,12 @@ namespace DungeonExplorer
     {
         static void Main(string[] args)
         {
+            // Initalise Game Class
             Game game = new Game();
+            // Start the game
             game.Start();
-            Console.WriteLine("Waiting for your Implementation");
+            // End the game
+            Console.WriteLine("Thanks For Playing");
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }
