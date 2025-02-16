@@ -7,6 +7,7 @@ namespace DungeonExplorer
     {
         private Player player;
         private Room currentRoom;
+        private Map map;
 
         public Game()
         {
@@ -18,6 +19,7 @@ namespace DungeonExplorer
             bool nameSelect = true;
             bool playing = false;
             string name = "";
+            
 
             // Code for selecting name for the character
             while (nameSelect)
@@ -32,7 +34,10 @@ namespace DungeonExplorer
             // Initalise Player Class
             player = new Player(name, 10);
             //Initalise Starting Room Class
-            currentRoom = new Room();
+            currentRoom = new Room(0,0);
+            
+            //Initalise Map Class
+            map = new Map(3,3,currentRoom);
             
             //Allow Entry into main game Loop
             playing = true;

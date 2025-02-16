@@ -10,10 +10,14 @@ namespace DungeonExplorer
         private string roomTitle;
         private string description;
         private bool searched;
+        private int roomX;
+        private int roomY;
 
 
-        public Room()
+        public Room(int roomX, int roomY)
         {
+            this.roomX = roomX;
+            this.roomY = roomY;
             List<string> roomInfo = GetNameAndDescription();
             roomTitle = roomInfo[0];
             description = roomInfo[1];
@@ -65,6 +69,16 @@ namespace DungeonExplorer
         public string GetTitle()
         {
             return roomTitle;
+        }
+
+        public int GetRoomX()
+        {
+            return roomX;
+        }
+
+        public int GetRoomY()
+        {
+            return roomY;
         }
 
         public void RoomInfoMenu()
