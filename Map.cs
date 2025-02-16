@@ -31,6 +31,7 @@ namespace DungeonExplorer
                     {
                         layout[i, j] = rnd.Next(0, 2);
                         if (layout[i, j] == 1) roomLayoutArray[i, j] = new Room(i,j);
+                        Console.WriteLine($"Room at {i},{j} is {roomLayoutArray[i, j]}");
                     }
                 }
             }
@@ -57,28 +58,28 @@ namespace DungeonExplorer
                 direction = Console.ReadLine().ToLower();
                 if (direction == "right")
                 {
-                    if (currentX + 1 < width)
+                    if (currentX + 1 <= width && layout[currentX +1,currentY] == 1)
                     {
                         return roomLayoutArray[currentX + 1, currentY];
                     }
                 }
                 else if (direction == "left")
                 {
-                    if (currentX - 1 >= 0)
+                    if (currentX - 1 >= 0 && layout[currentX -1, currentY] == 1)
                     {
                         return roomLayoutArray[currentX - 1, currentY];
                     }
                 }
                 else if (direction == "up")
                 {
-                    if (currentY - 1 >= 0)
+                    if (currentY - 1 >= 0 && layout[currentX, currentY -1] == 1)
                     {
                         return roomLayoutArray[currentX, currentY - 1];
                     }
                 }
                 else if (direction == "down")
                 {
-                    if (currentY + 1 < height)
+                    if (currentY + 1 <= height && layout[currentX, currentY + 1] == 1)
                     {
                         return roomLayoutArray[currentX, currentY + 1];
                     }
