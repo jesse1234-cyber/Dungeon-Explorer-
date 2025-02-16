@@ -64,14 +64,14 @@ namespace DungeonExplorer
                 }
                 else if (direction == "left")
                 {
-                    if (currentX - 1 > 0)
+                    if (currentX - 1 >= 0)
                     {
                         return roomLayoutArray[currentX - 1, currentY];
                     }
                 }
                 else if (direction == "up")
                 {
-                    if (currentY - 1 > 0)
+                    if (currentY - 1 >= 0)
                     {
                         return roomLayoutArray[currentX, currentY - 1];
                     }

@@ -64,7 +64,7 @@ namespace DungeonExplorer
                     string inventory = player.InventoryContents();
                     Console.WriteLine($"Inventory: {inventory}");
                 }
-                else if (command == "Move")
+                else if (command == "move")
                 {
                     // Move to a new room
                     currentRoom = map.changeRoom(currentRoom);
