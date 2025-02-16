@@ -30,8 +30,7 @@ namespace DungeonExplorer
                     else
                     {
                         layout[i, j] = rnd.Next(0, 2);
-                        if (layout[i, j] == 1) roomLayoutArray[i, j] = new Room(i,j);
-                        Console.WriteLine($"Room at {i},{j} is {roomLayoutArray[i, j]}");
+                        if (layout[i, j] == 1) roomLayoutArray[i, j] = new Room(i, j);
                     }
                 }
             }
@@ -96,6 +95,25 @@ namespace DungeonExplorer
                 
             }
             return currentRoom;
+        }
+        public void DisplayMap()
+        {
+            Console.WriteLine("After reading your map you see:");
+            for (int j = 0; j < width; j++)
+            {
+                for (int i = 0; i < height; i++)
+                {
+                    if (layout[i, j] == 1)
+                    {
+                        Console.Write("O");
+                    }
+                    else
+                    {
+                        Console.Write("X");
+                    }
+                }
+                Console.WriteLine();
+            }
         }
         
     }

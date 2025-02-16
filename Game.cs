@@ -52,8 +52,9 @@ namespace DungeonExplorer
                 Console.WriteLine("2) Move");
                 Console.WriteLine("3) Room Info Menu");
                 Console.WriteLine("4) Search Room");
-                Console.WriteLine("5) Exit Game");
-                Console.WriteLine("Choose a command (check, move, room, search, exit): ");
+                Console.WriteLine("5) View Map");
+                Console.WriteLine("6) Exit Game");
+                Console.WriteLine("Choose a command (check, move, room, search, map, exit): ");
                 Console.Write("> ");
                 // Get Main Game Menu Command
                 command = Console.ReadLine().ToLower();
@@ -78,6 +79,11 @@ namespace DungeonExplorer
                 {
                     // Search the room
                     player = currentRoom.SearchRoom(player);
+                }
+                else if (command == "map")
+                {
+                    // View the map
+                    map.DisplayMap();
                 }
                 else if (command == "exit")
                 {
