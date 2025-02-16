@@ -26,6 +26,7 @@ namespace DungeonExplorer
             {
                 Console.Write("What is your character's name: ");
                 name = Console.ReadLine();
+                // Ask if the name is correct
                 Console.WriteLine($"Is {name} the right name? y/n");
                 string desision = Console.ReadLine().ToLower();
                 if (desision == "y") nameSelect = false;
@@ -92,6 +93,7 @@ namespace DungeonExplorer
                 }
                 else
                 {
+                    // Invalid command
                     Console.WriteLine("Invalid command");
                     Console.WriteLine("Press any key to continue");
                     Console.ReadKey();
