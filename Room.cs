@@ -1,4 +1,6 @@
-﻿namespace DungeonExplorer
+﻿using System;
+
+namespace DungeonExplorer
 {
     public class Room
     {
@@ -7,6 +9,7 @@
         public Room(string description)
         {
             this.description = description;
+            //Console.WriteLine($"Current Room: {description}");
         }
 
         public string GetDescription()
