@@ -4,49 +4,76 @@ using System.Linq;
 
 namespace DungeonExplorer
 {
-    class Player
+    /// <summary>
+    /// Player class
+    /// Contains player's name, player's health and inventory items
+    /// </summary>
+    public class Player
     {
-        private string playerName;
-        private int playerHealth;
-        private List<string> playerInventory = new List<string>();
+        private string _playerName = "DefaultName";
+        private int _playerHealth;
+        private List<string> _playerInventory = new List<string>();
 
+        /// <summary>
+        /// Initialises a new instance of the Player class
+        /// </summary>
+        /// <param name="playerName">The player's name</param>
+        /// <param name="playerHealth">The player's health points</param>
+        /// <param name="playerInventory">The player's inventory items</param>
         public Player(string playerName, int playerHealth, List<string> playerInventory)
         {
             Name = playerName;
             Health = playerHealth;
-            Inventory = new List<string>();
+            Inventory = playerInventory ?? new List<string>();
         }
 
+        /// <summary>
+        /// Gets and sets the name as 'DefaultName' before it has been chosen
+        /// </summary>
         public string Name
         {
-            get { return playerName; }
-            set { playerName = string.IsNullOrWhiteSpace(value) ? "NoName" : value; }
-        }
-        public int Health
-        {
-            get { return playerHealth; }
-            set { playerHealth = value; }
-        }
-        public List<string> Inventory
-        {
-            get { return playerInventory; }
-            set { playerInventory = value ?? new List<string>(); }
+            get { return _playerName; }
+            set { _playerName = string.IsNullOrWhiteSpace(value) ? "DefaultName" : value; }
         }
 
+        /// <summary>
+        /// Gets and sets the health of the player
+        /// </summary>
+        public int Health
+        {
+            get { return _playerHealth; }
+            set { _playerHealth = value; }
+        }
+
+        /// <summary>
+        /// Gets and sets the inventory items
+        /// </summary>
+        public List<string> Inventory
+        {
+            get { return _playerInventory; }
+            set { _playerInventory = value ?? new List<string>(); }
+        }
+
+        /// <summary>
+        /// Asks the user to enter their name, assigns it to the Name variable
+        /// </summary>
         public void ChooseName()
         {
             // Ask user for their name
-            string inputName;
             Console.WriteLine("What is your name? ");
-            inputName = Console.ReadLine();
+            string inputName = Console.ReadLine() ?? "DefaultName";
 
             // Assign name to Name
-            this.Name = inputName;
+            Name = inputName;
 
             // Return the player's details, including name and health
             Console.WriteLine($"Welcome, {Name}! You currently have {Health}hp!");
         }
 
+        /// <summary>
+        /// User can pick up an item, adds to Inventory list
+        /// </summary>
+        /// <param name="RoomItem">Item stored in the room</param>
         public void PickUpItem(string RoomItem)
         {
             // Add item to the inventory
