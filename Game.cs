@@ -1,26 +1,67 @@
-﻿using System;
-using System.Media;
+﻿using System.Runtime.InteropServices;
+using System.Linq;
+using DungeonExplorer;
+using System;
 
-namespace DungeonExplorer
+namespace Program
 {
-    internal class Game
+    // Main game class, main code in here and entry point.
+    public class Game
     {
-        private Player player;
-        private Room currentRoom;
+        static Player P1 = new Player();
+        static char[,] Map = new char[10, 20];
+        private int menuChoice;
 
-        public Game()
+        public static void Main(string[] Args)
         {
-            // Initialize the game with one room and one player
+            for (int i = 0; i < 9; i++)
+                for (int j = 0; j < 19; j++)
+                    Map[i, j] = '?';
+
+
+
+            titleScreen();
+        }
+
+        public static void titleScreen()
+        {
+            Console.WriteLine("The Legend Of Zelda: Adventure In Text");
+            Console.WriteLine("[1] New Game");
+            Console.WriteLine("[2] Load");
+            switch (GameInputs.V(2))
+            {
+                case 1:
+                    Console.WriteLine("Starting Game");
+                    gameLoop();
+                    break;
+                case 2:
+                    Console.WriteLine("Sausage roll");
+                    break;
+            }
+
+            Console.ReadLine();
+        }
+        static void newGame()
+        {
 
         }
-        public void Start()
+
+        static void gameLoop()
         {
-            // Change the playing logic into true and populate the while loop
-            bool playing = false;
-            while (playing)
+
+            for (int i = 0; i < 9; i++)
             {
-                // Code your playing logic here
+                for (int j = 0; j < 19; j++)
+                {
+                    Console.Write(Map[i, j]);
+                }
+                Console.WriteLine();
             }
+
+
+            Console.ReadLine();
         }
     }
+
+
 }

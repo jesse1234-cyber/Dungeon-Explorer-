@@ -1,25 +1,57 @@
 ﻿using System.Collections.Generic;
+using System;
+using System.Linq;
 
-namespace DungeonExplorer
+namespace Program
 {
     public class Player
     {
-        public string Name { get; private set; }
-        public int Health { get; private set; }
-        private List<string> inventory = new List<string>();
+        public Player() { }
+        int Health { get; set; }
+        int MaxHealth { get; set; }
+        public PlayerInventory pInv = new PlayerInventory(5);
 
-        public Player(string name, int health) 
+
+    }
+
+    public class PlayerInventory
+    {
+        public PlayerInventory(int inCapacity)
         {
-            Name = name;
-            Health = health;
+            iCapacity = inCapacity;
         }
-        public void PickUpItem(string item)
+
+        private int iCapacity { get; set; }
+        private List<InventoryItem> Inventory = new List<InventoryItem>();
+
+        public string fPickUpItem(InventoryItem ItemToAdd)
+        {
+            if (Inventory.Count == iCapacity)
+            {
+                return "Your inventory is full! You must drop something first";
+            }
+            Inventory.Add(ItemToAdd);
+            return "Item Added";
+        }
+        public string fShowInventory()
+        {
+            for (int i = 0; i < iCapacity - 1; i++)
+            {
+                Console.WriteLine("[", iCapacity.ToString(), "] ", Inventory[i].sName);
+            }
+
+            return null;
+        }
+        private string fDeleteItem(int iItemToRemove, InventoryItem ItemToAdd)
         {
 
+            return null;
         }
-        public string InventoryContents()
-        {
-            return string.Join(", ", inventory);
-        }
+
+    }
+
+    public abstract class InventoryItem
+    {
+        public virtual string sName { get; set; }
     }
 }
