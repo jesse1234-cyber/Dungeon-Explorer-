@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace DungeonExplorer
@@ -65,6 +66,9 @@ namespace DungeonExplorer
 
             // Assign name to Name
             Name = inputName;
+
+            //Prevent user from entering a blank name
+            Debug.Assert(Name != null, "Please enter a name");
 
             // Return the player's details, including name and health
             Console.WriteLine($"Welcome, {Name}! You currently have {Health}hp!");
