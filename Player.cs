@@ -6,10 +6,12 @@ namespace Program
 {
     public class Player
     {
-        public Player() { }
+        public Player() {
+            pInv = new PlayerInventory(5);
+        }
         int Health { get; set; }
         int MaxHealth { get; set; }
-        public PlayerInventory pInv = new PlayerInventory(5);
+        public PlayerInventory pInv;
 
 
     }
@@ -19,6 +21,9 @@ namespace Program
         public PlayerInventory(int inCapacity)
         {
             iCapacity = inCapacity;
+            for (int i = 0; i < iCapacity - 1; i++) { 
+                Inventory.Add(new InventoryItem("Sausage Roll"));
+            }
         }
 
         private int iCapacity { get; set; }
@@ -50,8 +55,12 @@ namespace Program
 
     }
 
-    public abstract class InventoryItem
+    public class InventoryItem
     {
         public virtual string sName { get; set; }
+        public InventoryItem(string name)
+        {
+            sName = name;
+        }
     }
 }

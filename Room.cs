@@ -1,4 +1,4 @@
-﻿namespace DungeonExplorer
+﻿namespace Program
 {
     public class Room
     {

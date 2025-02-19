@@ -1,6 +1,5 @@
 ﻿using System.Runtime.InteropServices;
 using System.Linq;
-using DungeonExplorer;
 using System;
 
 namespace Program
@@ -58,6 +57,8 @@ namespace Program
                 Console.WriteLine();
             }
 
+
+            P1.pInv.fShowInventory();
 
             Console.ReadLine();
         }
