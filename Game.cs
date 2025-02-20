@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Media;
 
+
+//wow, much comment, very cool
+
 namespace DungeonExplorer
 {
     internal class Game
