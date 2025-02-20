@@ -21,7 +21,8 @@ namespace Program
         public PlayerInventory(int inCapacity)
         {
             iCapacity = inCapacity;
-            for (int i = 0; i < iCapacity - 1; i++) { 
+            for (int i = 0; i < iCapacity; i++)
+            {
                 Inventory.Add(new InventoryItem("Sausage Roll"));
             }
         }
@@ -40,9 +41,9 @@ namespace Program
         }
         public string fShowInventory()
         {
-            for (int i = 0; i < iCapacity - 1; i++)
+            for (int i = 0; i < iCapacity; i++)
             {
-                Console.WriteLine("[", iCapacity.ToString(), "] ", Inventory[i].sName);
+                Console.WriteLine("[" + (i + 1).ToString() + "] " + Inventory[i].sName);
             }
 
             return null;
@@ -57,10 +58,19 @@ namespace Program
 
     public class InventoryItem
     {
-        public virtual string sName { get; set; }
-        public InventoryItem(string name)
+        public int maxNoOfItem { get; set; }
+        public int noOfItem { get; set; }
+        public string sName { get; set; }
+        public InventoryItem(string name, int maxNoOfItem)
         {
-            sName = name;
+            this.sName = name;
+            this.maxNoOfItem = maxNoOfItem;
+        }
+        public InventoryItem(string name, int maxNoOfItem, int noOfItem)
+        {
+            this.sName = name;
+            this.maxNoOfItem = maxNoOfItem;
+            this.noOfItem = noOfItem;
         }
     }
 }

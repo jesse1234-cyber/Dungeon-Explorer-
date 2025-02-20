@@ -7,7 +7,6 @@ namespace Program
     // Main game class, main code in here and entry point.
     public class Game
     {
-        static Player P1 = new Player();
         static char[,] Map = new char[10, 20];
         private int menuChoice;
 
@@ -57,7 +56,7 @@ namespace Program
                 Console.WriteLine();
             }
 
-
+            Player P1 = new Player();
             P1.pInv.fShowInventory();
 
             Console.ReadLine();
