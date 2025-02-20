@@ -23,7 +23,7 @@ namespace Program
             iCapacity = inCapacity;
             for (int i = 0; i < iCapacity; i++)
             {
-                Inventory.Add(new InventoryItem("Sausage Roll"));
+                Inventory.Add(new InventoryItem("Sausage Roll", 3, 10));
             }
         }
 
@@ -43,14 +43,14 @@ namespace Program
         {
             for (int i = 0; i < iCapacity; i++)
             {
-                Console.WriteLine("[" + (i + 1).ToString() + "] " + Inventory[i].sName);
+                Console.WriteLine("[" + (i + 1).ToString() + "] " + Inventory[i].sName + ": " + Inventory[i].noOfItem.ToString() + "/" + Inventory[i].maxNoOfItem.ToString());
             }
 
             return null;
         }
-        private string fDeleteItem(int iItemToRemove, InventoryItem ItemToAdd)
+        private string fDeleteItem(InventoryItem ItemToRemove, InventoryItem ItemToAdd)
         {
-
+            Inventory.Remove(ItemToRemove);
             return null;
         }
 
@@ -65,6 +65,7 @@ namespace Program
         {
             this.sName = name;
             this.maxNoOfItem = maxNoOfItem;
+            this.noOfItem = 0;
         }
         public InventoryItem(string name, int maxNoOfItem, int noOfItem)
         {
