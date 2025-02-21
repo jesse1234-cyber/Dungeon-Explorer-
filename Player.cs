@@ -29,7 +29,7 @@ namespace DungeonExplorer
             {
                 if (value <= 0)
                 {
-                    Console.WriteLine("Player health cannot be empty.");
+                    Console.WriteLine("Player health cannot be set to zero or be negative.");
                 }
                 else
                 {
