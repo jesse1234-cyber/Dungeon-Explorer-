@@ -174,9 +174,11 @@ namespace DungeonExplorer
                 return player;
             }
 
+            //Generate Random Number between 1 and 100
             Random rnd = new Random();
             int chance = rnd.Next(1, 101);
 
+            // Check the random number
             if (chance <= 99)
             {
                 // 99% chance of finding a health potion
