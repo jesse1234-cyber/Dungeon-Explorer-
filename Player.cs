@@ -10,8 +10,43 @@ namespace DungeonExplorer
 
         public Player(string name, int health) 
         {
+<<<<<<< Updated upstream
             Name = name;
             Health = health;
+=======
+            get { return name; }
+            set { name = value; }
+        }
+
+        public int Health
+        {
+            get { return health; }
+            set
+            {
+
+                if (value < 0)
+                {
+                    health = 0;
+                }
+                else
+                {
+                    health = value;
+                }
+            }
+        }
+        
+        public List<string> Inventory
+        {
+            get { return inventory; }
+            set { inventory = value; }
+        }
+        
+        public Player(string Name, int Health, List<string> Inventory) 
+        {
+            name = Name;
+            health = Health;
+            inventory = Inventory;
+>>>>>>> Stashed changes
         }
         public void PickUpItem(string item)
         {
