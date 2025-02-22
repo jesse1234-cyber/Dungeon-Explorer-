@@ -20,11 +20,13 @@ namespace DungeonExplorer
             Health = health;
             maxHealth = health;
         }
+        // Inventory Setter
         public void PickUpItem(Item item)
         {
             // Add the item to the player's inventory
             inventory.Add(item);
         }
+        // Inventory Getter
         public string InventoryContents()
         {
             // Return the contents of the player's inventory

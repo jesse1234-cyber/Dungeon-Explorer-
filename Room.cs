@@ -20,15 +20,63 @@ namespace DungeonExplorer
         public Room(int roomX, int roomY)
         {
             // Get a random room title and description
-            this.roomX = roomX;
-            this.roomY = roomY;
+            SetRoomX(roomX);
+            SetRoomX(roomY);
             // Get a random room title and description
             List<string> roomInfo = GetNameAndDescription();
             // Set the room title and description
-            roomTitle = roomInfo[0];
-            description = roomInfo[1];
-            searched = false;
+            SetTitle(roomInfo[0]);
+            SetDescription(roomInfo[1]);
+            SetSearched(false);
         }
+
+        
+
+        // Getters
+        public string GetDescription()
+        {
+            return description;
+        }
+
+        public string GetTitle()
+        {
+            return roomTitle;
+        }
+
+        public int GetRoomX()
+        {
+            return roomX;
+        }
+
+        public int GetRoomY()
+        {
+            return roomY;
+        }
+
+
+        //Setters
+        public void SetDescription(string description)
+        {
+            this.description = description;
+        }
+        public void SetTitle(string title)
+        {
+            this.roomTitle = title;
+        }
+        public void SetRoomX(int roomX)
+        {
+            this.roomX = roomX;
+        }
+        public void SetRoomY(int roomY)
+        {
+            this.roomY = roomY;
+        }
+        public void SetSearched(bool searched)
+        {
+            this.searched = searched;
+        }
+
+        //Methods
 
         // Get a random room title and description
         // Returns: a list containing the room title and description
@@ -60,7 +108,7 @@ namespace DungeonExplorer
 
                 sr.Close();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("Exception Caught: " + e);
             }
@@ -74,27 +122,7 @@ namespace DungeonExplorer
             return outputList;
         }
 
-        // Getters
-        public string GetDescription()
-        {
-            return description;
-        }
-
-        public string GetTitle()
-        {
-            return roomTitle;
-        }
-
-        public int GetRoomX()
-        {
-            return roomX;
-        }
-
-        public int GetRoomY()
-        {
-            return roomY;
-        }
-
+        // Room Info Menu
         public void RoomInfoMenu()
         {
             bool roomMenu = true;

@@ -17,7 +17,6 @@ namespace DungeonExplorer
 
             //Initalise Map Class
             map = new Map(3, 3, currentRoom);
-
         }
         // Start the game
         public void Start()
