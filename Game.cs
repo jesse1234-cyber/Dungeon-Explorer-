@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Media;
+using System.Xml.Linq;
 
 namespace DungeonExplorer
 {
@@ -11,9 +12,14 @@ namespace DungeonExplorer
 
         public Game()
         {
-            // Initialize the game with one room and one player
+            //Initalise Starting Room Class
+            currentRoom = new Room(0, 0);
+
+            //Initalise Map Class
+            map = new Map(3, 3, currentRoom);
 
         }
+        // Start the game
         public void Start()
         {
             bool nameSelect = true;
@@ -32,13 +38,9 @@ namespace DungeonExplorer
                 if (desision == "y") nameSelect = false;
             }
 
-            // Initalise Player Class
+            // Initalise Player Class (not in constructor because it requires player name)
             player = new Player(name, 10);
-            //Initalise Starting Room Class
-            currentRoom = new Room(0,0);
             
-            //Initalise Map Class
-            map = new Map(3,3,currentRoom);
             
             //Allow Entry into main game Loop
             playing = true;

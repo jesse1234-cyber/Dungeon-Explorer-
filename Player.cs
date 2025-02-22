@@ -9,11 +9,16 @@ namespace DungeonExplorer
       
         private List<Item> inventory = new List<Item>();
 
+        // Player Constructor
+        // Arguments:
+        // name - the name of the player
+        // health - the health of the player
         public Player(string name, int health) 
         {
-            // Set the player's name and health
+            // Set the player's name and health / maxHealth
             Name = name;
             Health = health;
+            maxHealth = health;
         }
         public void PickUpItem(Item item)
         {

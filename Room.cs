@@ -13,12 +13,16 @@ namespace DungeonExplorer
         private int roomX;
         private int roomY;
 
-
+        // Room Constructor
+        // Arguments:
+        // roomX - the x position of the room
+        // roomY - the y position of the room
         public Room(int roomX, int roomY)
         {
             // Get a random room title and description
             this.roomX = roomX;
             this.roomY = roomY;
+            // Get a random room title and description
             List<string> roomInfo = GetNameAndDescription();
             // Set the room title and description
             roomTitle = roomInfo[0];
@@ -26,6 +30,8 @@ namespace DungeonExplorer
             searched = false;
         }
 
+        // Get a random room title and description
+        // Returns: a list containing the room title and description
         private List<string> GetNameAndDescription()
         {
 
@@ -91,9 +97,9 @@ namespace DungeonExplorer
 
         public void RoomInfoMenu()
         {
-            // Room Info Menu
             bool roomMenu = true;
             string command = "";
+            // Room Info Menu
             while (roomMenu)
             {
                 Console.WriteLine("Room Info Menu:");
@@ -126,7 +132,11 @@ namespace DungeonExplorer
                 }
             }
         }
-        
+
+        // Search the room
+        // Arguments:
+        // player - the player searching the room
+        // Returns: the player after searching the room
         public Player SearchRoom(Player player)
         {
             // Check if the room has already been searched

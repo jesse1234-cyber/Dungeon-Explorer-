@@ -8,8 +8,14 @@ namespace DungeonExplorer
         public int width;
         public int height;
         public Room[,] roomLayoutArray;
+        // Map Constructor
+        // Arguments:
+        // width - the width of the map
+        // height - the height of the map
+        // startingRoom - the room the player starts in
         public Map(int width, int height, Room startingRoom)
         {
+            // Create a new map
             this.width = width;
             this.height = height;
             Random rnd = new Random();
@@ -24,12 +30,15 @@ namespace DungeonExplorer
                     // 1 means there is a room and 0 means there isn't a room
                     if (i == 0 && j == 0)
                     {
+                        //Starting Room
                         layout[i, j] = 1;
                         roomLayoutArray[i, j] = startingRoom;
                     }
                     else
                     {
+                        // Randomly generate rooms
                         layout[i, j] = rnd.Next(0, 2);
+                        // If there is a room, create a new room object
                         if (layout[i, j] == 1) roomLayoutArray[i, j] = new Room(i, j);
                     }
                 }
@@ -37,6 +46,9 @@ namespace DungeonExplorer
             
         }
 
+        //Change the room
+        //Arguments: currentRoom - the room the player is currently in
+        //Returns: the room the player wants to move to
         public Room changeRoom(Room currentRoom)
         {
             string direction = "";
