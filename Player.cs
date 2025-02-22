@@ -4,14 +4,44 @@ namespace DungeonExplorer
 {
     public class Player
     {
-        public string Name { get; private set; }
-        public int Health { get; private set; }
-        private List<string> inventory = new List<string>();
+        private string name;
+        private int health;
+        private List<string> inventory;
 
-        public Player(string name, int health) 
+        public string Name
         {
-            Name = name;
-            Health = health;
+            get { return name; }
+            set { name = value; }
+        }
+
+        public int Health
+        {
+            get { return health; }
+            set
+            {
+
+                if (value < 0)
+                {
+                    health = 0;
+                }
+                else
+                {
+                    health = value;
+                }
+            }
+        }
+
+        public List<string> Inventory
+        {
+            get { return inventory; }
+            set { inventory = value; }
+        }
+
+        public Player(string Name, int Health, List<string> Inventory) 
+        {
+            name = Name;
+            health = Health;
+            inventory = Inventory;
         }
         public void PickUpItem(string item)
         {
