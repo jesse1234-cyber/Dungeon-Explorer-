@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Metadata;
 
 namespace DungeonExplorer
 {
@@ -7,6 +8,7 @@ namespace DungeonExplorer
     {
         public string Name { get; private set; }
         public int Health { get; private set; }
+        public string NewItem { get; private set; }
         private List<string> inventory = new List<string>();
 
         public Player(string name, int health) 
@@ -16,11 +18,15 @@ namespace DungeonExplorer
         }
         public void PickUpItem(string item)
         {
-            string NewItem = item;
+            Console.WriteLine($"{item} picked up!");
+            NewItem = item;
+            inventory.Add(item);
         }
-        public string InventoryContents()
+        public void InventoryContents()
         {
-            return string.Join(", ", inventory);
+            Console.WriteLine($"\nYour inventory currently has:");
+            string ShowInventory = string.Join(", ", inventory);
+            Console.WriteLine(ShowInventory);
         }
     }
 }

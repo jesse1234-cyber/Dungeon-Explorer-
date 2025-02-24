@@ -1,5 +1,7 @@
 ﻿using System;
+using System.CodeDom;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Media;
 
 namespace DungeonExplorer
@@ -36,27 +38,36 @@ namespace DungeonExplorer
                 }
                 while (Key != ConsoleKey.Enter);
 
-                Console.WriteLine(currentRoom.GetDescription());
-                string item = currentRoom.GetItems();
-                Console.WriteLine($"In the room there is a {item}." +
-                    "Press Space to pick it up, or Enter to carry on...");
-                ConsoleKey PickupInput;
-                PickupInput = Console.ReadKey(true).Key;
-                while (true)
+                int TurnCount = 6;
+                while (TurnCount > 0)
                 {
-                    if (PickupInput == ConsoleKey.Spacebar)
+                    Console.WriteLine(currentRoom.GetDescription());
+                    string item = currentRoom.GetItems();
+                    Console.WriteLine($"\nIn the room there is a {item}." +
+                        " Press Space to pick it up, or Enter to carry on...");
+                    ConsoleKey PickupInput;
+
+                    bool condition = true;
+                    while (condition == true)
                     {
-                        player.PickUpItem(item);
-                        return;
+                        PickupInput = Console.ReadKey(true).Key;
+                        if (PickupInput == ConsoleKey.Spacebar)
+                        {
+                            player.PickUpItem(item);
+                            player.InventoryContents();
+                            condition = false;
+                        }
+                        else if (PickupInput == ConsoleKey.Enter)
+                        {
+                            condition = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter Space to pick up or Enter to continue");
+                        }
                     }
-                    else if (PickupInput == ConsoleKey.Enter)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Please enter Space to pick up or Enter to continue");
-                    }
+                    TurnCount -= 1;
+
                 }
 
 
