@@ -21,10 +21,9 @@ namespace Program
         public PlayerInventory(int inCapacity)
         {
             iCapacity = inCapacity;
-            for (int i = 0; i < iCapacity; i++)
-            {
-                Inventory.Add(new InventoryItem("Sausage Roll", 3, 10));
-            }
+           
+             Inventory.Add(new InventoryItem("Sausage Roll", 10, 3));
+            
         }
 
         private int iCapacity { get; set; }
@@ -41,7 +40,7 @@ namespace Program
         }
         public string fShowInventory()
         {
-            for (int i = 0; i < iCapacity; i++)
+            for (int i = 0; i < Inventory.Count; i++)
             {
                 Console.WriteLine("[" + (i + 1).ToString() + "] " + Inventory[i].sName + ": " + Inventory[i].noOfItem.ToString() + "/" + Inventory[i].maxNoOfItem.ToString());
             }
