@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace DungeonExplorer
 {
@@ -41,11 +42,23 @@ namespace DungeonExplorer
 
         public void PickUpItem(string item)
         {
-            inventory.Add(item);
+            if (inventory.Contains(item))
+            {
+                Console.WriteLine(item + " already in inventory!");
+            }
+            else
+            {
+                Console.WriteLine("Picked up: " + item);
+                inventory.Add(item);
+            }
+
+
         }
+
         public string InventoryContents()
         {
             return string.Join(", ", inventory);
         }
     }
 }
+
