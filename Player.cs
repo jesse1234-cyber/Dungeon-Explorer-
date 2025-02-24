@@ -10,7 +10,7 @@ namespace DungeonExplorer
 
         public Player(string name, int health) 
         {
-<<<<<<< Updated upstream
+
             Name = name;
             Health = health;
 =======
