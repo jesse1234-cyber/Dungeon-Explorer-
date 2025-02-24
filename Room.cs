@@ -36,7 +36,6 @@ namespace DungeonExplorer
             description = Description;
             monster = Monster;
         }
-
         public string GetDescription()
         {
             return description;

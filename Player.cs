@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
@@ -7,6 +8,7 @@ namespace DungeonExplorer
         private string name;
         private int health;
         private List<string> inventory;
+        static Random rnd = new Random();
 
         public string Name
         {
@@ -36,7 +38,7 @@ namespace DungeonExplorer
             set { inventory = value; }
         }
 
-        public Player(string name, int health, List<string> Inventory) 
+        public Player(string name, int health, List<string> inventory) 
         {
 
             name = Name;
