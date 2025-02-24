@@ -16,7 +16,7 @@ namespace DungeonExplorer
         }
         public void PickUpItem(string item)
         {
-
+            string NewItem = item;
         }
         public string InventoryContents()
         {

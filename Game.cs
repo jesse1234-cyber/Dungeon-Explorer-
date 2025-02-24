@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Media;
 
 namespace DungeonExplorer
@@ -12,6 +13,7 @@ namespace DungeonExplorer
         {
             currentRoom = new Room();
             player = new Player("Username", 10);
+
 
         }
         public void Start()
@@ -35,6 +37,31 @@ namespace DungeonExplorer
                 while (Key != ConsoleKey.Enter);
 
                 Console.WriteLine(currentRoom.GetDescription());
+                string item = currentRoom.GetItems();
+                Console.WriteLine($"In the room there is a {item}." +
+                    "Press Space to pick it up, or Enter to carry on...");
+                ConsoleKey PickupInput;
+                PickupInput = Console.ReadKey(true).Key;
+                while (true)
+                {
+                    if (PickupInput == ConsoleKey.Spacebar)
+                    {
+                        player.PickUpItem(item);
+                        return;
+                    }
+                    else if (PickupInput == ConsoleKey.Enter)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter Space to pick up or Enter to continue");
+                    }
+                }
+
+
+
+
 
                 Console.WriteLine("\nPress any key to end the game...");
                 Console.ReadKey();

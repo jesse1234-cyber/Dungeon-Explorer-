@@ -19,13 +19,20 @@ namespace DungeonExplorer
             "\nThe floor squelches with every step as thick slime coats the stone floors. Occasional bubbles rise and pop. The walls ooze with the same sticky substance",
             "\nThis vast, domed chamber seems unnaturally large. Shadows flicker abnormally. In the center of the room, a pedestal holds a cracked hourglass" };
 
-            rand = new Random();
-        }
+            Items = new List<string> { "Apple", "Rusted Sword", "Health Potion", "Broken Jar", "Dice", "Damp Cloth" };
 
+            rand = new Random();
+
+        }
 
         public string GetDescription()
         {
             return RoomDescriptions[rand.Next(RoomDescriptions.Count)];
+        }
+
+        public string GetItems()
+        {
+            return Items[rand.Next(Items.Count)];
         }
     }
 }
