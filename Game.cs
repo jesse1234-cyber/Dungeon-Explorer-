@@ -33,10 +33,10 @@ namespace DungeonExplorer
                     damageValue = 5;
                     break;
                 case 3:
-                    damageValue = 10;
+                    damageValue = 20;
                     break;
                 case 4:
-                    damageValue = 20;
+                    damageValue = 35;
                     break;
                 case 5:
                     damageValue = 30;
@@ -44,11 +44,24 @@ namespace DungeonExplorer
             }
             return damageValue;
         }
+
+        public bool PlayerDeath()
+        {
+            if (player1.Health <= 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public void Start()
         {
             // Change the playing logic into true and populate the while loop
-            bool playing = true;
-            while (playing)
+            bool creatingPlayer = true;
+            bool playing = false;
+            while (creatingPlayer)
             {
                 // Code your playing logic here
 
@@ -62,58 +75,56 @@ namespace DungeonExplorer
 
                 Console.WriteLine($"Player's name is {player1.Name} \n{player1.Name}'s health is: {player1.Health} \nInventory is empty\nPress any key to begin your adventure...");
                 Console.ReadKey();
-                bool playerCreated = true;
+                creatingPlayer = false;
+            }
 
-                while (playerCreated)
+            playing = true;
+            int roomsPassed = 0;
+                while (playing == true)
                 {
-
-
-                    int roomNum = rnd.Next(1, 5);
-                    switch (roomNum)
-                    {
-                        case 1:
-                            currentRoom.Description = "You enter a small, dimly lit room. There is a small health potion placed on a table in the far left corner.";
-                            break;
-                        case 2:
-                            currentRoom.Description = "You enter a completely dark room. It is impossible to see anything. Your fumble around in the darkness searching for a door to the next room.";
-                            break;
-                        case 3:
-                            currentRoom.Description = "You enter a large, brightly lit room. There is a large health potion hidden under a cloth in the near left corner of the room.";
-                            break;
-                        case 4:
-                            currentRoom.Description = "You emerge into blinding sunlight. You have escaped the dungeon!";
-                            playerCreated = false;
-                            playing = false;
-                            break;
-                    }
-
+                    currentRoom.Description = currentRoom.ChooseRoom();
                     Console.WriteLine(currentRoom.Description);
                     Console.ReadKey();
 
                     int monsterPresent = rnd.Next(1, 3);
-                    if (monsterPresent == 1 && roomNum != 4)
+                if (monsterPresent == 1)
+                {
+                    currentRoom.Monster = true;
+                    int damageValue = PlayerTakeDamage();
+                    Console.WriteLine($"There is a monster in this room! {player1.Name} has taken {damageValue} damage!");
+                    player1.Health = player1.Health - damageValue;
+                    Console.ReadKey();
+                    if (PlayerDeath() == true)
                     {
-                        currentRoom.Monster = true;
-                        int damageValue = PlayerTakeDamage();
-                        Console.WriteLine($"There is a monster in this room! {player1.Name} has taken {damageValue} damage!");
-                        player1.Health = player1.Health - damageValue;
+                        Console.WriteLine($"GAME OVER! {player1.Name} has died...");
+                        playing = false;
+                    }
+                    else
+                    {
+                        roomsPassed++;
+                    }
+                    if (roomsPassed >= 10)
+                    {
+                        Console.WriteLine($"CONGRATULATIONS {player1.Name} YOU HAVE ESCAPED THE DUNGEON! You had {player1.Health} health points remaining");
+                        playing = false;
                         Console.ReadKey();
                     }
-                    else if (monsterPresent == 2 || roomNum == 4)
+                }
+                else if (monsterPresent == 2)
+                {
+                    currentRoom.Monster = false;
+                    Console.WriteLine("There is no monster in this room!");
+                    roomsPassed++;
+                    if (roomsPassed >= 10)
                     {
-                        if (roomNum == 4)
-                        {
-                            Console.WriteLine();
-                        }
-                        else
-                        {
-                            currentRoom.Monster = false;
-                            Console.WriteLine("There is no monster in this room!");
-                            Console.ReadKey();
-                        }
+                        Console.WriteLine($"CONGRATULATIONS {player1.Name} YOU HAVE ESCAPED THE DUNGEON! You had {player1.Health} health points remaining");
+                        playing = false;
+                        Console.ReadKey();
                     }
                 }
-            }
+                }
+                
+            
         }
     }
 }
