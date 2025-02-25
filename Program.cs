@@ -10,11 +10,24 @@ namespace DungeonExplorer
     {
         static void Main(string[] args)
         {
-            Game game = new Game();
-            game.Start();
-            Console.WriteLine("Waiting for your Implementation");
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
+            try
+            {
+                Console.WriteLine("Welcome to dungeon explorer");
+                Game game = new Game();
+                game.Start();
+            }
+
+            catch (Exception)
+            {
+                Console.WriteLine("Error has Occured");
+            }
+
+            finally
+            {
+                Console.WriteLine("Waiting for your Implementation");
+                Console.WriteLine("Press any key to exit...");
+                Console.ReadKey();
+            }
         }
     }
 }
