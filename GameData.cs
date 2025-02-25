@@ -45,6 +45,7 @@ namespace DungeonExplorer
             new List<object> { "Orc", 20, 60, 1 },
             new List<object> { "Troll", 30, 70, 2 },
             new List<object> { "Giant", 40, 80, 3 },
+            new List<object> { "Wizard", 35, 90, 3 },
             new List<object> { "Dragon", 50, 120, 4 }
         };
 
@@ -91,13 +92,20 @@ namespace DungeonExplorer
         public static List<object> GetRandomEnemy(int min, int max)
         {
             int index = random.Next(min, max);
-            return enemies.ElementAt(index);
+            List<object> enemyTemplate = enemies.ElementAt(index);
+            return new List<object> { enemyTemplate[0], enemyTemplate[1], enemyTemplate[2], enemyTemplate[3] };
         }
+
 
         public static string GetRandomRoomDescription()
         {
             int index = random.Next(roomDescriptions.Count);
             return roomDescriptions[index];
+        }
+
+        public static Dictionary<string, int> GetWeapons()
+        {
+            return weapons;
         }
     }
 }

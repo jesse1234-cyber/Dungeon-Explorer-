@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Media;
+using System.Threading;
 
 namespace DungeonExplorer
 {
@@ -7,7 +9,7 @@ namespace DungeonExplorer
     {
         // Game's Properties
         public Player Player { get; set; }
-        public bool IsGameOver { get; set; }
+        public static bool IsGameOver { get; set; }
         public Room[,] Grid { get; set; }
 
         // Game's constructor
@@ -21,11 +23,27 @@ namespace DungeonExplorer
         // Main game loop
         public void Start()
         {
+            bool DisplayInfo = false;
+            bool DisplayMap = false;
+            Console.WriteLine("\nStarting Game...\n");
+            Thread.Sleep(400);
             while (!IsGameOver)
             {
-                Console.WriteLine();
+                Thread.Sleep(100);
+                Console.Clear();
                 Player.CurrentRoom.GetDescription();
-                Console.Write("\nWhat do you want to do?\n1. Move to another room\n2. Pick up items\n3. View player stats\n4. Display the Map\n5. Quit\n: ");
+                if (DisplayInfo)
+                {
+                    Player.DisplayInfo();
+                    DisplayInfo = false;
+                }
+                if (DisplayMap)
+                {
+                    Player.DisplayMap(Grid);
+                    DisplayMap = false;
+                }
+                Console.Write("\nWhat do you want to do?\n\n1. Move to another room\t\t" +
+                    "2. Fight!\n3. Pick up items\t\t4. View player stats\n5. Display the Map\t\t6. Quit\n: ");
                 string choice = Console.ReadLine();
 
                 switch (choice)
@@ -34,20 +52,23 @@ namespace DungeonExplorer
                         Player.MoveToRoom(Grid, Player.CurrentRoom.RoomCount);
                         break;
                     case "2":
-                        Player.PickUpItem();
+                        Player.FightEnemy();
                         break;
                     case "3":
-                        Player.DisplayInfo();
+                        Player.PickUpItem();
                         break;
                     case "4":
-                        Player.DisplayMap(Grid);
+                        DisplayInfo = true;
                         break;
                     case "5":
+                        DisplayMap = true;
+                        break;
+                    case "6":
                         IsGameOver = true;
-                        Console.WriteLine("Thanks for playing!");
+                        Console.WriteLine("\nThanks for playing!\n");
                         break;
                     default:
-                        Console.WriteLine("Invalid choice. Try again.");
+                        Console.WriteLine("\nInvalid choice. Try again.\n");
                         break;
                 }
             }

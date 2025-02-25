@@ -10,7 +10,7 @@ namespace DungeonExplorer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("===== Dungeon Crawler =====");
+            Console.WriteLine("===== Dungeon Crawler =====\n");
 
             // Creates an empty grid of rooms
             int gridSize = 20;

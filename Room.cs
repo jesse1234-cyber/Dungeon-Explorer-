@@ -11,7 +11,7 @@ namespace DungeonExplorer
         public string Description { get; set; }
         public List<string> Exits { get; set; }
         public List<string> Items { get; set; }
-        public List<string> Enemies { get; set; }
+        public List<object> Enemies { get; set; }
 
         // Room's constructor
         public Room(string roomID, string description, int roomCount)
@@ -21,22 +21,41 @@ namespace DungeonExplorer
             Description = description;
             Exits = new List<string>();
             Items = new List<string>();
-            Enemies = new List<string>();
+            Enemies = new List<object>();
         }
 
         // Method to get the room's description
         public void GetDescription()
         {
-            Console.WriteLine($"{RoomID}: {Description}");
+            Console.WriteLine($"\n{RoomID}: {Description}\n");
+
+            // Writes all the items in the room
             if (Items.Count > 0)
             {
-                Console.WriteLine("Items here: " + string.Join(", ", Items));
+                Console.WriteLine("Items here: " + string.Join(", ", Items) + "\n");
             }
+
+            // Writes all the enemies in the room
             if (Enemies.Count > 0)
             {
-                Console.WriteLine("Enemies here: " + string.Join(", ", Enemies));
+                Console.Write("Enemies here: ");
+                for (int i = 0; i < Enemies.Count; i++)
+                {
+                    // Access first element of each enemy item
+                    List<object> enemy = (List<object>)Enemies[i];
+                    Console.Write(enemy[0]);
+
+                    // Add a comma and space if it's not the last enemy
+                    if (i < Enemies.Count - 1)
+                    {
+                        Console.Write(", ");
+                    }
+                }
+                Console.WriteLine("\n");
             }
-            Console.WriteLine("Exits: " + string.Join(", ", Exits));
+
+            // Writes all the exits in the room
+            Console.WriteLine("Exits: " + string.Join(", ", Exits) + "\n");
         }
 
         // Method to add an item to the room
@@ -46,7 +65,7 @@ namespace DungeonExplorer
         }
 
         // Method to add an enemy to the room
-        public void AddEnemy(string enemy)
+        public void AddEnemy(List<object> enemy)
         {
             Enemies.Add(enemy);
         }
