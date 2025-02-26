@@ -4,8 +4,8 @@ namespace DungeonExplorer
 {
     public class Player
     {
-        public string Name { get; private set; }
-        public int Health { get; private set; }
+        public string Name { get; private set; };
+        public int Health { get; private set; };
         private List<string> inventory = new List<string>();
 
         public Player(string name, int health) 
@@ -15,11 +15,17 @@ namespace DungeonExplorer
         }
         public void PickUpItem(string item)
         {
-
+            this.inventory.Add(item);
         }
         public string InventoryContents()
         {
             return string.Join(", ", inventory);
+        }
+        public string GetStatus()
+        {
+
+            return string.Join(Health, InventoryContents());
+            
         }
     }
 }

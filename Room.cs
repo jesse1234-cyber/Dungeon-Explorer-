@@ -3,6 +3,7 @@
     public class Room
     {
         private string description;
+        private string[] directions = {"N", "W", "S", "E"};
 
         public Room(string description)
         {
@@ -11,7 +12,16 @@
 
         public string GetDescription()
         {
-            return description;
+            return this.description;
+        }
+        
+        public void SetAdjacent(string[] availabledirection)
+        {
+            this.directions = availabledirection;
+        }
+        public string[] GetDirections()
+        {
+            return this.directions;
         }
     }
 }
