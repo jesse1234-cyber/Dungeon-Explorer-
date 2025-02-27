@@ -1,9 +1,12 @@
-﻿namespace DungeonExplorer
+﻿using System.Net.Http.Headers;
+
+namespace DungeonExplorer
 {
     public class Room
     {
         private string description;
         private string[] directions = {"N", "W", "S", "E"};
+        private Item 
 
         public Room(string description)
         {

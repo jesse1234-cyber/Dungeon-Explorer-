@@ -25,24 +25,28 @@ namespace DungeonExplorer
             bool playing = true;
             while (playing)
             {
-                Console.WriteLine("A. Look around the room.");
-                Console.WriteLine("B. Display status.");
+                Console.WriteLine("1. Look around the room.");
+                Console.WriteLine("2. Display status.");
                 Console.WriteLine("Please enter a listed value to continue... ");
                 bool loop = true;
                 
                 
                 while (loop == true)
                 {
-                    string valueTest = Console.ReadKey().Key;
+                    ConsoleKeyInfo valueTest = Console.ReadKey();
                     Console.WriteLine("That is not a valid input");
 
-                    if (valueTest = ConsoleKey.A)
+                    if ("1" == valueTest.KeyChar.ToString())
                     {
                         Console.Write(this.currentRoom.GetDescription());
                     }
-                    else if (valueTest = ConsoleKey.B)
+                    else if ("2" == valueTest.KeyChar.ToString())
                     {
                         Console.Write(this.player.GetStatus());
+                    }
+                    else if ("3" == valueTest.KeyChar.ToString())
+                    {
+                        Console
                     }
                     else
                     {
