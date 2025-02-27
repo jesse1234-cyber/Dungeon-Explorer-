@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
@@ -15,7 +16,7 @@ namespace DungeonExplorer
         }
         public void PickUpItem(string item)
         {
-
+            Console.WriteLine($"Picked up: {item}");
         }
         public string InventoryContents()
         {
