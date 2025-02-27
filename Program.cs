@@ -10,10 +10,10 @@ namespace DungeonExplorer
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Welcome to Dungeon Explorer! Press any button to begin.");
+            Console.ReadKey();
             
-
             Game game = new Game();
-            Console.WriteLine("Waiting for your Implementation");
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }
