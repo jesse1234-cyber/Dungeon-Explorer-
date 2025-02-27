@@ -1,17 +1,30 @@
-﻿namespace DungeonExplorer
+﻿using System.Collections.Generic;
+
+namespace DungeonExplorer
 {
     public class Room
     {
-        private string description;
+        public static int currentRoom = 0;
 
-        public Room(string description)
+        private string room1Description = "get roomed (1) :>";
+        private string room2Description = "get roomeeed (2) :>";
+        private string room3Description = "get roomored (3) 8>";
+
+        private List<string> room1Items = new List<string> {"Dagger"};
+
+        private List<string> RoomDescriptions = new List<string>();
+
+        public Room()
         {
-            this.description = description;
+            RoomDescriptions.Add(room1Description);
+            RoomDescriptions.Add(room2Description);
+            RoomDescriptions.Add(room3Description);
         }
 
         public string GetDescription()
         {
-            return description;
+            string roomDescription = RoomDescriptions[currentRoom];
+            return roomDescription;
         }
     }
 }
