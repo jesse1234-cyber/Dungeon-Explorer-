@@ -1,25 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
     public class Player
     {
-        public string Name { get; private set; }
-        public int Health { get; private set; }
+        private static Random random = new Random();
+        private string name;
+        public int health;
         private List<string> inventory = new List<string>();
 
-        public Player(string name, int health) 
+        public Player(string name) 
         {
-            Name = name;
-            Health = health;
+            this.name = name;
+            this.health = random.Next(14, 18);
         }
-        public void PickUpItem(string item)
+
+        public string GetPlayerData()
         {
 
-        }
-        public string InventoryContents()
-        {
-            return string.Join(", ", inventory);
+            return "Name: " + this.name + "\n" + "Health: " + this.health;
         }
     }
 }
