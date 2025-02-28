@@ -49,6 +49,7 @@ namespace DungeonExplorer
             new List<object> { "Dragon", 50, 120, 4 }
         };
 
+        // List of room descriptions
         private static List<string> roomDescriptions = new List<string>()
         {
             "A damp, moss-covered chamber with a faint dripping sound echoing from the walls.",
@@ -77,18 +78,21 @@ namespace DungeonExplorer
             "A room with a massive, iron gate that creaks open as you approach.",
         };
 
+        // Method to return a random weapon
         public static KeyValuePair<string, int> GetRandomWeapon(int min, int max)
         {
             int index = random.Next(min, max);
             return weapons.ElementAt(index);
         }
 
-        public static KeyValuePair<string, int> GetRandomItem(int min, int max)
+        // Method to return a random potion
+        public static KeyValuePair<string, int> GetRandomPotion(int min, int max)
         {
             int index = random.Next(min, max);
             return potions.ElementAt(index);
         }
 
+        // Method to return a random enemy
         public static List<object> GetRandomEnemy(int min, int max)
         {
             int index = random.Next(min, max);
@@ -96,16 +100,23 @@ namespace DungeonExplorer
             return new List<object> { enemyTemplate[0], enemyTemplate[1], enemyTemplate[2], enemyTemplate[3] };
         }
 
-
+        // Method to return a random room description
         public static string GetRandomRoomDescription()
         {
             int index = random.Next(roomDescriptions.Count);
             return roomDescriptions[index];
         }
 
+        // Gets the weapons dictionary
         public static Dictionary<string, int> GetWeapons()
         {
             return weapons;
+        }
+
+        // Gets the potions dictionary
+        public static Dictionary<string, int> GetPotions()
+        {
+            return potions;
         }
     }
 }

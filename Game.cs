@@ -20,18 +20,24 @@ namespace DungeonExplorer
             Grid = grid;
         }
 
-        // Main game loop
+        // Method that starts the game
         public void Start()
         {
             bool DisplayInfo = false;
             bool DisplayMap = false;
             Console.WriteLine("\nStarting Game...\n");
             Thread.Sleep(400);
+
+            // Main game loop
             while (!IsGameOver)
             {
                 Thread.Sleep(100);
                 Console.Clear();
+
+                // Gets the room information
                 Player.CurrentRoom.GetDescription();
+
+                // Displays relavant information if needed
                 if (DisplayInfo)
                 {
                     Player.DisplayInfo();
@@ -42,10 +48,13 @@ namespace DungeonExplorer
                     Player.DisplayMap(Grid);
                     DisplayMap = false;
                 }
+
+                // Asks the player what they want to do
                 Console.Write("\nWhat do you want to do?\n\n1. Move to another room\t\t" +
-                    "2. Fight!\n3. Pick up items\t\t4. View player stats\n5. Display the Map\t\t6. Quit\n: ");
+                    "2. Fight!\n3. Pick up items\t\t4. Use Items\n5. View player stats\t\t6. Display the Map\n7. Quit\n: ");
                 string choice = Console.ReadLine();
 
+                // Switch statement to handle the player's choice
                 switch (choice)
                 {
                     case "1":
@@ -58,12 +67,15 @@ namespace DungeonExplorer
                         Player.PickUpItem();
                         break;
                     case "4":
-                        DisplayInfo = true;
+                        Player.UseItem();
                         break;
                     case "5":
-                        DisplayMap = true;
+                        DisplayInfo = true;
                         break;
                     case "6":
+                        DisplayMap = true;
+                        break;
+                    case "7":
                         IsGameOver = true;
                         Console.WriteLine("\nThanks for playing!\n");
                         break;

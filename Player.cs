@@ -22,6 +22,7 @@ namespace DungeonExplorer
         public int MaxHealth { get; set; }
         public int Health { get; set; }
         public int Strength { get; set; }
+        public string Weapon { get; set; }
         public int EquippedWeaponDamage { get; set; }
         public List<string> Inventory { get; set; }
         public int PlayerX { get; set; }
@@ -40,6 +41,7 @@ namespace DungeonExplorer
             PlayerX = startX;
             PlayerY = startY;
             CurrentRoom = currentRoom;
+            Weapon = null;
         }
 
         // Method to add an item to inventory
@@ -47,14 +49,22 @@ namespace DungeonExplorer
         {
             if (GameData.GetWeapons().ContainsKey(item))
             {
-                Console.WriteLine("\nYou picked up a weapon, do you want to equip it?");
-                Console.Write("1. Yes\t\t2. No\n: ");
-                string choice = Console.ReadLine();
-                if (choice == "1")
-                {
-                    EquippedWeaponDamage = GameData.GetWeapons()[item];
-                    Console.WriteLine($"\nEquipped weapon damage: {EquippedWeaponDamage}\n");
-                }
+                EquipWeapon(item);
+            }
+            Inventory.Add(item);
+        }
+
+        // Method to equip a weapon
+        public void EquipWeapon(string item)
+        {
+            Console.WriteLine("\nYou picked up a weapon, do you want to equip it?");
+            Console.Write("1. Yes\t\t2. No\n: ");
+            string choice = Console.ReadLine();
+            if (choice == "1")
+            {
+                EquippedWeaponDamage = GameData.GetWeapons()[item];
+                Weapon = item;
+                Console.WriteLine($"\nEquipped weapon damage: {EquippedWeaponDamage}\n");
             }
         }
 
@@ -63,18 +73,60 @@ namespace DungeonExplorer
         {
             Console.WriteLine($"\nName: {Name}");
             Console.WriteLine($"Health: {Health}/{MaxHealth}");
-            Console.WriteLine($"Inventory: {string.Join(", ", Inventory)}\n");
+            Console.WriteLine($"Inventory: {string.Join(", ", Inventory)}");
+            Console.WriteLine($"Equipped Weapon: {Weapon}\n");
+        }
+
+        // Method to use an item
+        public void UseItem()
+        {
+            // Checks if the player has any items then prints them out
+            if (Inventory.Count > 0)
+            {
+                Console.WriteLine("\nYou decide to use an item, which item do you want to use?");
+                for (int i = 0; i < Inventory.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {Inventory[i]}");
+                }
+
+                Console.Write($"{Inventory.Count + 1}. Exit \n: ");
+                int choice = Convert.ToInt32(Console.ReadLine());
+
+                // If their choice is valid, check if it's a weapon or potion
+                if (choice <= Inventory.Count)
+                {
+                    if (GameData.GetWeapons().ContainsKey(Inventory[choice - 1]))
+                    {
+                        EquipWeapon(Inventory[choice - 1]);
+                    }
+
+                    if (GameData.GetPotions().ContainsKey(Inventory[choice - 1]))
+                    {
+                        Health += GameData.GetPotions()[Inventory[choice - 1]];
+                        Console.WriteLine($"\nYou use a potion and gain {GameData.GetPotions()[Inventory[choice - 1]]} health.\n");
+                        Inventory.RemoveAt(choice - 1);
+                    }
+                }
+            }
+
+            else
+            {
+                Console.WriteLine("\nYou have no items to use.\n");
+            }
+
         }
 
         // Method to move to another room
         public void MoveToRoom(Room[,] Grid, int RoomCount)
         {
+            // Must check if there are enemies in the room before moving
             if (CurrentRoom.Enemies.Count > 0)
             {
                 Console.WriteLine("\nYou must defeat all enemies in the room before moving to another room.\n");
                 return;
             }
 
+            // Prints out the exits and asks the player where they want to go
             Console.WriteLine("\nYou decide to move to another room, where do you want to go?");
             int end = CurrentRoom.Exits.Count;
             for (int i = 0; i < end; i++)
@@ -83,9 +135,10 @@ namespace DungeonExplorer
             }
             Console.Write($"{end + 1}. Cancel\n: ");
             int choice = Convert.ToInt32(Console.ReadLine());
+
+            // Create and move to the selected room if the choice is valid
             if (choice != (end + 1) && choice <= end)
             {
-                // Create and move to the selected room
                 RoomCount++;
                 string roomID = "Room " + RoomCount;
                 string direction = CurrentRoom.Exits[choice - 1];
@@ -111,6 +164,7 @@ namespace DungeonExplorer
                         break;
                 }
 
+                // Amount of rooms before the last room
                 if (RoomCount == 10)
                 {
                     lastRoom = true;
@@ -134,6 +188,7 @@ namespace DungeonExplorer
                     bool doorAdded = false;
                     Random random = new Random();
 
+                    // Loop to add at least one new valid room to the grid
                     while (!doorAdded)
                     {
                         foreach (string key in OppositeDirections.Keys)
@@ -176,19 +231,41 @@ namespace DungeonExplorer
                         }
                     }
 
+                    // If it's not the last room, add random enemies and items
                     if (!lastRoom)
                     {
-                        int amount = 1 + (RoomCount / 3);
-                        for (int i = 0; i < amount; i++)
+                        // Add random amount of enemies based on room number
+                        int amountOfEnemies = 1 + (RoomCount / 3);
+                        for (int i = 0; i < amountOfEnemies; i++)
                         {
                             newRoom.AddEnemy(GameData.GetRandomEnemy(0, 1 + (RoomCount / 2)));
                         }
+
+                        // Add random amount of items based on room number
+                        int amountOfItems = 0 + (RoomCount / 2);
+                        Random randomItem = new Random();
+                        for (int i = 0; i < amountOfItems; i++)
+                        {
+                            // For each item, there is a 50% chance of it being a potion or a weapon
+                            int chance = randomItem.Next(1, 3);
+                            if (chance == 1)
+                            {
+                                newRoom.AddItem(GameData.GetRandomPotion((0 + RoomCount / 5), (1 + RoomCount / 3)).Key);
+                            }
+                            else
+                            {
+                                newRoom.AddItem(GameData.GetRandomWeapon((2 + RoomCount),(5 + RoomCount)).Key);
+                            }
+                        }
                     }
+
+                    // If it's the last room, add a final enemy and exit
                     else
                     {
                         newRoom.Description = "You have reached the final room, be careful.";
                         newRoom.Exits.RemoveRange(1, newRoom.Exits.Count - 1);
                         newRoom.AddExit("Exit");
+                        newRoom.AddEnemy(GameData.GetRandomEnemy(5, 6));
                     }
 
                     // Add the new room to the grid
@@ -205,6 +282,7 @@ namespace DungeonExplorer
         // Method to pick up an item
         public void PickUpItem()
         {
+            // Checks if there are items in the room then prints them
             if (CurrentRoom.Items.Count > 0)
             {
                 Console.WriteLine("\nYou decide to pick up an item, what do you pick up?");
@@ -235,6 +313,7 @@ namespace DungeonExplorer
             {
                 for (int x = 0; x < Grid.GetLength(0); x++)
                 {
+                    // Checks if the grid position has a room and if the player is currently there
                     if (Grid[x, y] != null)
                     {
                         if (x == PlayerX && y == PlayerY)
@@ -259,6 +338,7 @@ namespace DungeonExplorer
         // Method to fight an enemy
         public void FightEnemy()
         {
+            // Checks if there are enemies in the room then prints them
             if (CurrentRoom.Enemies.Count > 0)
             {
                 Console.WriteLine("\nYou decide to fight an enemy, which enemy do you want to fight?");
@@ -270,6 +350,8 @@ namespace DungeonExplorer
                 }
                 Console.Write($"{end + 1}. Cancel\n: ");
                 int choice = Convert.ToInt32(Console.ReadLine());
+
+                // Checks the choice is valid and starts the fight
                 if (choice != (end + 1) && choice <= end)
                 {
                     Thread.Sleep(100);
@@ -277,6 +359,8 @@ namespace DungeonExplorer
                     List<object> enemy = (List<object>)CurrentRoom.Enemies[choice - 1];
                     int enemyMaxHealth = (int)enemy[2];
                     int round = 1;
+
+                    // Fight loop
                     while (true)
                     {
                         round++;
@@ -287,23 +371,38 @@ namespace DungeonExplorer
                         Console.WriteLine("1. Attack\t\t 2. Use item\t\t 3. Run");
                         Console.Write(": ");
                         string choice2 = Console.ReadLine();
+
+                        // Switch statement to handle the player's choice
                         switch (choice2)
                         {
                             case "1":
+
+                                // Random multiplier for player damage
                                 Random random = new Random();
                                 double multiplier = Math.Round(random.NextDouble() + 1, 1);
 
                                 int playerDamage = (int)((Strength + 1 + EquippedWeaponDamage) * multiplier);
                                 enemy[2] = (int)enemy[2] - playerDamage;
+                                Console.WriteLine($"\nYou deal {playerDamage} damage to {enemy[0]}.\n");
 
+                                // Checks if the enemy is defeated before it attacks the player
+                                if ((int)enemy[2] <= 0)
+                                {
+                                    Console.WriteLine($"You have defeated the {enemy[0]}.\n");
+                                    CurrentRoom.Enemies.RemoveAt(choice - 1);
+                                    Thread.Sleep(2000);
+                                    return;
+                                }
+
+                                // Enemy attacks the player depending on its speed
                                 if (round % (int)enemy[3] == 0)
                                 {
                                     Health -= (int)enemy[1];
                                 }
 
-                                Console.WriteLine($"\nYou deal {playerDamage} damage to {enemy[0]}.\n");
                                 Console.WriteLine($"{enemy[0]} deals {enemy[1]} damage to you.\n");
 
+                                // Checks if the player has died
                                 if (Health <= 0)
                                 {
                                     Console.WriteLine("You have died.\n");
@@ -312,45 +411,20 @@ namespace DungeonExplorer
                                     return;
                                 }
 
-                                if ((int)enemy[2] <= 0)
-                                {
-                                    Console.WriteLine($"You have defeated {enemy[0]}.\n");
-                                    CurrentRoom.Enemies.RemoveAt(choice - 1);
-                                    Thread.Sleep(2000);
-                                    return;
-                                }
-
                                 break;
 
                             case "2":
-                                if (Inventory.Count > 0)
-                                {
-                                    Console.WriteLine("\nYou decide to use an item, which item do you want to use?");
-                                    for (int i = 0; i < Inventory.Count; i++)
-                                    {
-                                        Console.WriteLine($"{i + 1}. {Inventory[i]}");
-                                    }
-                                    Console.Write(": ");
-                                    int choice3 = Convert.ToInt32(Console.ReadLine());
-                                    if (choice3 <= Inventory.Count)
-                                    {
-                                        Inventory.RemoveAt(choice3 - 1);
-                                        Health += 20;
-                                        Console.WriteLine("\nYou use a potion and gain 20 health.\n");
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("\nYou have no items to use.\n");
-                                }
+                                UseItem();
                                 break;
 
                             case "3":
                                 Console.WriteLine("\nYou run away from the fight.\n");
+                                Thread.Sleep(1500);
                                 return;
 
                             default:
                                 Console.WriteLine("\nInvalid choice. Try again.\n");
+                                Thread.Sleep(1500);
                                 break;
                         }
                         Thread.Sleep(1500);
