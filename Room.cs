@@ -24,6 +24,7 @@ namespace DungeonCrawler
         public void investigate(List<Item> inventory, List<Weapon> weaponInventory, int b, Player player)
         {
             Dice D20 = new Dice(20);
+            Dice D6 = new Dice(6);
             List<string> ministryOfSillyWalks = new List<string> {
             "You blithely saunter",
             "You make your merry way",
@@ -44,7 +45,19 @@ namespace DungeonCrawler
             "You swagger up",
             "You bounce up",
             "You hop up",
-            "You rollick your way up"
+            "You rollick your way up",
+            "You step over",//20
+            "You pace furtively up",
+            "You make your way",
+            "You move up",
+            "You tread closer",
+            "You curiously pace up",
+            "You gallantly stride over",//26
+            "You confidently swagger up",
+            "You stroll smoothly up",
+            "You courageously sidle over",
+            "Flashing a grin indicative of derring do, you theatrically stroll up",
+            "Armed with your dazzling smile, you strut over"
             };
             if (b < 1)
             {
@@ -200,9 +213,18 @@ namespace DungeonCrawler
                             {
                                 Console.WriteLine($"\n{ministryOfSillyWalks[D20.Roll(D20) - 1]} to the {FeatureList[answer1].Name}...\n");            
                             }
+                            else if (player.Traits.ContainsKey("thespian"))
+                            {
+                                Console.WriteLine($"\n{ministryOfSillyWalks[25+D6.Roll(D6)]} to the {FeatureList[answer1].Name}");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"\n{ministryOfSillyWalks[19+D6.Roll(D6)]} to the {FeatureList[answer1].Name}...\n");
+                            }
+                            Console.ReadKey(true);
                             FeatureList[answer1].investigateFeature();
                             FeatureList[answer1].search(inventory, weaponInventory);
-                            
+                            Console.ReadKey(true);
                             Console.WriteLine(options);
                             continue;
                         }

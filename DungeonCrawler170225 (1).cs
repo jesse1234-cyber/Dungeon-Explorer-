@@ -73,7 +73,7 @@ namespace DungeonCrawler
             Item halfOfCrackedBowl = new Item("half a cracked bowl", "Its a cheap bowl made of clay - half of one anyway - chipped in places around the rim and bearing a hairline crack down its left side.");
             Item otherHalfOfCrackedBowl = new Item("other half of a cracked bowl", "It's not much less damaged than its counterpart");
             Item musicBox = new Item("music box", "A curious artefact with a hand-crafted ebony exterior, inlaid with gold. It has glass panels displaying well oiled brass cogs gently whirring inside.", true, "unopened", 1, "strange lullaby");
-            Weapon rustyChains = new Weapon("rusty chains", "They're so caked with rust that they're links have stiffened with age. You doubt these could hold any prisoner. Perhaps that's why they weren't used on you.", chainDamage, defaultCritHits, defaultGoodHits);
+            Weapon rustyChains = new Weapon("rusty chains", "They're so caked with rust that they're links have stiffened with age. You doubt these could hold any prisoner. Perhaps that's why they weren't used on you. Handling one of them, you figure it'd make a halfway decent, impromptu weapon - if you've really no other choice.", chainDamage, defaultCritHits, defaultGoodHits);
             Item garment = new Item("garment", "Haphazardly strewn about the rickety floor of your cell, they're worn, faded and moth-eaten. Hardly a fashion accessory.", true, "unburned");
             Item elixirFeline = new Item("Elixir of Feline Guile", "It's pungent aroma makes you recoil. Upon the label it reads, 'Is 'butter-fingers' your middle name? Do you like jumping from great heights, but don't like the dying that usually follows? Merigold's Wondrous Elixir of Feline Guile is the thing for you! Please note Merigold is not responsible for fatal falls during or after this potion takes effect. Please use responsibly. Pleasant fragrance not included.'", true, "unshattered", 1, "Skill: Boosts your skill by 1 point. Caution: excessive use may cause an over-fondness for catnip.");
             Item FelixFelicis = new Item("Felix Felicis", "It bubbles, roils and froths within its bottle. You almost sense a quiver through the glass, like the crystalline liquid inside is trying to escape. The label on the side is illegible; someone has written over it with a shaky cursive, 'Don't drink it! Whatever you do, don't drink it! For the love of all that is holy, if you care for anyone around you keep the stopper on!!! ~ Yours sincerely, Merigold.'", true, "unshattered", 10, "Luck: Drink and accomplish your wildest dreams..."); // access to 'jinxed' critmisses for 1 battle only
@@ -660,11 +660,19 @@ namespace DungeonCrawler
                 usesDictionaryItemItem.Add(halfOfCrackedBowl, new List<Item> { otherHalfOfCrackedBowl });
                 usesDictionaryItemItem.Add(otherHalfOfCrackedBowl, new List<Item> { halfOfCrackedBowl });
                 usesDictionaryItemFeature.Add(healPotion, new List<Feature> { skeleton });
+                usesDictionaryItemFeature.Add(FelixFelicis, new List<Feature> { skeleton });
+                usesDictionaryItemFeature.Add(elixirFeline, new List<Feature> { skeleton });
             }
             Dictionary<Item, List<Player>> usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 } , [FelixFelicis] = new List<Player> { player1}, [elixirFeline] = new List<Player> { player1} };
             List<Feature> features = new List<Feature>();
 
-            Console.WriteLine($"You rouse yourself from your self-reflection. Who knows who, or what, this dubious curse-breaker is? Who knows what they have in store for you - or how their twisted designs might alleviate whatever Myrovia's curse is? You resolve to find a way out of your predicament and this {room.Name}, and you intend to do it fast...");
+            Console.WriteLine($"You rouse yourself from your self-reflection. " +
+                $"Who knows who, or what, this dubious curse-breaker is? Who knows what they have in store for you - or how their twisted designs might alleviate whatever Myrovia's curse is?");
+            if (player1.Traits.ContainsKey("thespian"))
+            {
+                Console.WriteLine("And who, i tell you, *who* could possibly have thought your antics of feigned gallantry and cons would ever land you in this... predicament. You knew you should have stuck to stage acting.");
+            }
+            Console.WriteLine($" You resolve to find a way out of your predicament and this {room.Name}, and you intend to do it fast...");
             Console.ReadKey(true);
             Console.WriteLine("Will you...");
             Console.WriteLine("[1] Check what items are still on your person?");
@@ -979,7 +987,7 @@ namespace DungeonCrawler
                                     if (player1.Inventory.Contains(binkySkull))
                                     {
                                         Console.ReadKey(true);
-                                        Console.WriteLine("\n\t'Hey! Get up! Get up, you oaf!' \n You notice Binky is somehow hovering over your shoulder and is yelling at the dead goblin. You ask what does he think he's doing?\n\t'Well,' Binky replies haughtily, 'that guard always was BONE IDLE!\n\n You both burst with uproarious laughter. \nFinally, with a gleeful heart you skip over the corpse and ever onward in your quest!");
+                                        Console.WriteLine("\n\t'Just look at that,' Binky tuts, peering out of your backpack as you see if you've room for any more items. 'Honestly, where have all the good monsters gone these days, eh? I mean he isn't any Medusa or Circe or anything, but slouching on the job?' \n Your gaze matches his as you contemplate the sprawling bloody mess that was your foe. You answer that you're pretty sure the goblin's dead... right? As you speak a fly lands over its exposed eyeball before buzzing away. \n\t'Dead? Of course not! You're this story's hero! Hero's are never murderers, he's just bone idle!' \nYeah, you answer, you guess that makes sense... No, of course it does!\nWith your gleeful heart as light as an ever-so-teensy-bit-eccentric feather you skip over the corpse and ever onward in your quest!");
                                     }
                                     trialBattle.wonFight();
                                     if (room.FeatureList.Contains(holeInCeiling))
