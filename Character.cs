@@ -175,7 +175,14 @@ namespace DungeonCrawler
                 r++;
             }
             Console.WriteLine(message);
-            
+            if (r == 1)
+            {
+                message = "You have no items or weapons in your pack. \nIt's as empty as the word of that mysterious innkeeper who betrayed you. Better get moving...";
+                Console.WriteLine(message);
+                Console.ReadKey(true);
+                return;
+            }
+            Console.WriteLine(message);
 
             bool continueLoop = true;
             int a = 0;
