@@ -197,7 +197,7 @@ namespace DungeonCrawler
             {
                 Console.WriteLine($"Your reactions aren't fast enough. {Monster.Name} takes the initiative!");
             }
-            int turn = 0;
+            private int turn = 0;
             if (initiative)
             {
 
