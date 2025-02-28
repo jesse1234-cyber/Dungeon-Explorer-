@@ -36,7 +36,6 @@
     &quot;.NET Project.DungeonExplorer.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -75,6 +74,7 @@
       <updated>1740690664865</updated>
       <workItem from="1740690669246" duration="397000" />
       <workItem from="1740747729755" duration="376000" />
+      <workItem from="1740748181942" duration="205000" />
     </task>
     <servers />
   </component>
