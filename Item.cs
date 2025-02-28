@@ -458,7 +458,10 @@ namespace DungeonCrawler
         {
             Dice D18 = new Dice(18);
             Dice D3 = new Dice(3);
+<<<<<<< HEAD
             System.Diagnostics.Debug.Assert(room.ItemList.Count > 2, "Items in the room must number at least three if there is any chance of combat occuring else an ArgumentNullException will occur for the 6th element of jinxedMisses.");
+=======
+>>>>>>> cda1f0d9597d77966572ae2de4b5ca71097d3f24
             List<string> jinxedMisses = new List<string>
             {
                 $"The {monsterName.Name} has you now! Finally, relishing it's soon-to-be freedom from your cursed, jinxy hide, it raises its {monsterName.Items[0].Name} to strike... and gets it stuck in the {room.FeatureList[D3.Roll(D3) - 1].Name}. You scurry away as the {monsterName.Name} curses, trying to free it. \nThe {monsterName.Name} loses 1 stamina.",
