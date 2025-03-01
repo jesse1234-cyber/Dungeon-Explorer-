@@ -69,9 +69,10 @@ namespace DungeonExplorer
             PrintLetterByLetter("Make your choice: ", 50);
         }
 
-        public bool YouHaveAchoice()
+        public bool YouHaveAChoice()
         {
-            while (true) {
+            while (true)
+            {
                 string choices = Console.ReadLine();
 
                 switch (choices)
@@ -83,12 +84,27 @@ namespace DungeonExplorer
                     default:
                         Console.WriteLine("Invalid choice, Please select 1 or 2");
                         break;
-        public void YouHaveAChoiceOutcome()
-        {
-
-        }
                 }   
             }
+        }
+        public void HandleYouHaveAChoice()
+        {
+            bool choice = YouHaveAChoice();
+
+            if (choice)
+            {
+                PrintLetterByLetter("Logic", 50);
+            }
+            else
+            {
+                _clear.Terminal();
+                PrintLetterByLetter("You choose to try out the wooden door to find a cobbled stair case leading to the surface, you swifly make your exit.\n", 50);
+                Thread.Sleep(500);
+                PrintLetterByLetter("did you win or lose? that is up to your own philosophy of the term 'winning'.\n\n", 50);
+                PrintLetterByLetter("The End.\n\n", 300);
+                PrintLetterByLetter("Your trait: 'The Reluctant Adventurer'", 50);
+            }
+            
         }
     }
 
@@ -109,7 +125,7 @@ namespace DungeonExplorer
             while (playing)
             {
                 intro.Displayintro();
-                intro.YouHaveAchoice();
+                intro.HandleYouHaveAChoice();
                 playing = false;
             }
         }
