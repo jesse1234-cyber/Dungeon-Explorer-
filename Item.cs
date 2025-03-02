@@ -371,6 +371,46 @@ namespace DungeonCrawler
                                 Console.WriteLine($"\nYou've healed by {boost} stamina points!");
                             }
                         }
+                        else if (player.Traits.ContainsKey("friends with fairies"))
+                        {
+                            Dice D40 = new Dice(40);
+                            Dice D4 = new Dice(4);
+                            int boost = D40.Roll(D40);
+                            if (player.Stamina + 2*player.Skill >= player.InitialStamina)
+                            {
+                                if (boost < 13)
+                                {
+                                    Console.WriteLine($"The {item1.Name} was super tasty, but had no effect. You are already as fit as can be. So scrumptious though... Your fairy friends urge you to drink another. Yum!");
+                                }
+                                else if (boost < 27)
+                                {
+                                    Console.WriteLine($"You feel the {item1.Name} awakening some dormant Fey magic! The world seems to whirl dizzyingly around you as you follow the fairies' dance. Your footwork and fighting stance become a bewilderingly erratic and unpredictable shuffle, scrape and stomp of feverish steps as you're swept up in the danse macabre with your pixie friends...");
+                                    foreach (Weapon w in player.WeaponInventory)
+                                    {
+
+
+                                        w.Boon += D4.Roll(D4) - 1;
+
+
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Urgh! That {item1.Name} didn't taste like the Fey 'magic' you've grown accustomed to... \nYou lose {boost/5} stamina points!");
+                                    player.Stamina -= boost/5;
+                                }
+                            }
+                            else if (player.Stamina + boost > player.InitialStamina)
+                            {
+                                player.Stamina = player.InitialStamina;
+                                Console.WriteLine("\nYou've fully healed! \nAnd your chakras feel all sparkly too...");
+                            }
+                            else
+                            {
+                                player.Stamina += boost;
+                                Console.WriteLine($"\nYou've healed by {boost} stamina points!");
+                            }
+                        }
                         else
                         {
                             int boost = D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6);
@@ -409,15 +449,22 @@ namespace DungeonCrawler
                     }
                     else if (propString == "Luck")
                     {
+                        
+                        
+
+                        
+                        
+                        
                         foreach (Weapon w in player.WeaponInventory)
                         {
-                            
-                            
+
+
                             w.Boon += item1.SpecialEffect;
-                           
+
 
                         }
-                        player.Inventory.Remove(item1);
+                        player.Inventory.Remove(item1); 
+                        
                         return true;
                     }
                     else { Console.WriteLine($"~~{item1.Name} is an unknown quantity~~"); return false; }
@@ -458,10 +505,7 @@ namespace DungeonCrawler
         {
             Dice D18 = new Dice(18);
             Dice D3 = new Dice(3);
-<<<<<<< HEAD
             System.Diagnostics.Debug.Assert(room.ItemList.Count > 2, "Items in the room must number at least three if there is any chance of combat occuring else an ArgumentNullException will occur for the 6th element of jinxedMisses.");
-=======
->>>>>>> cda1f0d9597d77966572ae2de4b5ca71097d3f24
             List<string> jinxedMisses = new List<string>
             {
                 $"The {monsterName.Name} has you now! Finally, relishing it's soon-to-be freedom from your cursed, jinxy hide, it raises its {monsterName.Items[0].Name} to strike... and gets it stuck in the {room.FeatureList[D3.Roll(D3) - 1].Name}. You scurry away as the {monsterName.Name} curses, trying to free it. \nThe {monsterName.Name} loses 1 stamina.",
@@ -473,7 +517,12 @@ namespace DungeonCrawler
                 $"You stammer as you try reasoning with the {monsterName.Name}. Surely you can just talk things out over a lovely cup of mead... The {monsterName.Name} doesn't listen. It lunges at you, only to crash into the {room.FeatureList[D3.Roll(D3) - 1].Name}. Yikes! \nThe {monsterName.Name} loses 11 stamina.",
                 $"In frustration the {monsterName.Name} hurls its {monsterName.Items[0].Name} at you! It bounces off your armour back at the {monsterName.Name}. \n The {monsterName.Name} loses 6 stamina.",
                 $"The {monsterName.Name} attacks wildly, wanting nothing more than to end the whirlwind of chaos your ill-fortune brings. It trips. Ouch! That's going to need a bandage... \nThe {monsterName.Name} loses 7 stamina.",
-                $"The {monsterName.Name} at last has you cornered. It looms over you with a leer, ready to at last deliver the killing blow. Then the {room.Name}'s ceiling caves in.\n The {monsterName.Name}'s engulfed by an avalanche of cascading debris. A trickle of dust takes a moment to stop. Then finally, one loose floorboard topples from the floor above and crowns the heap."
+                $"The {monsterName.Name} at last has you cornered. It looms over you with a leer, ready to at last deliver the killing blow. Then the {room.Name}'s ceiling caves in.\n The {monsterName.Name}'s engulfed by an avalanche of cascading debris. A trickle of dust takes a moment to stop. Then finally, one loose floorboard topples from the floor above and crowns the heap.",
+                $"The {monsterName.Name} gets hit by a random meteorite - or was it a shooting star? Either way, what are the chances? \n The {monsterName.Name}'s head falls off as you make a wish... ",
+                $"The {monsterName.Name} stubs its toe on the {room.ItemList[D3.Roll(D3) - 1].Name}...\nShortly afterwards it is crushed by the full force of the extreme probability wave generated by the Felix Felicis you drank, blasting the creature apart like an abstract nuclear device of pure mathematics. Paradoxes open and close in the underlying fabric of reality, swallowing the {monsterName.Name} whole before burping out the toe.\nHuh, you say as you take a second glance at the potion's ingredients list...",
+                $"The {monsterName.Name}'s armour attracts a bolt of lightning from, uh, somewhere(?)... \nThat was sure unlucky. You ponder the odds as the {monsterName.Name} is fried to a crisp."
+                
+                
             };
 
             int goodHit;
@@ -794,8 +843,82 @@ namespace DungeonCrawler
                     }
                     if (20 - (10 - skill) / 3 < hitRoll + playerBoon)
                     {
-                        
-                        if (player.Traits.ContainsKey("jinxed") || playerBoon>9)
+                        if (player.Traits.ContainsKey("friends with fairies") && playerBoon > 9)
+                        {
+                            Dice D26 = new Dice(26);
+                            int rollmiss = D26.Roll(D26);
+                            if (rollmiss > 20) 
+                            {
+                                Console.WriteLine(jinxedMisses[(rollmiss - 1) / 2]);
+                                damageDealt = -9999;
+                            }
+
+                            else if (rollmiss > 18 && enemyStamina < 2 * enemyStamina / 3)
+                            {
+                                damageDealt = -9999;
+                                Console.WriteLine(jinxedMisses[(rollmiss - 1) / 2]);
+                                room.FeatureList.Add(holeInCeiling);
+                            }
+                            else if (rollmiss > 18)
+                            {
+                                Console.WriteLine(jinxedMisses[(rollmiss - D18.Roll(D18) - 1) / 2]);
+                            }
+                            else if (rollmiss > 16)
+                            {
+                                damageDealt = -7;
+                                Console.WriteLine(jinxedMisses[(rollmiss - 1) / 2]);
+
+                            }
+                            else if (rollmiss > 14)
+                            {
+                                damageDealt = -6;
+                                Console.WriteLine(jinxedMisses[(rollmiss - 1) / 2]);
+
+                            }
+                            else if (rollmiss > 12)
+                            {
+                                damageDealt = -11;
+                                Console.WriteLine(jinxedMisses[(rollmiss - 1) / 2]);
+
+                            }
+                            else if (rollmiss > 10)
+                            {
+                                damageDealt = -3;
+                                Console.WriteLine(jinxedMisses[(rollmiss - 1) / 2]);
+
+                            }
+                            else if (rollmiss > 8)
+                            {
+                                damageDealt = -1;
+                                Console.WriteLine(jinxedMisses[(rollmiss - 1) / 2]);
+
+                            }
+                            else if (rollmiss > 6)
+                            {
+                                damageDealt = -7;
+                                Console.WriteLine(jinxedMisses[(rollmiss - 1) / 2]);
+
+                            }
+                            else if (rollmiss > 4)
+                            {
+                                damageDealt = -5;
+                                Console.WriteLine(jinxedMisses[(rollmiss - 1) / 2]);
+
+                            }
+                            else if (rollmiss > 2)
+                            {
+                                damageDealt = -2;
+                                Console.WriteLine(jinxedMisses[(rollmiss - 1) / 2]);
+
+                            }
+                            else
+                            {
+                                damageDealt = -1;
+                                Console.WriteLine(jinxedMisses[(rollmiss - 1) / 2]);
+
+                            }
+                        }
+                        else if (player.Traits.ContainsKey("jinxed") || playerBoon>9)
                         { 
                             int rollmiss = D20.Roll(D20);
                             
