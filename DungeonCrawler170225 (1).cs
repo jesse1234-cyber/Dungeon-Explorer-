@@ -23,9 +23,14 @@ namespace DungeonCrawler
         
         static void Main(string[] args)
         {
-            //Prologue
+            //Instantiating a six sided dice to be used for dealing damage with a particular weapon. 
+            // Damage works in combat by rolling dice. Each weapon has a different set of dice. Hence,
+            // one might deal a different range, with different prob distribution, of damage amounts
+            // depending on choice of weapon. This has been inspired by D&D and also more directly BG3.
             Dice D6 = new Dice(6);
             List<Dice> chainDamage = new List<Dice> { D6};
+            //The following are lists of messages that might chance to appear in combat if certain, 
+            //requirements are met, such as critical or good hits.
             List<String> defaultCritHits = new List<String>
                 {
                 "One instant your weapon is by your side, the next it hovers in the air, held in one still hand as blood spatters the ground beneath it. Behind you the foul enemy totters for but a moment before slumping to the ground in a cascade of guts. The only sound that fills the crackling silence is the ringing of your blade as you once again sheathe it. Your enemy was no match for your lightning reflexes, it seems. A smug smile slips upon your lips.",
@@ -65,8 +70,8 @@ namespace DungeonCrawler
                 "The enemy gets a spontaneous nosebleed."
                 };
             string newNote = "Someone has scrawled upon the note in hasty erratic cursive. It reads, 'I don't have long now. If you're reading this then you're likely another foolhardy adventurer like myself who got his'self kidnapped just as I woz. I don' have much space so mark my words. Whatever they tell you - its a lie. They're going to harm you. They're most likely going to kill you in one of their mad experiments. There's a music box. I kept it locked away and hidden from sight. It's in the chest. It may look empty but set in its bottom is a panel that can be removed. You'll find it there. If you play it the guard loses his marbles about it. Can't stand the tune, the little blighter! It's like nails on a chalkboard to 'em creatures. When it enters, subdue the loathsome thing. It's the only way out of 'ere. Hopefully, if I don't make it, at least someone else will...' The rest deteriorates into an illegible scribble at the bottom of the page.";
-            //Items in the room
-            Item binkySkull = new Item("Binky", "~~ He's a bonafide friend in need, a bonny true soul indeed, he's brimming with revelry when you've got bonhomie, Hey! don't be a bonana, 'cause you've got a BONANZA, of a friend in me! ~~");
+            //Items to be located somewhere in the room or upon the player character
+            Item binkySkull = new Item("Binky", "~~ He's a bonafide friend in need, a bonny true soul indeed, he's brimming with revelry when you bring bonhomie, Hey! don't be a bonana, 'cause you've got a BONANZA, of a friend in me! ~~");
             Item steelKey = new Item("steel key", "You find it under the skeleton's bones. You guess whoever it was had swallowed it before death. The key itself is rather nondescript - just a humble key. You suppose it must unlock something...");
             Item healPotion = new Item("healing potion", "It has flecks of gold floating amidst a gel like suspension. The label reads; 'When you're feeling blue, down with the flu, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!'", true, "used", 0, "Stamina: When you're blue, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!");
             Item note = new Item("note", "The note is dogeared and yellowed with age.\nSomeone has scrawled upon it but the writing is too small to make out. Snatches of words, poorly spelt, unveil themselves to you when you strain your eyes. However, no coherent message can be deciphered. Something about a false bottom? If only there was some spell to enlarge letters, you muse... If only you knew any spells!", true, "unread");
@@ -81,7 +86,10 @@ namespace DungeonCrawler
             Item bowlFragments = new Item("bowl fragments", "They're sharp. You best avoid stepping on them.", false, "shattered");
             List<Item> cellInventory = new List<Item> { rustyChains, halfOfCrackedBowl, otherHalfOfCrackedBowl, bowlFragments, garment };
 
-            // Features of the room, some with items hidden upon them
+            // Features of the room, some with items hidden upon or within them. Both
+            // Items and features can be interacted with but only items can be picked up
+            // and features remain in place unless shattered or unlocked or burned depending on
+            // their special attribute.
             List<Item> inRosewoodChest = new List<Item> { };
             List<Item> onSkeleton = new List<Item> { healPotion, steelKey, magnifyingGlass};
             Feature skeleton = new Feature("skeleton", "Its empty sockets fasten you with a stern gaze. It serves as a macabre reminder of what might yet befall you...", true, "unshattered", onSkeleton);
@@ -92,9 +100,18 @@ namespace DungeonCrawler
             Feature bookCase = new Feature("bookcase", "The ostensibly empty bookcase is a little worse for wear. One of it's shelves is lopsided. Another at the bottom has collapsed. Cobwebs span its dusty corners.", true, "searched", inBookcase);
             Feature holeInCeiling = new Feature("hole in the ceiling", "You gaze from the heap of debris that has buried the creature alive to the hole through the ceiling above. You bet you could climb the heap and enter the room above yours.");
             
-
+            // I instantiate a room with a list of items and features inside it and a description and room name
             List<Feature> cellfeatures = new List<Feature> {rosewoodDoor, brazier, brazier, rosewoodChest, bookCase, skeleton };
             Room room = new Room("dank cell", "The foreboding cell is bathed in the earthy glow of lit braziers, barely lighting cold stony walls, a heavy rosewood door studded with iron hinges, and only the sparsest of furnishings.\nThe door is set within the north wall, two flickering braziers casting orbs of low light either side of it so as to look like great fiery eyes watching you from the murk.\t\nTo the west wall there is a large chest, mingled with a cascade of rusted and disused iron shackles.\t\nTo the south wall is a small bookcase and some garments haphazardly strewn about you.\t\nTo the east wall is the last occupant; a skeleton with a permanent grin that  almost seems to watch you from dark wells where once there were its eyes. It holds something in its bony fist.\t\t", cellInventory, cellfeatures);
+            
+            ///
+            /// This is where the game begins for now, until i make a game class.
+            /// It begins with a prologue the player can choose to skip.
+            /// As such player input is required and hence the while loop that ensures a
+            /// correct response is given and catches any errors. We'll see this structure a lot throughout this 
+            /// program. This one below is simpler than some of the others I deployed. But they
+            /// are all of the same basic formula
+            ///
             Console.Write("Would you like to skip the prologue? ");
             while (true)
             {
@@ -190,9 +207,18 @@ namespace DungeonCrawler
                     Console.WriteLine("ERROR! Please enter 'yes' or 'no'.");
                 }
             }
-            
-            string pk;
-            bool continueChar = true;
+
+            string pk; // not important, it's just for the console.readline at the end of the program.
+            bool continueChar = true; //for while loop involved in making character and player instantiation.
+            /// These two methods below are involved when the player chooses what traits they would like.
+            /// There were a number of ways I could have gone about this but this was the one that used least
+            /// memory and was most efficient as opposed to creating a separate list for traits, appended
+            /// to during character creation.
+            /// Besides, this was more fun :D
+            /// Essentially i create a list of traits to choose from in the form of a string,
+            /// printed to the console. I then use the position of certain numbers and reoccurring 
+            /// symbols to know where to truncate the string and isolate the key that 
+            /// exists in the dictionary of traits and corresponds to the values which are its description.
             string truncateString(string traitsString)
             {
                 int index = traitsString.LastIndexOf("\n");
@@ -209,22 +235,29 @@ namespace DungeonCrawler
                 return key;
             }
             int number;
-            string name = "";
+            string name = ""; // name is to be the name of your hero character.
             Dice D4 = new Dice(4);
             Dice D2 = new Dice(2);
             Dice D3 = new Dice(3);
-            
+            // instantiating a few dice needed for calculating skill and stamina stats
             Dice D8 = new Dice(8);
+            //these lists of dice to be thrown for titular stats
             List<Dice> skillDice = new List<Dice>();
             int skill = 0;
             List<Dice> staminaDice = new List<Dice>();
             int stamina = 0;
             List<Weapon> weaponInventory = new List<Weapon>();
             List<Item> inventory = new List<Item>();
+            // separate lists for weapons and items. Even though weapons inherit from items
+            // they don't work well when grouped together (they become difficult to disentangle
+            // and recast as weapons). It's best to use two separate lists.
+            //
+            //This is the dictionary of player chosen traits.
             Dictionary<string, string> traits = new Dictionary<string, string>();
+            // instantiating a 'foundation' player. to be overwritten a bit later.
             Player player1 = new Player(name, skill, stamina, weaponInventory, inventory, traits);
-            bool askquestion = true;
-            int n = 0;
+            bool askquestion = true; // keep asking a question until appropriate response is given.
+            int n = 0; //for adding appropriate number of dice at start of character creation
             while (continueChar == true)
             {
                 Console.Write("Please enter your hero's name here: ");
@@ -233,7 +266,9 @@ namespace DungeonCrawler
                 {
                     player1.Name = name;
                 }
-                else { continue; }
+                else { continue; } 
+                //must enter a name, although player has free rein to make this name
+                // whatever he or she chooses.
                 if (n == 0)
                 {
                     skillDice.Add(D4);
@@ -244,6 +279,7 @@ namespace DungeonCrawler
                 Console.WriteLine("Rolling your character's skill (3 4-sided dice)...");
                 player1.Skill = 0;
                 skill = 0;
+                // By pausing with console.Readkey between dice rolls, randomness is ensured
                 foreach (Dice d in skillDice) { Console.ReadKey(true); int roll = d.Roll(d); skill += roll; Console.WriteLine($"You rolled a {roll}"); }
                 skill = skill - 2;
                 //
@@ -252,7 +288,7 @@ namespace DungeonCrawler
                 Console.WriteLine($"Your skill is {skill + 2} - 2 = {skill}");
                 //
                 
-
+                //
                 if (n == 0)
                 {
                     staminaDice.Add(D2);
@@ -270,7 +306,7 @@ namespace DungeonCrawler
                 stamina = stamina * 10;
                 player1.Stamina = stamina;
                 player1.InitialStamina = stamina;
-                //
+                //Initial stamina determines the maximum health a player can have.
                 Console.WriteLine($"Your stamina is {stamina}");
                 
 
@@ -351,14 +387,19 @@ namespace DungeonCrawler
                 }
                 Console.WriteLine(traitsString);
                 bool continueChoice = true;
-                int t = 0;
-
+                int t = 0;// t is 'traits chosen so far'
+                ///I've established below a loop that allows the player to 
+                ///peruse the different traits available according to rolled 
+                ///skill and stamina scores. Descriptions are displayed and 
+                ///then there is a check to see if the player really wants to 
+                ///select this trait. There is a maximum of two that can be 
+                ///chosen.
                 while (continueChoice && t < 2)
                 {
 
                     string key = ""; 
                     string answer = Console.ReadLine().Trim().ToLower();
-                    if (int.TryParse(answer, out number))
+                    if (int.TryParse(answer, out number)) // if number entered
                     {
                         string traitchoice = traitsString;
                         
@@ -449,7 +490,7 @@ namespace DungeonCrawler
                             string nextAnswer = Console.ReadLine().Trim().ToLower();
                             if (nextAnswer == "yes" || nextAnswer == "y")
                             {
-                                try
+                                try // can't select same trait twice.
                                 {
                                     player1.Traits.Add(key, traitList[key]);
                                     t++;
@@ -473,7 +514,7 @@ namespace DungeonCrawler
                         }
                         askquestion = true;
                     }
-                    else
+                    else // if trait typed out or player does not wish to continue trait selection
                     {
                         if (!traitList.ContainsKey(answer) && answer != "done")
                         {
@@ -543,7 +584,7 @@ namespace DungeonCrawler
                 {
                     if (player1.Skill < 3) { player1.Skill = 1; }
                     else { player1.Skill = 2; }
-                    //Console.WriteLine("Boon is +6 for all weapons, but skill is reduced to 2 or stays at 1. if jinxedforeach weapon in weaponInventory weapon.boon = 5");
+                    //Console.WriteLine("Boon is +6 for all weapons, but skill is reduced to 2 or stays at 1.
                 }
                 if (player1.Traits.ContainsKey("diligent"))
                 {
@@ -575,8 +616,10 @@ namespace DungeonCrawler
                     // else you talk the guard into opening cell door but your con is 
                     // uncovered and you have to fight.
                 }
-                //
+                //Finally, a description of the character created whose composition is
+                //the result of player choices and stats levels
                 Console.WriteLine($"\n{name}'s details are as follows:\n{player1.describeSkill()}\n{player1.describeInitialStamina()}\n{characterTrait}");
+                ///Check that player is happy with created character or wishes to start over.
                 Console.WriteLine("Are you happy with this character?");
                 while (true)
                 {
@@ -638,7 +681,7 @@ namespace DungeonCrawler
             player1.Inventory.Add(FelixFelicis);
             player1.Inventory.Add(elixirFeline);
            
-
+            ///Instantiating monsters to be fought later
             List<Item> goblinInventory = new List<Item> { scimitar, breadKnife };
             List<Item> gnollInventory = new List<Item> { dagger };
             Item bracelet = new Item("Enchanted Bracelet of Blurred Image");
@@ -647,11 +690,12 @@ namespace DungeonCrawler
             Monster goblin = new Monster("goblin", "The goblin's swarthy, pock-marked skin does little to lessen the effect of its ugly snarl.", goblinInventory, 50, 2, scimitar);
             goblin.Items.Add(bracelet);
             Monster gnoll = new Monster("gnoll", "The ravenous gnoll stares at you with hungry eyes. It seeks to feast, and you would make an excellent appetiser...", gnollInventory, 50, 6, bite);
+            ///Instantiating battles to be used later.
             Combat trialBattle = new Combat(goblin, player1);
             Combat toughestBattle = new Combat(minotaur, player1);
             Combat tougherBattle = new Combat(gnoll, player1);
 
-            // Dictionaries for items used on other effects
+            // Dictionaries for items used on other effects (items or features)
             var usesDictionaryItemItem = new Dictionary<Item, List<Item>> { [magnifyingGlass]= new List<Item> { note} };
             var usesDictionaryItemFeature = new Dictionary<Item, List<Feature>> { [steelKey] = new List<Feature> { rosewoodChest }, [note] = new List<Feature> { brazier }, [breadKnife] = new List<Feature> { skeleton, bookCase }, [scimitar] = new List<Feature> { skeleton, bookCase }, [dagger] = new List<Feature> { skeleton, bookCase }, [vanquisher] = new List<Feature> { skeleton, bookCase }, [garment] = new List<Feature> { brazier } };
 
@@ -682,17 +726,20 @@ namespace DungeonCrawler
             int b = 0;
             int c = 0;
             int e = 0;
+            ///The previous choices are your base capabilities you'll keep returning to
+            ///until more options open up. classes and their functions are repeatedly called 
+            ///within each, making the game deeper than might first be expected.
             while (true)
             {
                 string reply = Console.ReadLine().Trim().ToLower();
-                
+                ///If player answers by typing number in list...
                 try
                 {
                     
                     int reply1 = int.Parse(reply);
                     if (((a<1 || b<1) && (reply1 < 1 || reply1 > 3))||(reply1>4)&&!player1.Inventory.Contains(musicBox) || reply1>5)
                     {
-                        Console.WriteLine("Please enter 1, 2 or 3.");
+                        Console.WriteLine("Please enter a number corresponding to a choice of action.");
                         continue;
                     }
                     else if (reply1 == 1) 
@@ -784,7 +831,32 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         
                     }
-                    else if (reply1 == 4)
+                    /// I'm going to change all the following code (using item on 
+                    /// something else) into two polymorphic methods - one 
+                    /// for combat and the other for use outside of combat.
+                    /// The one for combat will need an extra parameter, the monster,
+                    /// so this should work well, and save space.
+                    /// 
+                    /// Essentially i first ask which item the player wishes to
+                    /// use from their pack. I then ask what they wish to use it on.
+                    /// The success of this action is determined by a dictionary 
+                    /// (usesDictionaryItemItem or usesDictionaryItemFeature) where an item may
+                    /// have a list of items corresponding to it. If it does, the item
+                    /// can be used on the feature or effected item. otherwise the usesItem function
+                    /// returns a false value and a stock response is given to let the user know, 
+                    /// the item cannot be used that way.
+                    /// 
+                    /// the usesitem function comes from the
+                    /// Item class and so weapons can also be used this way,
+                    /// as weapons inherit from items, though I've yet to implement this by
+                    /// upgrading the usesDictionaries accordingly.
+                    /// 
+                    /// There are 3 usesItem functions. one for effecting items,
+                    /// another for effecting features and lastly for effecting 
+                    /// the player themselves. Nestled try and catch statements are used 
+                    /// to determine which of these functions must be used.
+                    
+                    else if (reply1 == 4) // for when player has searched their pack and the room at least once.
                     {
                         e++;
                         bool success = false;
@@ -967,7 +1039,7 @@ namespace DungeonCrawler
                             System.Environment.Exit(0);
                         }
                     }
-                    else if (reply1 == 5)
+                    else if (reply1 == 5) // The player solved the puzzle and must fight the goblin.
                     {
                         Console.WriteLine("You gaze at the innocuous music box nestled snugly in the palm of your hand. Biting your lip, you look to the rosewood door. The note said that whatever kept guard would be enraged by the tune this thing plays. Once opened there will be no going back...");
                         Console.WriteLine("Are you sure you wish to proceed?");
@@ -1040,7 +1112,7 @@ namespace DungeonCrawler
                             else { Console.WriteLine("Please enter either 'yes' or 'no'."); }
                         }
                     }
-                    if (e > 3)
+                    if (e > 3) // if the player fails to find an escape within a certain number of moves, then it's game over.
                     {
                         Console.WriteLine("You've tried as hard as you " +
                         "might to find some way out of the dank cell, but your " +
@@ -1080,7 +1152,7 @@ namespace DungeonCrawler
                     }
                     
                 }
-                catch
+                catch //and a check to make sure they know the correct input.
                 {
                     Console.WriteLine("Please enter a number corresponding to your choice of action.");
                     continue; 

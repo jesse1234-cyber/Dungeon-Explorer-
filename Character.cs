@@ -174,7 +174,7 @@ namespace DungeonCrawler
                 message += $"[{r}] {item.Name}\n";
                 r++;
             }
-            Console.WriteLine(message);
+            
             if (r == 1)
             {
                 message = "You have no items or weapons in your pack. \nIt's as empty as the word of that mysterious innkeeper who betrayed you. Better get moving...";
