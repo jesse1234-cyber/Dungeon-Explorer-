@@ -18,6 +18,10 @@ namespace DungeonCrawler
             Monster = monster;
             Player = player;
         }
+        /// <summary>
+        /// For after the player wins a fight and wishes
+        /// to search the monster for treasure
+        /// </summary>
         public void wonFight()
         {
             Console.WriteLine($"Would you like to search the {Monster.Name} for items?");
@@ -34,6 +38,41 @@ namespace DungeonCrawler
                 else { Console.WriteLine("ERROR! Please answer 'yes' or 'no'."); }
             }
         }
+        /// <summary>
+        /// The general idea is that combat and the fight method is turn based; the player 
+        /// attacks then the monster attacks, and who goes first is determined by dice rolls
+        /// whether the dice roll succeeds is based off of what skill the player and monster possesses
+        /// as well as other factors such as Boon or traits such as Jinxed. 
+        /// Damage is determined by dice rolls too. the dice to be rolled is determined
+        /// by the weapon in question being wielded. and the damage dealt can be magnified
+        /// by a 'good hit' factor or a 'crit hit' factor. The threshold for rolling these
+        /// is determined by factors such as skill and Boon. each operate in different ways 
+        /// to boost the probability of good and crit hits. 
+        /// You can also miss! and when you're jinxed the enemy can critically miss which
+        /// harms them! messages will appear in the events of good or crit hits and 
+        /// provide commentary of the battle. these messages are different for the type of 
+        /// weapon used.
+        /// The fight method returns 'true' if player wins the fight or false otherwise. Battle
+        /// continues until either player or monster stamina falls to 0. 
+        /// During battle you'll have the option to equip different weapons, fight barehanded
+        /// or even use an item on something in the room or on the monster during combat. 
+        /// This makes for a level of strategy involved in how one might deal with monsters. 
+        /// If a monster holds an amulet that grants it a Boon in combat, do you use your turn 
+        /// to heal yourself, equip a more effective weapon, strike back and hope for the best, 
+        /// or try to use something in your possession to counter their amulet? The most effective
+        /// choice in large part depends on your own traits. Jinxed characters might do more damage
+        /// by letting the monster try and fail to land a hit. MedicineMan, meanwhile, makes healing
+        /// potions extra effective. And 'Friends with Fairies' can lead to some unpredictable
+        /// shenanigans indeed. 'Opening up' new strategies is always fun!
+        /// 
+        /// </summary>
+        /// <param name="usesDictionaryItemItem"></param>
+        /// <param name="usesDictionaryItemFeature"></param>
+        /// <param name="room"></param>
+        /// <param name="player"></param>
+        /// <param name="usesDictionaryItemChar"></param>
+        /// <param name="holeInCeiling"></param>
+        /// <returns>boolean: true or false</returns>
         public bool fight(Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling)
         {
             player = Player;
@@ -42,6 +81,7 @@ namespace DungeonCrawler
             Dice D4 = new Dice(4);
             Dice D5 = new Dice(5);
             Dice D6 = new Dice(6);
+            //pugilism is FormatException the players unhanded fighting capability
             List<Dice> pugilism = new List<Dice>();
             int i = 0;
             string another = "a";
@@ -129,7 +169,7 @@ namespace DungeonCrawler
             {
                 playerWeapon = new Weapon("fists", "Your firm hands are deadly weapons in themselves; artfully precise implements of destruction that've been hardened by years of punching tree trunks and doing press ups on blazing hot coals.", pugilism, pugilismCritHits, pugilismGoodHits);
             }
-
+            //checking to see which weapon player has equipped, otherwise uses fists
             foreach (Weapon y in Player.WeaponInventory)
             {
                 if (y is Weapon)
@@ -141,7 +181,9 @@ namespace DungeonCrawler
             if (player.Traits.ContainsKey("jinxed"))
             {
                 //
-
+                ///Boon slides the probability curve to the players favour during dice rolls
+                ///a boon of 6 increases the chance to hit, the chance the monster misses, and the
+                ///likelihood of crit Hits by 30% or 25% (because we use a D20)
                 //
                 playerWeapon.Boon = 6;
                 
@@ -236,6 +278,7 @@ namespace DungeonCrawler
                 while (true)
                 {
                     string answer = Console.ReadLine().Trim().ToLower();
+                    // attack with weapon
                     if (answer == "yes" || answer == "y")
                     {
                         pugilism = new List<Dice>();
@@ -319,6 +362,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         break;
                     }
+                    // try some other tactic
                     else if ((answer == "no") || (answer == "n"))
                     {
                         turn = -1;
@@ -425,6 +469,11 @@ namespace DungeonCrawler
                                     break;
                                 }
                             }
+                            ///The following is very similar to what you'll see in the game class 
+                            ///or the main method. It's the same formula for using an item on something else 
+                            ///but it lists objects the monster has too. as such it'll need to become
+                            ///its own separate method at a later date.
+
                             else if (answer1 == "3" || answer1 == "three")
                             {
                                 bool success = false;
@@ -610,7 +659,7 @@ namespace DungeonCrawler
                             }
                                 
                                     
-                                   
+                            // basically you lose a turn       
                             else if (answer1 == "4" || answer1 == "four")
                             {
                                 Console.WriteLine($"The {Monster.Name} closes in for another vicious attack!");
