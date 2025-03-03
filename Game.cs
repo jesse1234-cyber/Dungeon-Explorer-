@@ -9,7 +9,7 @@ namespace DungeonExplorer
     // User quality of life terminal clear
     public class Game_commands
     {
-        public void Clear()
+        public void ClearTerminal()
         {
             Console.Clear();
         }
@@ -72,20 +72,20 @@ namespace DungeonExplorer
             PrintLetterByLetter(". *You whisper quietly*", 50);
             Thread.Sleep(1000);
 
-            _Game_commands.Clear();
+            _Game_commands.ClearTerminal();
             Thread.Sleep(2000);
             PrintLetterByLetter("*You hear a calm swoosh, a blazing tourch dimly lights up the room*", 50);
             Thread.Sleep(2000);
 
-            _Game_commands.Clear();
+            _Game_commands.ClearTerminal();
             PrintLetterByLetter("*You look down and are met with a pair of heavy handcuffs, however they're no longer attatched to your wrists*", 50);
             Thread.Sleep(2000);
 
-            _Game_commands.Clear();
+            _Game_commands.ClearTerminal();
             PrintLetterByLetter("*You turn around and find yourself facing a wooden door.*", 50);
             Thread.Sleep(2000);
 
-            _Game_commands.Clear();
+            _Game_commands.ClearTerminal();
             PrintLetterByLetter("You have a choice to make:\n\n", 50);
             PrintLetterByLetter("(1) Exit through the wooden door\n", 50);
             PrintLetterByLetter("(2) Explore the Dungeon...\n\n", 50);
@@ -106,7 +106,7 @@ namespace DungeonExplorer
             }
             else
             {
-                _Game_commands.Clear();
+                _Game_commands.ClearTerminal();
                 PrintLetterByLetter("You choose to try out the wooden door to find a cobbled stair case leading to the surface, you swifly make your exit.\n", 50);
                 Thread.Sleep(500);
                 PrintLetterByLetter("did you win or lose? that is up to your own philosophy of the term 'winning'.\n\n", 50);
