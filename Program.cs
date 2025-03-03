@@ -10,8 +10,10 @@ namespace DungeonExplorer
     {
         static void Main(string[] args)
         {
+            //Starts game
             Game game = new Game();
             game.Start();
+            //Ends game
             Console.WriteLine("Game over, press any key to exit...");
             Console.ReadKey();
         }

@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace DungeonExplorer
 {
     public class Room
     {
+        //Room class' attributes
         private string description;
         private bool monster;
         private string item;
         static Random rnd = new Random();
 
-
+        //Using getters and setters for the room class' attributes
         public string Description
         {
             get { return description; }
@@ -19,18 +21,7 @@ namespace DungeonExplorer
         public bool Monster
         {
             get { return monster; }
-            set
-            {
-                int randomMonster = rnd.Next(1, 3);
-                if (randomMonster == 1)
-                {
-                    monster = true;
-                }
-                else if (randomMonster == 2)
-                {
-                    monster = false;
-                }
-            }
+            set { monster = value; }
         }
 
         public string Item
@@ -38,6 +29,9 @@ namespace DungeonExplorer
             get { return item; }
             set { item = value; }
         }
+
+            //Function which randomly generates an item for the room
+            //game object
             public string ChooseItem()
         {
 
@@ -57,6 +51,8 @@ namespace DungeonExplorer
             }
             return item;
         }
+
+        //Room constructor
         public Room(string description, bool monster, string item)
         {
             description = Description;
@@ -64,6 +60,7 @@ namespace DungeonExplorer
             item = ChooseItem();
         }
 
+        //Function which randomly generates one of 4 room descriptions
         public string ChooseRoom()
         {
             int roomNum = rnd.Next(1, 5);
@@ -74,20 +71,20 @@ namespace DungeonExplorer
                     chosenRoom = "You enter a small, dimly lit room";
                     break;
                 case 2:
-                    chosenRoom = "You enter a completely dark room. It is impossible to see anything. Your fumble around in the darkness searching for a door to the next room.";
+                    chosenRoom = "You enter a completely dark room. It is" +
+                        " impossible to see anything. Your fumble around in" +
+                        " the darkness searching for\n a door to the next" +
+                        " room.";
                     break;
                 case 3:
                     chosenRoom = "You enter a large, brightly lit room";
                     break;
                 case 4:
-                    chosenRoom = "You enter a cave-like room. There is an ominous shadow in the corner...";
+                    chosenRoom = "You enter a cave-like room. There" +
+                        " is an ominous shadow in the corner...";
                     break;
             }
             return chosenRoom;
-        }
-        public string GetDescription()
-        {
-            return description;
         }
     }
 }
