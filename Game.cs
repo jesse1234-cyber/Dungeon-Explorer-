@@ -6,15 +6,15 @@ using DungeonExplorer;
 
 namespace DungeonExplorer
 {
-    // User quality of life terminal clear
     public class Game_commands
     {
         public void ClearTerminal()
         {
             Console.Clear();
         }
-        public bool Choice(string choice1, string choice2)
+        public bool Choice(string message, string choice1, string choice2)
         {
+            Console.Write(message);
             while (true)
             {
                 string choices = Console.ReadLine()?.Trim();
@@ -25,16 +25,15 @@ namespace DungeonExplorer
                     continue;
                 }
 
-                switch (choices.ToLower())
-                {
-                    case var input when input == choice1.ToUpper(): return false;
-                    case var input when input == choice2.ToUpper(): return true;
+                if (choices.Equals(choice1, StringComparison.OrdinalIgnoreCase)) return true;
+                if (choices.Equals(choice2, StringComparison.OrdinalIgnoreCase)) return false;
 
-                    default:
-                        Console.WriteLine($"Invalid choice, Please select {choice1} or {choice2}");
-                        break;
-                }
+                Console.WriteLine($"Invalid choice, Please select {choice1} or {choice2}");
             }
+        }
+        public bool Endgame()
+        {
+            return Choice("(Y/N) Would you like to replay?", "Y", "N");
         }
     }
     public class Intro
@@ -89,20 +88,20 @@ namespace DungeonExplorer
             PrintLetterByLetter("You have a choice to make:\n\n", 50);
             PrintLetterByLetter("(1) Exit through the wooden door\n", 50);
             PrintLetterByLetter("(2) Explore the Dungeon...\n\n", 50);
-            PrintLetterByLetter("Make your choice: ", 50);
         }
 
         public bool YouHaveAChoice()
         {
-            return _Game_commands.Choice("1", "2");    
+            return _Game_commands.Choice("Make your choice: ", "1", "2");    
         }
-        public void HandleYouHaveAChoice()
+        public bool HandleYouHaveAChoice()
         {
             bool choice = YouHaveAChoice();
 
             if (choice)
             {
                 PrintLetterByLetter("Logic", 50);
+                return false;
             }
             else
             {
@@ -112,6 +111,7 @@ namespace DungeonExplorer
                 PrintLetterByLetter("did you win or lose? that is up to your own philosophy of the term 'winning'.\n\n", 50);
                 PrintLetterByLetter("The End.\n\n", 300);
                 PrintLetterByLetter("Your trait: 'The Reluctant Adventurer'", 50);
+                return _Game_commands.Endgame();
             }
         }
     }
@@ -121,9 +121,11 @@ namespace DungeonExplorer
         private Player player;
         private Room currentRoom;
         private Intro intro;
+        private Game_commands _game_Commands;
 
         public Game()
         {
+            _game_Commands = new Game_commands();
             intro = new Intro();
         }
         public void Start()
@@ -133,8 +135,14 @@ namespace DungeonExplorer
             while (playing)
             {
                 intro.Displayintro();
-                intro.HandleYouHaveAChoice();
-                playing = false;
+                bool continueplaying = intro.HandleYouHaveAChoice();
+                playing = intro.HandleYouHaveAChoice();
+                {
+                    if (playing)
+                    {
+                        _game_Commands.ClearTerminal();
+                    }
+                }
             }
         }
     }
