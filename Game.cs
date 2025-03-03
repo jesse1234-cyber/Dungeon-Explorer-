@@ -30,23 +30,34 @@ namespace DungeonExplorer
                 string userMoveInput = Console.ReadLine();
                 if (userMoveInput == "A")
                 {
+                    Console.WriteLine("Moving to the right");
+                    Console.WriteLine("You have found a golden sword");
                     player.PickUpItem("A golden sword");
+                    player.InventoryContents();
                 }
 
                 else if (userMoveInput == "D")
                 {
-
+                    Console.WriteLine("Moving to the left");
+                    Console.WriteLine("You have found a bow and arrow");
+                    player.PickUpItem("A bow and arrow");
+                    player.InventoryContents();
                 }
 
                 else if(userMoveInput == "W")
                 {
-
+                    Console.WriteLine("Moving forwards");
+                    Console.WriteLine("You have found armour");
+                    player.PickUpItem("Armour");
+                    player.InventoryContents();
                 }
 
                 else
                 {
                     Console.WriteLine("You must enter an appropriate input (A, D or W)");
                 }
+
+                break;
                 
             }
         }
