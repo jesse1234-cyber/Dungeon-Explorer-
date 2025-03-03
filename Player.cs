@@ -13,19 +13,16 @@ namespace DungeonExplorer
         {
             Name = name;
             Health = health;
-
-            //Console.WriteLine($"name: {name}");
-            //Console.WriteLine($"health: {health}");
         }
 
         public void PickUpItem(string item)
         {
-
+            inventory.Add(item);
         }
 
-        public string InventoryContents()
+        public void InventoryContents()
         {
-            return string.Join(", ", inventory);
+            Console.WriteLine(string.Join(", ", inventory));
         }
     }
 }

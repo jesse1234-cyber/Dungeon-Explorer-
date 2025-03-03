@@ -7,19 +7,11 @@ namespace DungeonExplorer
     {
         private Player player;
         private Room currentRoom;
+        public bool playing;
+        public string userInput;
 
         public Game()
         {
-            /*
-            Initialize the game with the start room and the player
-
-            Attributes:
-            ???
-
-            Methods:
-            ???
-            */
-
             Console.WriteLine("Awakening on a cold floor, a pounding headache clouds any clear thought\nYou can barely remember your name: ");
             string PlayerName = Console.ReadLine();
             Console.WriteLine("you pull yourself to your feet and examine your surroundings");
@@ -31,7 +23,7 @@ namespace DungeonExplorer
         {
             // Change the playing logic into true and populate the while loop
 
-            bool playing = true;
+            playing = true;
             while (playing)
             {
                 // Code your playing logic here
@@ -41,37 +33,57 @@ namespace DungeonExplorer
                     currentRoom.roomNumber++;
                     continue;
                 }
-                Console.WriteLine("Would you like to explore the room? (Y/N)");
-                string userInput = Console.ReadLine();
-                if (CheckUserInput(userInput, 0))
+                else if (currentRoom.roomNumber == 10)
                 {
-                    if (userInput == "y")
+                    Console.WriteLine($"\nyou have reached a dead end, it seems this is the end of your jouney {player.Name}...");
+                    playing = false;
+                    continue;
+                }
+
+                bool getUserInput = true;
+                while (getUserInput) 
+                {
+                    Console.WriteLine("Would you like to explore the room? (Y/N)");
+                    userInput = Console.ReadLine();
+
+                    if (CheckUserInput(userInput, 0)) 
                     {
-                        ;
+                        getUserInput = false;
                     }
                 }
-                //Console.WriteLine("Would you like to explore the room further?? (Y/N)");
-                //Console.WriteLine("you hear a small growling");
-                //Console.WriteLine("you catch a sparkle in the corner of your eye");
+                getUserInput = true;
 
-                /*
-                if (Console.ReadLine().ToLower() == "y")
+                currentRoom.GetItemRoom();
+                if (userInput == "y" && currentRoom.itemRoom)
                 {
-                    Console.WriteLine(currentRoom.GetDescription());
+                    currentRoom.GetItem();
+                    Console.WriteLine($"after a thorough search you discover a {currentRoom.Item}!");
+                    Console.WriteLine("Would you like to keep it? (Y/N)");
+                    userInput = Console.ReadLine();
+                    if (CheckUserInput(userInput, 0))
+                    {
+                        player.PickUpItem(currentRoom.Item);
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("You are a coward");
+                    Console.WriteLine("you find nothing useful in this room and continue on");
                 }
-                */
-
-                playing = false;
             }
         }
 
         public bool CheckUserInput(string userInput, int inputContext) 
         {
-            if (inputContext == 0) {
+            if (userInput == "quit")
+            {
+                playing = false;
+            }
+            if (userInput == "inventory")
+            {
+                player.InventoryContents();
+            }
+
+            if (inputContext == 0) { // yes/no context
                 if (userInput.ToLower() == "y" || userInput.ToLower() == "n") {
                     return true;
                 }
@@ -80,7 +92,7 @@ namespace DungeonExplorer
                     return false;
                 }
             }
-            else if (inputContext == 1) {
+            else if (inputContext == 1) { // fight/run context // need to add enemies in future update
                 if (userInput.ToLower() == "f" || userInput.ToLower() == "r")
                 {
                     return true;

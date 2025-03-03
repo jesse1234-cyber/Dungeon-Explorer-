@@ -13,8 +13,8 @@ namespace DungeonExplorer
             Game game = new Game();
             game.Start();
 
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
+            //Console.WriteLine("Press any key to exit...");
+            //Console.ReadKey();
         }
     }
 }
