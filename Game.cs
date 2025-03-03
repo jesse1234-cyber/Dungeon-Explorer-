@@ -72,6 +72,60 @@ namespace DungeonExplorer
             return isItem;
         }
 
+        public void UseItem(List<string> inventory)
+        {
+            Console.WriteLine("Enter the name of the item you want to use: ");
+            string itemUsed = Console.ReadLine().ToLower();
+            if (inventory.Contains(itemUsed))
+            {
+                if (itemUsed == "small health potion")
+                {
+                    if (player1.Health <= 95)
+                    {
+                        player1.Health += 5;
+                        player1.Inventory.Remove(itemUsed);
+                        Console.WriteLine($"{player1.Name}'s health has been increased by 5hp \n{player1.Name}'s current health: {player1.Health}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{player1.Name}'s health is too high to use this potion");
+                    }
+
+                }
+                else if (itemUsed == "regular health potion")
+                {
+                    if (player1.Health <= 90)
+                    {
+                        player1.Health += 10;
+                        player1.Inventory.Remove(itemUsed);
+                        Console.WriteLine($"{player1.Name}'s health has been increased by 10hp \n{player1.Name}'s current health: {player1.Health}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{player1.Name}'s health is too high to use this potion");
+                    }
+
+                }
+                else if (itemUsed == "large health potion")
+                {
+                    if (player1.Health <= 80)
+                    {
+                        player1.Health += 20;
+                        player1.Inventory.Remove(itemUsed);
+                        Console.WriteLine($"{player1.Name}'s health has been increased by 20hp \n{player1.Name}'s current health: {player1.Health}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{player1.Name}'s health is too high to use this potion");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine($"You do not have any {itemUsed}s left in your inventory, you get frustrated and move on");
+
+            }
+        }
         public void Start()
         {
             // Change the playing logic into true and populate the while loop
@@ -88,7 +142,14 @@ namespace DungeonExplorer
                 player1.Health = 100;
 
                 player1.Inventory = new List<string>();
-
+                Console.WriteLine("Game rules: \nYou have been stranded in a dungeon. To escape you must pass through 10 \nrooms, fighting any monsters you may come across... \nPress any key to continue");
+                Console.ReadKey();
+                Console.WriteLine("When you enter each room you will search it for monsters or items. \nMonsters may damage you and you will lose health points \nItems such as health potions will replenish your health when consumed");
+                Console.ReadKey();
+                Console.WriteLine("Potions: \nSmall health potion: grants 5 health points when consumed\nRegular health potion: grants 10 health points when consumed \nLarge health potion: grants 20 health points when consumed");
+                Console.ReadKey();
+                Console.WriteLine($"Now, {player1.Name}, your adventure begins. Good luck!");
+                Console.ReadKey();
                 Console.WriteLine($"Player's name is {player1.Name} \n{player1.Name}'s health is: {player1.Health} \nInventory is empty\nPress any key to begin your adventure...");
                 Console.ReadKey();
                 creatingPlayer = false;
@@ -106,6 +167,20 @@ namespace DungeonExplorer
                 }
                 else if (playerChoice == "C")
                 {
+                    Console.WriteLine("Would you like to use an item from your inventory? (Enter 'yes' or 'no') \n");
+                    string playerUseitem = Console.ReadLine().ToLower();
+                    if (playerUseitem == "yes")
+                    {
+                        UseItem(player1.Inventory);
+                    }
+                    else if (playerUseitem == "no")
+                    {
+                        Console.WriteLine("");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid selection, confused, you continue through the dungeon");
+                    }
                     currentRoom.Description = currentRoom.ChooseRoom();
                     Console.WriteLine(currentRoom.Description);
                     Console.ReadKey();
@@ -118,7 +193,7 @@ namespace DungeonExplorer
                         Console.ReadKey();
                         Console.WriteLine(player1.InventoryContents());
                     }
-                    else if (ItemGeneration() == false)
+                    else
                     {
                         Console.WriteLine($"{player1.Name} searches the room but finds no items \nPress any key to continue");
                         Console.ReadKey();

@@ -46,13 +46,13 @@ namespace DungeonExplorer
             switch (randomItem)
             {
                 case 1:
-                    item = "Small health potion which adds 10hp when consumed";
+                    item = "small health potion";
                     break;
                 case 2:
-                    item = "Health potion which adds 20hp when consumed";
+                    item = "regular health potion";
                     break;
                 case 3:
-                    item = "Huge health potion which adds 35hp when consumed";
+                    item = "large health potion";
                     break;
             }
             return item;
@@ -71,16 +71,16 @@ namespace DungeonExplorer
             switch (roomNum)
             {
                 case 1:
-                    chosenRoom = "You enter a small, dimly lit room. There is a small health potion placed on a table in the far left corner.";
+                    chosenRoom = "You enter a small, dimly lit room";
                     break;
                 case 2:
                     chosenRoom = "You enter a completely dark room. It is impossible to see anything. Your fumble around in the darkness searching for a door to the next room.";
                     break;
                 case 3:
-                    chosenRoom = "You enter a large, brightly lit room. There is a large health potion hidden under a cloth in the near left corner of the room.";
+                    chosenRoom = "You enter a large, brightly lit room";
                     break;
                 case 4:
-                    chosenRoom = "You enter a cave-like room. There are no items in here, just an ominous shadow in the corner...";
+                    chosenRoom = "You enter a cave-like room. There is an ominous shadow in the corner...";
                     break;
             }
             return chosenRoom;
