@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
@@ -12,11 +13,16 @@ namespace DungeonExplorer
         {
             Name = name;
             Health = health;
+
+            //Console.WriteLine($"name: {name}");
+            //Console.WriteLine($"health: {health}");
         }
+
         public void PickUpItem(string item)
         {
 
         }
+
         public string InventoryContents()
         {
             return string.Join(", ", inventory);
