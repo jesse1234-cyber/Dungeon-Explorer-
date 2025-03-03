@@ -16,7 +16,7 @@ namespace DungeonExplorer
             // Initialize the game with one room and one player
 
             player1 = new Player("", 0, new List<string>());
-            currentRoom = new Room("", false);
+            currentRoom = new Room("", false, "");
 
         }
 
@@ -56,6 +56,22 @@ namespace DungeonExplorer
                 return false;
             }
         }
+
+        public bool ItemGeneration()
+        {
+            bool isItem = false;
+            int randomItem = rnd.Next(1, 3);
+            if (randomItem == 1)
+            {
+                isItem = true;
+            }
+            else if (randomItem == 2)
+            {
+                isItem = false;
+            }
+            return isItem;
+        }
+
         public void Start()
         {
             // Change the playing logic into true and populate the while loop
@@ -80,51 +96,78 @@ namespace DungeonExplorer
 
             playing = true;
             int roomsPassed = 0;
-                while (playing == true)
+            while (playing == true)
+            {
+                Console.WriteLine($"Do you want to view {player1.Name}'s status or move on to the next room? \nType 'S' to view player status or 'C' to continue: ");
+                string playerChoice = Console.ReadLine().ToUpper();
+                if (playerChoice == "S")
+                {
+                    Console.WriteLine($"{player1.Name}'s health = {player1.Health} health points \n{player1.Name}'s inventory consists of: {player1.InventoryContents()} ");
+                }
+                else if (playerChoice == "C")
                 {
                     currentRoom.Description = currentRoom.ChooseRoom();
                     Console.WriteLine(currentRoom.Description);
                     Console.ReadKey();
 
+                    if (ItemGeneration() == true)
+                    {
+                        currentRoom.Item = currentRoom.ChooseItem();
+                        player1.PickUpItem(currentRoom.Item);
+                        Console.WriteLine($"{player1.Name} searches the room and finds a {currentRoom.Item} \nThis has been added to your inventory \nPress any key to continue");
+                        Console.ReadKey();
+                        Console.WriteLine(player1.InventoryContents());
+                    }
+                    else if (ItemGeneration() == false)
+                    {
+                        Console.WriteLine($"{player1.Name} searches the room but finds no items \nPress any key to continue");
+                        Console.ReadKey();
+                    }
                     int monsterPresent = rnd.Next(1, 3);
-                if (monsterPresent == 1)
-                {
-                    currentRoom.Monster = true;
-                    int damageValue = PlayerTakeDamage();
-                    Console.WriteLine($"There is a monster in this room! {player1.Name} has taken {damageValue} damage!");
-                    player1.Health = player1.Health - damageValue;
-                    Console.ReadKey();
-                    if (PlayerDeath() == true)
+                    if (monsterPresent == 1)
                     {
-                        Console.WriteLine($"GAME OVER! {player1.Name} has died...");
-                        playing = false;
+                        currentRoom.Monster = true;
+                        int damageValue = PlayerTakeDamage();
+                        Console.WriteLine($"There is a monster in this room!");
+                        Console.WriteLine("Press any key to fight the monster!");
+                        Console.ReadKey();
+                        Console.WriteLine($"{player1.Name} attacks the monster! \n{player1.Name} takes {damageValue} damage from the battle!");
+                        player1.Health = player1.Health - damageValue;
+                        Console.ReadKey();
+                        if (PlayerDeath() == true)
+                        {
+                            Console.WriteLine($"GAME OVER! {player1.Name} has died...");
+                            playing = false;
+                        }
+                        else
+                        {
+                            roomsPassed++;
+
+                        }
+                        if (roomsPassed >= 10)
+                        {
+                            Console.WriteLine($"CONGRATULATIONS {player1.Name} YOU HAVE ESCAPED THE DUNGEON! You had {player1.Health} health points remaining");
+                            playing = false;
+                            Console.ReadKey();
+                        }
                     }
-                    else
+
+                    else if (monsterPresent == 2)
                     {
+                        currentRoom.Monster = false;
+                        Console.WriteLine("There is no monster in this room!");
                         roomsPassed++;
-                    }
-                    if (roomsPassed >= 10)
-                    {
-                        Console.WriteLine($"CONGRATULATIONS {player1.Name} YOU HAVE ESCAPED THE DUNGEON! You had {player1.Health} health points remaining");
-                        playing = false;
-                        Console.ReadKey();
-                    }
-                }
-                else if (monsterPresent == 2)
-                {
-                    currentRoom.Monster = false;
-                    Console.WriteLine("There is no monster in this room!");
-                    roomsPassed++;
-                    if (roomsPassed >= 10)
-                    {
-                        Console.WriteLine($"CONGRATULATIONS {player1.Name} YOU HAVE ESCAPED THE DUNGEON! You had {player1.Health} health points remaining");
-                        playing = false;
-                        Console.ReadKey();
+                        if (roomsPassed >= 10)
+                        {
+                            Console.WriteLine($"CONGRATULATIONS {player1.Name} YOU HAVE ESCAPED THE DUNGEON! You had {player1.Health} health points remaining");
+                            playing = false;
+                            Console.ReadKey();
+                        }
                     }
                 }
-                }
-                
-            
+
+
+            }
         }
     }
 }

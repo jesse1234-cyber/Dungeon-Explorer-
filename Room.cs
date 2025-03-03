@@ -6,6 +6,7 @@ namespace DungeonExplorer
     {
         private string description;
         private bool monster;
+        private string item;
         static Random rnd = new Random();
 
 
@@ -20,21 +21,47 @@ namespace DungeonExplorer
             get { return monster; }
             set
             {
-                int randomNum = rnd.Next(1, 2);
-                if (randomNum == 1)
+                int randomMonster = rnd.Next(1, 3);
+                if (randomMonster == 1)
                 {
                     monster = true;
                 }
-                else if (randomNum == 2)
+                else if (randomMonster == 2)
                 {
                     monster = false;
                 }
             }
         }
-        public Room(string description, bool monster)
+
+        public string Item
+        {
+            get { return item; }
+            set { item = value; }
+        }
+            public string ChooseItem()
+        {
+
+            int randomItem = rnd.Next(1, 4);
+            string item = "";
+            switch (randomItem)
+            {
+                case 1:
+                    item = "Small health potion which adds 10hp when consumed";
+                    break;
+                case 2:
+                    item = "Health potion which adds 20hp when consumed";
+                    break;
+                case 3:
+                    item = "Huge health potion which adds 35hp when consumed";
+                    break;
+            }
+            return item;
+        }
+        public Room(string description, bool monster, string item)
         {
             description = Description;
             monster = Monster;
+            item = ChooseItem();
         }
 
         public string ChooseRoom()
