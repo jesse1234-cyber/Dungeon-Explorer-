@@ -7,20 +7,43 @@ using DungeonExplorer;
 namespace DungeonExplorer
 {
     // User quality of life terminal clear
-    public class Clear
+    public class Game_commands
     {
-        public void Terminal()
+        public void Clear()
         {
             Console.Clear();
+        }
+        public bool Choice(string choice1, string choice2)
+        {
+            while (true)
+            {
+                string choices = Console.ReadLine()?.Trim();
+
+                if (string.IsNullOrEmpty(choices))
+                {
+                    Console.WriteLine("Input cannot be Empty.");
+                    continue;
+                }
+
+                switch (choices.ToLower())
+                {
+                    case var input when input == choice1.ToUpper(): return false;
+                    case var input when input == choice2.ToUpper(): return true;
+
+                    default:
+                        Console.WriteLine($"Invalid choice, Please select {choice1} or {choice2}");
+                        break;
+                }
+            }
         }
     }
     public class Intro
     {
-        private Clear _clear;
+        private Game_commands _Game_commands;
 
         public Intro()
         {
-            _clear = new Clear();
+            _Game_commands = new Game_commands();
         }
         public void Print(string Info)
         {
@@ -49,20 +72,20 @@ namespace DungeonExplorer
             PrintLetterByLetter(". *You whisper quietly*", 50);
             Thread.Sleep(1000);
 
-            _clear.Terminal();
+            _Game_commands.Clear();
             Thread.Sleep(2000);
             PrintLetterByLetter("*You hear a calm swoosh, a blazing tourch dimly lights up the room*", 50);
             Thread.Sleep(2000);
 
-            _clear.Terminal();
+            _Game_commands.Clear();
             PrintLetterByLetter("*You look down and are met with a pair of heavy handcuffs, however they're no longer attatched to your wrists*", 50);
             Thread.Sleep(2000);
 
-            _clear.Terminal();
+            _Game_commands.Clear();
             PrintLetterByLetter("*You turn around and find yourself facing a wooden door.*", 50);
             Thread.Sleep(2000);
 
-            _clear.Terminal();
+            _Game_commands.Clear();
             PrintLetterByLetter("You have a choice to make:\n\n", 50);
             PrintLetterByLetter("(1) Exit through the wooden door\n", 50);
             PrintLetterByLetter("(2) Explore the Dungeon...\n\n", 50);
@@ -71,21 +94,7 @@ namespace DungeonExplorer
 
         public bool YouHaveAChoice()
         {
-            while (true)
-            {
-                string choices = Console.ReadLine();
-
-                switch (choices)
-                {
-                    case "1": return false;
-
-                    case "2": return true;
-
-                    default:
-                        Console.WriteLine("Invalid choice, Please select 1 or 2");
-                        break;
-                }   
-            }
+            return _Game_commands.Choice("1", "2");    
         }
         public void HandleYouHaveAChoice()
         {
@@ -97,14 +106,13 @@ namespace DungeonExplorer
             }
             else
             {
-                _clear.Terminal();
+                _Game_commands.Clear();
                 PrintLetterByLetter("You choose to try out the wooden door to find a cobbled stair case leading to the surface, you swifly make your exit.\n", 50);
                 Thread.Sleep(500);
                 PrintLetterByLetter("did you win or lose? that is up to your own philosophy of the term 'winning'.\n\n", 50);
                 PrintLetterByLetter("The End.\n\n", 300);
                 PrintLetterByLetter("Your trait: 'The Reluctant Adventurer'", 50);
             }
-            
         }
     }
 
