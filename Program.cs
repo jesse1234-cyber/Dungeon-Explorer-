@@ -26,9 +26,21 @@ namespace DungeonExplorer
             grid[startX, startY] = startRoom;
 
             // Create a new player
-            Console.Write("Enter your name: ");
-            string playerName = Console.ReadLine();
-            Player player = new Player(playerName, startX, startY, startRoom);
+            Player player = null;
+            while (true)
+            {
+                Console.Write("Enter your name: ");
+                string playerName = Console.ReadLine();
+                if (playerName.Length > 0)
+                {
+                    player = new Player(playerName, startX, startY, startRoom);
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a valid name.");
+                }
+            }
 
             // Creates a new game
             Game game = new Game(player, startRoom, grid);

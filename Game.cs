@@ -81,6 +81,7 @@ namespace DungeonExplorer
                         break;
                     default:
                         Console.WriteLine("\nInvalid choice. Try again.\n");
+                        Thread.Sleep(400);
                         break;
                 }
             }
