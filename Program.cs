@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DungeonExplorer
-{
+{   
     internal class Program
     {
         static void Main(string[] args)
@@ -23,6 +23,7 @@ namespace DungeonExplorer
 
             //Create a room with name Kitchen and description of Kitchen
             Room kitchen = new Room("Kitchen.");
+
             //Runs get description for object Kitchen to prints its description to Console. 
             Console.WriteLine(kitchen.GetDescription());
             Console.WriteLine("Press any key to exit...");

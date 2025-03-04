@@ -8,18 +8,24 @@ namespace DungeonExplorer
         private Player player;
         private Room currentRoom;
 
-        public Game()
+        public string Game()
         {
-            // Initialize the game with one room and one player
+            Console.WriteLine("Please input your name:");
+            string userName = Console.ReadLine();
+            Player user = new Player(userName, 15);
+
 
         }
         public void Start()
         {
             // Change the playing logic into true and populate the while loop
-            bool playing = false;
+            bool playing = true;
             while (playing)
             {
-                // Code your playing logic here
+                Console.WriteLine("Please input your name:");
+                string userName = Console.ReadLine();
+                Game();
+                Console.WriteLine("Hello " + user.Name)
             }
         }
     }
