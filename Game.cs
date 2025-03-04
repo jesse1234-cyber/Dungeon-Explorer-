@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Media;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using DungeonExplorer;
@@ -12,6 +13,11 @@ namespace DungeonExplorer
         {
             Console.Clear();
         }
+        /* A method for choices within the game with 2 options, all possible logic is met including 
+         * case sensitivity
+         * Whitespace
+         * empty strings
+         */
         public bool Choice(string message, string choice1, string choice2)
         {
             Console.Write(message);
@@ -31,9 +37,19 @@ namespace DungeonExplorer
                 Console.WriteLine($"Invalid choice, Please select {choice1} or {choice2}");
             }
         }
+        
+        //Endgame method utilising the "Choice" method for a simple but effective way to end the game
         public bool Endgame()
         {
-            return Choice("(Y/N) Would you like to replay?", "Y", "N");
+            bool GameStatus = Choice("\n\n(Y/N) Would you like to replay?", "Y", "N");
+
+            if (!GameStatus)
+            {
+                Console.Write("Thanks for playing, I hope you enjoyed!");
+                Environment.Exit(0);
+            }
+
+            return GameStatus;
         }
     }
     public class Intro
@@ -86,8 +102,8 @@ namespace DungeonExplorer
 
             _Game_commands.ClearTerminal();
             PrintLetterByLetter("You have a choice to make:\n\n", 50);
-            PrintLetterByLetter("(1) Exit through the wooden door\n", 50);
-            PrintLetterByLetter("(2) Explore the Dungeon...\n\n", 50);
+            PrintLetterByLetter("(1) Explore the Dungeon...\n", 50);
+            PrintLetterByLetter("(2) Exit through the wooden door\n\n", 50);
         }
 
         public bool YouHaveAChoice()
@@ -130,19 +146,12 @@ namespace DungeonExplorer
         }
         public void Start()
         {
-            // Change the playing logic into true and populate the while loop
             bool playing = true;
             while (playing)
             {
-                intro.Displayintro();
-                bool continueplaying = intro.HandleYouHaveAChoice();
-                playing = intro.HandleYouHaveAChoice();
-                {
-                    if (playing)
-                    {
-                        _game_Commands.ClearTerminal();
-                    }
-                }
+                Console.Clear();
+               // intro.Displayintro(); // Void function only shows text for intro
+                playing = intro.HandleYouHaveAChoice(); // possible end to the game, see intro.HandleYouHaveAChoice();
             }
         }
     }
