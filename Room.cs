@@ -23,6 +23,7 @@ namespace DungeonExplorer
 
         public string GetDescription()
         {
+            currentRoom++;
             string roomDescription = RoomDescriptions[currentRoom];
             return roomDescription;
         }
