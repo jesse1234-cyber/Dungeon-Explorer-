@@ -1,26 +1,60 @@
-﻿using System;
-using System.Media;
+﻿// Game class
 
-namespace DungeonExplorer
+public class Game
 {
-    internal class Game
+    private Player player;
+    private Room thisRoom;
+
+    // begins the game and initializes player and first room
+    public void BeginGame()
     {
-        private Player player;
-        private Room currentRoom;
+        Console.Write("Please enter your player's name: ");
+        string playerName = Console.ReadLine();
+        player = new Player(playerName);
+        player.Name = playerName;
 
-        public Game()
-        {
-            // Initialize the game with one room and one player
+        // initialize first room
+        thisRoom = new Room("A dark, gloomy dungeon room. A sword is on the ground.", "A sword");
 
-        }
-        public void Start()
+        Console.WriteLine("\nWelcome to Dungeon Explorer!");
+        GameLoop();
+
+
+
+    }
+    //Main game Loop
+    private void GameLoop()
+    {
+        bool playing = true;
+        while (playing)
         {
-            // Change the playing logic into true and populate the while loop
-            bool playing = false;
-            while (playing)
+            Console.WriteLine("\n" + thisRoom.GetDesccription()); // shows room description
+            Console.WriteLine("Options: (1) Pick up item , (2) Check status , (3) Exit ");
+
+            string option= Console .ReadLine();
+            switch (option)
             {
-                // Code your playing logic here
+                case "1":
+                    player.PickUpItem(this.thisRoom.GetItem()); // pick up item from room
+
+                    break;
+                case "2":
+                    player.DisplayPlayer(); //Shows player's stats
+
+                    break;
+                case "3":
+                    playing = false;
+
+                    Console.WriteLine("Thanks for playing!");
+                    break;
+                default:
+                    Console.WriteLine("Invalid option, Try again!");
+                    break;
+
+
+
             }
         }
     }
+
 }
