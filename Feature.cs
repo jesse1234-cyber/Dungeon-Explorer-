@@ -6,6 +6,18 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
+    /// <summary>
+    /// Feature has five attributes. Conceptually features are static things that
+    /// reside in a room. They cannot be picked up, but they can be searched. There are 
+    /// also special actions that can be made upon them, potentially, by certain items. 
+    /// A sword might shatter a skeleton, for example. Or you might extinguish a flaming
+    /// brazier. To reflect this, features have 'Attribute' and 'Specific Attribute'.
+    /// Specific Attribute is a string such as "lit" that can change to "unlit", or "locked"
+    /// to "unlocked", depending on whether the boolean 'Attribute' is true or false. 
+    /// Aside from these two attributes, there is the name and the description of each
+    /// feature. And the ItemList is a list of items that may be found around or about the 
+    /// instantiated feature.
+    /// </summary>
     public class Feature
     {
         public string Name { get; set; }
@@ -22,10 +34,27 @@ namespace DungeonCrawler
             SpecificAttribute = specificAttribute;
             ItemList = itemList;
         }
+        /// <summary>
+        /// investigate feature prints its description to the console.
+        /// </summary>
+        /// <returns></returns>
         public string investigateFeature()
         {
             return Description;
         }
+        /// <summary>
+        /// So far in the game only three features have itemLists and can be searched. 
+        /// Due to the complex nature of one of these, where its itemlist is discoverable
+        /// but not immediately available, I've had to deploy some convoluted code to
+        /// reflect this. Nevertheless, search() retains a general application that can be universally
+        /// applied regardless of whether the feature has an itemlist or not. 
+        /// It calls another function, pickUpItem(), that can be implemented on items in itemlist.
+        /// While the items listed does not change if you stash one of them in your pack, whether or not
+        /// you're able to pick it up again does change. You can't if the item is already in your pack.
+        /// The next time you visit the feature the stashed items around it will be gone from the list.
+        /// </summary>
+        /// <param name="inventory"></param>
+        /// <param name="weaponInventory"></param>
         public void search(List<Item> inventory, List<Weapon> weaponInventory)
         {
             Console.WriteLine($"Rummaging about the {Name}, you find the following;");
@@ -43,7 +72,9 @@ namespace DungeonCrawler
             {
                 message += "Your furtive fingers scrabble at the panel at the bottom of the chest. After some effort, you manage to at last unveil a hidden compartment...\n";
             }
-            List<Item> itemList = new List<Item>();
+            /// I create a copy of ItemList for reference so that removed items do not trigger an 
+            /// out of bounds exception.
+            List<Item> itemList = new List<Item>(); 
             if (ItemList != null)
             {
                 if (ItemList.Count != 0)
@@ -73,7 +104,9 @@ namespace DungeonCrawler
 
                         bool continueLoop = true;
                         int a = 0;
-                        
+                        /// This loop continues while the player is given the option
+                        /// to select, study or return items through the pickUpItem()
+                        /// function.
                         while (continueLoop)
                         {
                             Console.WriteLine(message);
@@ -102,10 +135,14 @@ namespace DungeonCrawler
                                 {
                                     try
                                     {
+                                        // I seem to have this habit of not using lists for reference. Saves memory I guess...
                                         bool success = false;
                                         string objName = message.Substring(message.IndexOf(reply1.ToString()) + 3, message.IndexOf((reply1 + 1).ToString()) - 2 - (message.IndexOf(reply1.ToString()) + 3));
                                         Console.WriteLine(objName);
                                         bool freshLoop = false;
+                                        /// checking to see if item is already in pack. Each item is unique,
+                                        /// so this works as a system of preventing the player from picking
+                                        /// up the same item multiple times.
                                         foreach (Item x in inventory)
                                         {
                                             if (x.Name == objName)
@@ -130,7 +167,7 @@ namespace DungeonCrawler
                                         {
                                             if (i.Name == objName)
                                             {
-                                                try
+                                                try //pickupitem() can be used on weapons or items but weapons must be distinguished as such
                                                 {
                                                     i.pickUpItem(inventory, weaponInventory, 6, 0, i, null, ItemList);
 
@@ -156,6 +193,7 @@ namespace DungeonCrawler
                                         try
                                         {
                                             bool success = false;
+                                            //way of retrieving objName changes if only one item in list
                                             string objName = message.Substring(message.IndexOf((r - 1).ToString()) + 3, message.Length - 1 - (message.IndexOf((r - 1).ToString()) + 3));
                                             Console.WriteLine(objName);
                                             bool freshLoop = false;
@@ -220,7 +258,7 @@ namespace DungeonCrawler
                                 }
                                 a++;
                             }
-                            catch
+                            catch //if not a number entered
                             {
                                 Console.WriteLine("Please enter a number corresponding to your choice of action.");
                                 continue;
@@ -229,7 +267,7 @@ namespace DungeonCrawler
                         }
 
                     }
-                    else
+                    else // these are specific cases for those features that may be searched more than once.
                     {
                         if (Name == "bookcase" || (Name == "rosewood chest" && Attribute))
                         {
@@ -247,7 +285,7 @@ namespace DungeonCrawler
                         return;
                     }
                 }
-                else if (ItemList.Count != 0)
+                else if (ItemList.Count != 0) // in every other non-specific case, the same or similar code replies
                 {
                     foreach (Item item in itemList)
                     {
@@ -538,6 +576,7 @@ namespace DungeonCrawler
                     return;
                 }
             }
+            // In the case of features with no itemlist
             else
             {
                 if (Name == "bookcase" || Name == "rosewood chest")
