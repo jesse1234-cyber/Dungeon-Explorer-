@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
+    /// <summary>
+    /// This character class is an abstract one from which Monster and Player 
+    /// derive Skill Stamina and also equip() and unequip(), which is typically used
+    /// in combat
+    /// </summary>
     public class Character
     {
         public string Name { get; set; }
@@ -40,6 +45,11 @@ namespace DungeonCrawler
     }
     public class Player : Character
     {
+        /// <summary>
+        /// In addition to inventory players also have weaponInventory as something
+        /// distinct for holding weapons. They also have traits and they have 
+        /// initial stamina
+        /// </summary>
         public int InitialStamina { get; set; }
         public List<Weapon> WeaponInventory { get; set; }
         public Dictionary<string, string> Traits { get; set; }
@@ -159,6 +169,13 @@ namespace DungeonCrawler
                 return "To describe you as one of the seven wonders of the world would frankly be an understatement. Your raw, physical prowess leaves those lucky enough to clap eyes on you trembling in your wake. Your 'sweet bod' is the sort of exemplary specimen even Conan the Barbarian would grudgingly admire.";
             }
         }
+        /// <summary>
+        /// The following is a similar line of code as searchFeature. It fulfills the same
+        /// function, only when it uses pickUpItem we specify the range as 5, meaning
+        /// the commentary and options are slightly different to normal. in any case
+        /// the formula for this code is very similar to searchfeature.
+        /// </summary>
+        /// <param name="roomItems"></param>
         public void searchPack(List<Item> roomItems)
         {
             Console.WriteLine("Rummaging through your effects you find the following;");
@@ -255,6 +272,11 @@ namespace DungeonCrawler
     }
     public class Monster : Character
     {
+        /// <summary>
+        /// Monsters have unique weapons, descriptions and a list of items in addition to
+        /// stamina, skill and so on. They are only really for combat (maybe dialogue)
+        /// and can only be searched once defeated.
+        /// </summary>
         public string Description { get; set; }
         public List<Item> Items { get; set; }
         public Weapon Veapon { get; set; }
@@ -269,6 +291,13 @@ namespace DungeonCrawler
         }
         public string getDescription() { return Description; }
         public string getName() { return Name; }
+        /// <summary>
+        /// similar to searchPack or searchFeature, once again this evokes a particular strand
+        /// of pickUpItem() demarked by its own range value. something that is different here is
+        /// you have to type out the name of the object you wish to pick up.
+        /// </summary>
+        /// <param name="inventory"></param>
+        /// <param name="weaponInventory"></param>
         public void search(List<Item> inventory, List<Weapon> weaponInventory)
         {
             bool continueSearch = true;
@@ -346,6 +375,8 @@ namespace DungeonCrawler
                     if (Items[i] is Weapon)
                     { weaponSplice.Add(Items[i]); }
                 }
+                ///I have to create a separate list for weapons out of Monster.Items and then
+                ///cast them as weapons afterwards
                 List<Weapon> weapon1 = weaponSplice.Cast<Weapon>().ToList();
                 List<string> checkWeapon = new List<string>();
                 foreach (Item weapon in Items) { checkWeapon.Add(weapon.Name.Trim().ToLower()); }

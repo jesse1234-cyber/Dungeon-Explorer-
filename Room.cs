@@ -21,10 +21,19 @@ namespace DungeonCrawler
             ItemList = itemList;
             FeatureList = featureList;
         }
+        /// <summary>
+        /// Involves picking up room items, searching room features and a broad
+        /// description of the room and where things are placed.
+        /// </summary>
+        /// <param name="inventory"></param>
+        /// <param name="weaponInventory"></param>
+        /// <param name="b"></param>
+        /// <param name="player"></param>
         public void investigate(List<Item> inventory, List<Weapon> weaponInventory, int b, Player player)
         {
             Dice D20 = new Dice(20);
             Dice D6 = new Dice(6);
+            //string list for moving about the room
             List<string> ministryOfSillyWalks = new List<string> {
             "You blithely saunter",
             "You make your merry way",
@@ -80,7 +89,8 @@ namespace DungeonCrawler
                         reply = reply2.ToString();
                     }
 
-
+                    ///In room description there are segments separated by \n and \t that describe each wall
+                    ///by compass direction. This only happens upon the first inspection of the room.
                     if (string.IsNullOrWhiteSpace(reply))
                     {
                         Console.WriteLine($"Will you glance over the {Name}'s...");
@@ -94,6 +104,8 @@ namespace DungeonCrawler
                     {
                         int reply1 = int.Parse(reply);
                         if (reply1 < 1 || reply1 > 4) { Console.WriteLine("Please enter a number from 1 to 4."); reply2 = 0; continue; }
+                        ///The following finds the right description of the wall within room.Description and displays it 
+                        ///by truncating and finding the right substring
                         else if (reply1 == 1)
                         {
                             string message = Description.Substring(Description.IndexOf("\n") + 1, Description.IndexOf("\t") - Description.IndexOf("\n"));
@@ -168,12 +180,16 @@ namespace DungeonCrawler
 
                 }
             }
+            ///What now follows are a list of options whereby the player can pick up
+            ///items in the room, investigate features of the room, or try something else, i.e.
+            ///return to main options.
             Console.WriteLine($"Would you like to perhaps make a closer inspection of the {Name}'s features, pick up some of the {Name}'s items?\nOr would you prefer a different course of action for now?");
             int k = 1;
             Dice D9 = new Dice(9);
             List<string> searchWords = new List<string> { "Search", "Scour", "Investigate", "Inspect", "Scrutinise", "Examine", "Probe", "Check", "Ransack" };
             string options = "";
-            
+            ///Creating a duplicate list for room items so that there is no
+            ///out of bounds exception when items are removed
             List<Item> itemList = new List<Item>();
             if (ItemList != null)
             {
@@ -207,8 +223,9 @@ namespace DungeonCrawler
                             Console.WriteLine($"Please enter a number between 1 and {k}.");
                             continue;
                         }
-                        else if (answer1 < FeatureList.Count)
+                        else if (answer1 < FeatureList.Count)//if you wish to investigate a feature
                         {
+                            ///If the player has specific traits then the comments are customised accordingly
                             if (player.Traits.ContainsKey("friends with fairies"))
                             {
                                 Console.WriteLine($"\n{ministryOfSillyWalks[D20.Roll(D20) - 1]} to the {FeatureList[answer1].Name}...\n");            
@@ -228,7 +245,7 @@ namespace DungeonCrawler
                             Console.WriteLine(options);
                             continue;
                         }
-                        else if (answer1 < k - 1) 
+                        else if (answer1 < k - 1) //if you wish to pick up an item in the room.
                         {
                             try
                             {
@@ -245,7 +262,7 @@ namespace DungeonCrawler
 
                                 foreach (Weapon x in weaponInventory)
                                 {
-                                    if (x.Name == ItemList[answer1 - FeatureList.Count].Name)
+                                    if (x.Name == itemList[answer1 - FeatureList.Count].Name)
                                     {
                                         Console.WriteLine($"You've already taken the {x.Name}.");
                                         freshLoop = true;
@@ -257,7 +274,7 @@ namespace DungeonCrawler
                                 List<Weapon> weapon1 = weaponSplice.Cast<Weapon>().ToList();
                                 weapon1[0].pickUpItem(inventory, weaponInventory, 4, 0, null, weapon1[0], null, ItemList);
                             }
-                            catch
+                            catch // if not a weapon that is to be picked up...
                             {
                                 bool freshLoop = false;
                                 foreach (Item x in inventory)
@@ -285,7 +302,7 @@ namespace DungeonCrawler
                                 
                             }
                         }
-                        else
+                        else //if player wants to return to main options...
                         {
                             return;
                         }

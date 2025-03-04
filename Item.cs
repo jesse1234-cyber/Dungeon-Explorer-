@@ -39,8 +39,29 @@ namespace DungeonCrawler
         {
             return item.Description;
         }
+        /// <summary>
+        /// pickupitem can be used to pick up weapons or items, however the distinction
+        /// must be made clear in the parameters beforehand. range and value work to distinguish,
+        /// in effect, when and where the picking up is taking place. Are you picking up the item
+        /// from within the room, around a feature, from within your pack, during battle? 
+        /// While there is no explicit parameter demarcating these instances, range and/or value, do
+        /// the work to ensure there's no confusion. They are primarily about customising the
+        /// wording printed to the console when picking up your weapon or item. But by virtue of this
+        /// they double as a means of determining the context within which items are being picked up too.
+        /// 
+        ///
+        /// </summary>
+        /// <param name="inventory"></param>
+        /// <param name="weaponInventory"></param>
+        /// <param name="range"></param>
+        /// <param name="value"></param>
+        /// <param name="item"></param>
+        /// <param name="weapon"></param>
+        /// <param name="featureItems"></param>
+        /// <param name="roomItems"></param>
         public void pickUpItem(List<Item> inventory, List<Weapon> weaponInventory,  int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null)
         {
+            //the following are customised messages for when an item is picked up. 
             List<string> messages = new List<string> { $"The {Name} now rests in your hands.", $"You reach over and pick up the {Name}.", $"You grasp the {Name} in your hands.", $"The {Name} is now clasped firmly in your hands.", $"With some trepidation, your clammy hand grips the {Name}.", $"You prise the {Name} from it's resting place", $"You slide the {Name} into your hands.", $"The {Name} is now nestled in your hands." };
             if (value == 0)
             {
@@ -53,6 +74,7 @@ namespace DungeonCrawler
                 int index = value;
                 Console.WriteLine(messages[index]);
             }
+            /// Note the change in wording depending on the value of range.
             if (range == 3 || range == 4|| range == 6)
             {
                 Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it upon your person \n[3]place it back where you found it?");
@@ -77,6 +99,7 @@ namespace DungeonCrawler
                     }
                     continue;
                 }
+                /// this was incase the user typed something like 'option 2' or something
                 int size = answer.Trim().Length;
                 char answerChar = answer.Trim()[size - 1];
                 answer = answerChar.ToString();
@@ -88,9 +111,9 @@ namespace DungeonCrawler
                         Console.WriteLine("Please choose option 1, 2, or 3.");
                         continue;
                     }
-                    else if (answerNum == 1)
+                    else if (answerNum == 1)//study the item
                     {
-                        if (weapon == null)
+                        if (weapon == null)//if item is not a weapon
                         {
                             Console.WriteLine(studyItem(item));
                             if (range == 3 || range == 4 || range == 6)
@@ -103,7 +126,7 @@ namespace DungeonCrawler
                             }
                             continue;
                         }
-                        else
+                        else//if item is a weapon
                         {
                             Console.WriteLine(studyItem(weapon));
                             if (range == 3 || range == 4)
@@ -182,7 +205,7 @@ namespace DungeonCrawler
                     }
                     else
                     {
-                        if (range == 5)
+                        if (range == 5)//if discarding weapon/item from your pack
                         {
                             if (weapon == null)
                             {
@@ -191,7 +214,7 @@ namespace DungeonCrawler
                                 Console.WriteLine($"You discard your {item.Name}. Who needs that old thing anyway?");
                                 return;
                             }
-                            else
+                            else//would have to cast weapon as item to store in roomitems - possible but unnecessary given story context
                             {
                                 
                                 Console.WriteLine($"Erm... Upon consideration you think discarding your {weapon.Name}, or any weapon, might be a bad idea...");
@@ -213,7 +236,7 @@ namespace DungeonCrawler
                         }
                     }
                 }
-                catch
+                catch //if a number was not entered
                 {
                     Console.WriteLine("Please enter '1', '2', or '3'");
                     if (range == 3 || range == 4 || range == 6)
@@ -228,6 +251,24 @@ namespace DungeonCrawler
                 }
             } while (true);
         }
+        /// <summary>
+        /// there are three functions below that essentially do the same thing. useItem is
+        /// for using an item on another item. useItem1 is for using an item on a feature.
+        /// useItem3 is for using an item on the player character. 
+        /// A dictionary is used to determine whether an item can be used on something else. 
+        /// After checking this dictionary, if successfully found, the item will cause the other object
+        /// to change the value of it's attribute and specialAttribute (unless player character)
+        /// Doors that were locked become unlocked, etc. 
+        ///   Special commentary is added for important features or items that can be effected
+        /// and that further the plot.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="feature"></param>
+        /// <param name="usesDictionary"></param>
+        /// <param name="inventory"></param>
+        /// <param name="weaponInventory"></param>
+        /// <param name="binkySkull"></param>
+        /// <returns></returns>
         public bool useItem1(Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Item binkySkull = null)
         {
             if (usesDictionary[item].Contains(feature))
@@ -501,6 +542,22 @@ namespace DungeonCrawler
             Equipped = equipped;
 
         }
+        /// <summary>
+        /// the following calculates the damagedealt and any other special comments to be 
+        /// posted to console during one turn of combat. both monsters and players use
+        /// this function.
+        /// </summary>
+        /// <param name="skill"></param>
+        /// <param name="opponentSkill"></param>
+        /// <param name="enemyStamina"></param>
+        /// <param name="commentary"></param>
+        /// <param name="monsterName"></param>
+        /// <param name="player"></param>
+        /// <param name="another"></param>
+        /// <param name="room"></param>
+        /// <param name="holeInCeiling"></param>
+        /// <param name="start"></param>
+        /// <returns></returns>
         public int Attack(int skill, int opponentSkill, int enemyStamina, bool commentary, Monster monsterName, Player player, string another, Room room, Feature holeInCeiling, bool start = false)
         {
             Dice D18 = new Dice(18);
@@ -524,15 +581,19 @@ namespace DungeonCrawler
                 
                 
             };
-
+            ///The above is special comments for jinxed characters, characters
+            ///who drink felix felicis, or for the last three characters who
+            ///have the trait 'friends with fairies' and drink felix felicis.
             int goodHit;
             bool crit = false;
             bool good = false;
-            int hitThreshold = 0;
+            int hitThreshold = 0;// hit threshold is the number under which you need to roll on a D20 to hit an enemy
+            // commentary is only true if the player is attacking
             if (commentary && player.Traits.ContainsKey("opportunist"))
             {
                 hitThreshold = 18 + skill / 2 - opponentSkill / 2;
             }
+            //if monster is attacking and human armadillo.
             else if (!commentary && player.Traits.ContainsKey("human armadillo"))
             {
                 hitThreshold = 13 + skill / 3 - opponentSkill / 2;
@@ -546,9 +607,10 @@ namespace DungeonCrawler
 
             hitRoll -= Boon;
             int damageDealt = 0;
+            ///if the player/monster scores a hit...
             if (hitRoll < hitThreshold)
             {
-                if (commentary)
+                if (commentary) //if the player is attacking...
                 {
                     Console.WriteLine($"Roll for your {Name}...");
                     foreach (Dice d in Damage)
@@ -639,7 +701,9 @@ namespace DungeonCrawler
                 if (commentary)
                 {
                     //Console.WriteLine($"\n {damageFlag}\n");
-                    
+                    ///there are specific comments for whether a good attack or a crit attack
+                    ///lands and determined by both player skill and how much relative damage they do as a proportion 
+                    ///to the enemy's remaining stamina.
                     if (crit)
                     {
 
@@ -815,7 +879,7 @@ namespace DungeonCrawler
                     return (damageDealt + (goodHit / 2));
                 }
             }
-            else
+            else // you or the monster misses!
             {
                 if (commentary)
                 {
@@ -841,8 +905,9 @@ namespace DungeonCrawler
                     {
                         playerBoon += 10; // Felix Felicis effect
                     }
-                    if (20 - (10 - skill) / 3 < hitRoll + playerBoon)
+                    if (20 - (10 - skill) / 3 < hitRoll + playerBoon)// ensures only boon of 5 or more (i.e. jinxed or flix drinkers) receive these events.
                     {
+                        ///Jinxed critmisses for the monster, including possible instant death
                         if (player.Traits.ContainsKey("friends with fairies") && playerBoon > 9)
                         {
                             Dice D26 = new Dice(26);
