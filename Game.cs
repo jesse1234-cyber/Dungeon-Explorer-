@@ -143,6 +143,7 @@ namespace DungeonExplorer
         {
             _game_Commands = new Game_commands();
             intro = new Intro();
+            currentRoom = new Room("A dark cold echoy chamber");
         }
         public void Start()
         {
@@ -150,8 +151,9 @@ namespace DungeonExplorer
             while (playing)
             {
                 Console.Clear();
-               // intro.Displayintro(); // Void function only shows text for intro
-                playing = intro.HandleYouHaveAChoice(); // possible end to the game, see intro.HandleYouHaveAChoice();
+                // intro.Displayintro(); // Void function only shows text for intro
+                // playing = intro.HandleYouHaveAChoice(); // possible end to the game, see intro.HandleYouHaveAChoice();
+                Console.WriteLine(currentRoom.GetDescription());
             }
         }
     }
