@@ -330,8 +330,6 @@ namespace DungeonExplorer
                         }
                     }
                 }
-
-
             }
         }
     }
