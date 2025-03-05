@@ -10,6 +10,13 @@ namespace DungeonExplorer
     {
         static void Main(string[] args)
         {
+            /*
+             * This function starts the program
+             * Inputs:
+             * None
+             * Outputs:
+             * None
+             */
             Game game = new Game();
             game.Start();
             Console.WriteLine("Waiting for more Implementation");
