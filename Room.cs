@@ -1,17 +1,17 @@
-﻿namespace DungeonExplorer
+﻿public class Room
 {
-    public class Room
+    public string Description { get; private set; }
+    public string Item { get; private set; }
+    public bool HasItem() => !string.IsNullOrEmpty(Item); // Check if there's an item in the room
+
+    public Room(string description, string item)
     {
-        private string description;
+        Description = description;
+        Item = item;
+    }
 
-        public Room(string description)
-        {
-            this.description = description;
-        }
-
-        public string GetDescription()
-        {
-            return description;
-        }
+    public void RemoveItem()
+    {
+        Item = null; // Remove the item from the room
     }
 }
