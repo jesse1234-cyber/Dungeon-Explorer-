@@ -1,4 +1,5 @@
-﻿using System.Dynamic;
+﻿using System.Data;
+using System.Dynamic;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 
@@ -7,7 +8,7 @@ namespace DungeonExplorer
     public class Room
     {
         private string description;
-        private string[] directions = {"N", "W", "S", "E"};
+        private int[] directions = {-1, -1, -1, -1};
         private string[] collectable = new string[2];
         private string action = "Error";
         private bool itemPickedUp = false;
@@ -16,15 +17,30 @@ namespace DungeonExplorer
 
         public string GetDescription(){return this.description;}
         
-        public void SetAdjacent(string[] availabledirection){this.directions = availabledirection;}
-        public string[] GetDirections(){return this.directions;}
+        public void SetAdjacent(int north, int east, int south, int west)
+        {
+            this.directions[0] = north;
+            this.directions[1] = east;
+            this.directions[2] = south;
+            this.directions[3] = west;
+        }
+        public int[] GetDirections(){return this.directions;}
         public void SetItem(string itemName, string itemDescription)
         {
             this.collectable[0] = itemName;
             this.collectable[1] = itemDescription;
         }
         public void SetAction(string itemAction){this.action = itemAction;}
-        public string[] GetCollectable(){return this.collectable;}
+        public string[] GetCollectable()
+        {
+            string[] empty = new string[1];
+            if (this.itemPickedUp == false)
+            {
+                this.UpdateAction();
+                return this.collectable;
+            }
+            else{return empty;}
+        }
         public string GetAction(){return this.action;}
         public void UpdateAction()
         {

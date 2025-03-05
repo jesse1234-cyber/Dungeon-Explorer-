@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Media;
+using System.Reflection;
 
 namespace DungeonExplorer
 {
     internal class Game
     {
         private Player player;
-        private Room currentRoom;
-        private List<Room> allRooms;
+        private List<Room> allRooms = new List<Room>();
 
         public Game()
         {
@@ -33,37 +33,55 @@ namespace DungeonExplorer
             action = action.Replace("                ", " ");
             mainEntrance.SetAction(action);
             mainEntrance.SetIndex(0);
+            mainEntrance.SetAdjacent(1, -1, -1, -1);
             this.allRooms.Add(mainEntrance);
-            design = @"";
+            design = @"Making it through the large double doors, you are
+                faced with a foyer a mansion's foyer. It has clearly seen
+                better days, there are bookcases lining the west wall,
+                however several shelves are rotten and broken, leaving
+                large numbers of books - spotted with black mould - covering
+                the floor, there are 2 doors leading out of the room, one to
+                the north and one to the east. By the east door, a chest of
+                draws rests, looking weathered and worn. 2 Paintings rest
+                either side of the North door, all of them portraits,
+                although the faces have all been scratched out, the marks
+                looking as if they were claws, though too large for any
+                housepet.";
             design = design.Replace("                ", " ");
             Room foyer = new Room(design);
-            foyer.SetItem("","");
-        }
-        public void SetCurrentRoom()
-        {
-            this.currentRoom = allRooms[player.GetRoomIndex()];
+            foyer.SetItem("Candle","This item can be combined with an empty lantern to create a light source, letting you traverse dark rooms.");
+            action = @"You reach the draws and gently pull one open, you 
+                find a candle in oddly prestine condition, deciding it could
+                be useful down the line, you place it in your bag.";
+            action = action.Replace("                ", " ");
+            foyer.SetAction(action);
+            foyer.SetIndex(1);
+            foyer.SetAdjacent(2, 3, 0, -1);
         }
         public void Start()
         {
+            this.GenerateRooms();
             bool playing = true;
             while (playing)
             {
-                Console.WriteLine("1. Look around the room.");
-                Console.WriteLine("2. Display status.");
-                Console.WriteLine("3. Pickup item");
-                Console.WriteLine("4. Move");
-                Console.WriteLine("0. Exit Game");
-                Console.WriteLine("Please enter a listed value to continue... ");
+                
                 bool loop = true;
                 
                 
                 while (loop == true)
                 {
+                    Console.WriteLine("1. Look around the room.");
+                    Console.WriteLine("2. Display status.");
+                    Console.WriteLine("3. Pickup item");
+                    Console.WriteLine("4. Move");
+                    Console.WriteLine("0. Exit Game");
+                    Console.WriteLine("Please enter a listed value to continue... ");
                     ConsoleKeyInfo valueTest = Console.ReadKey();
                     
                     if ("1" == valueTest.KeyChar.ToString())
                     {
-                        Console.Write($"\n{this.currentRoom.GetDescription()}\n");
+                        Console.Write($"\nplayerIndex:{player.GetRoomIndex()}\n");
+                        Console.Write($"\n{this.allRooms[player.GetRoomIndex()].GetDescription()}\n");
                     }
                     else if ("2" == valueTest.KeyChar.ToString())
                     {
@@ -71,12 +89,24 @@ namespace DungeonExplorer
                     }
                     else if ("3" == valueTest.KeyChar.ToString())
                     {
-                        Console.Write($"\n{currentRoom.GetAction()}\n");
-                        player.PickUpItem(currentRoom.GetCollectable());
+                        Console.Write($"\n{allRooms[player.GetRoomIndex()].GetAction()}\n");
+                        string[] artefact = allRooms[player.GetRoomIndex()].GetCollectable();
+                        string[] emptyArray = new string[1];
+                        if (artefact != emptyArray)
+                        {
+                            player.PickUpItem(artefact);
+                        }
                     }
                     else if ("4" == valueTest.KeyChar.ToString())
                     {
-                        Console.WriteLine("null");
+                        Console.Write("\nWhich direction would you like to move?");
+                        Console.Write("\n1. North");
+                        Console.Write("\n2. East");
+                        Console.Write("\n3. South");
+                        Console.Write("\n4. West\n");
+                        ConsoleKeyInfo movement = Console.ReadKey();
+                        player.Travel(int.Parse(movement.KeyChar.ToString())-1, allRooms[player.GetRoomIndex()]);
+                        Console.Write("\nYou Enter a new room\n");
                     }
                     else if ("0" == valueTest.KeyChar.ToString())
                     {
