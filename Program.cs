@@ -12,6 +12,7 @@ namespace DungeonExplorer
         {
             Game game = new Game();
             game.Start();
+            
             Console.WriteLine("To show the difference between 2 branches sdfgdhgfs");
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
