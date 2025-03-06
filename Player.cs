@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Eventing.Reader;
+
 
 namespace DungeonExplorer
 {
@@ -35,8 +35,10 @@ namespace DungeonExplorer
                 if (value <= 0) // Checks if the health is 0 or negative.
                 {
                     Console.WriteLine("Player health cannot be set to zero or be negative.");
+
                     Console.WriteLine("Player health will be set to 100.");
                     health = 100; // Sets the health to 100 as a default value.
+
                 }
                 else
                 {
@@ -49,6 +51,7 @@ namespace DungeonExplorer
         // Method which allows the player to pick up items from a room.
         public void PickUpItem(string item, Room currentRoom)
         {
+
             // Gets the list of items that are in the room.
             List<string> roomItems = currentRoom.GetRoomItems();
             // Finds the specified item within the room (case sensitive).
@@ -75,6 +78,21 @@ namespace DungeonExplorer
 
 
         // Method which returns the contents of the player's inventory.
+
+            if (inventory.Contains(item))
+            {
+                Console.WriteLine(item + " already in inventory!");
+            }
+            else
+            {
+                Console.WriteLine("Picked up: " + item);
+                inventory.Add(item);
+            }
+
+
+        }
+
+
         public string InventoryContents()
         {
             if (inventory.Count == 0)
@@ -88,4 +106,4 @@ namespace DungeonExplorer
         }
     }
 }
-    
+
