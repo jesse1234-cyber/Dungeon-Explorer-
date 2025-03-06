@@ -33,7 +33,8 @@ namespace DungeonExplorer
                 Console.WriteLine("View room description: a");
                 Console.WriteLine("View stats (health and inventory): b");
                 Console.WriteLine("Pick up an item: c");
-                Console.WriteLine("Exit game: d");
+                Console.WriteLine("Go to the next room: d");
+                Console.WriteLine("Exit game: e");
 
                 string userChoice = Console.ReadLine();
 
@@ -51,6 +52,11 @@ namespace DungeonExplorer
                         player.PickUpItem("Example"); // Yet to be randomised and implemented.
                         break;
                     case "d":
+                        currentRoom = Room.GetNewRoom(currentRoom);
+                        Console.WriteLine("\nYou went to the next room...");
+                        Console.WriteLine("Room Description: " + currentRoom.GetDescription());
+                        break;
+                    case "e":
                         Environment.Exit(0);
                         break;
                     default:
