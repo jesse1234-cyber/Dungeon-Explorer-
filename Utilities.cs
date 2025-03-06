@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace Program
 {
+    // Class containing static functions for validating userinputs within the game
     public class GameInputs
     {
         public static int G() // Simple function for returning integers from user input

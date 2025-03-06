@@ -4,6 +4,8 @@ using System.Linq;
 
 namespace Program
 {
+
+    // Class for the player, with health attributes and an instance of the inventory object
     public class Player
     {
         public Player() {
@@ -16,20 +18,21 @@ namespace Program
 
     }
 
+
+    // Player inventory class, with various functions to manage the inventory
     public class PlayerInventory
     {
         public PlayerInventory(int inCapacity)
         {
             iCapacity = inCapacity;
            
-             Inventory.Add(new InventoryItem("Sausage Roll", 10, 3));
+             Inventory.Add(new InventoryItem("Sausage Roll", 10, 3)); // Initializes the list of inventory items
             
         }
-
         private int iCapacity { get; set; }
         private List<InventoryItem> Inventory = new List<InventoryItem>();
 
-        public string fPickUpItem(InventoryItem ItemToAdd)
+        public string fPickUpItem(InventoryItem ItemToAdd) // Adds an item to players inventory (Checking its not full first)
         {
             if (Inventory.Count == iCapacity)
             {
@@ -38,7 +41,7 @@ namespace Program
             Inventory.Add(ItemToAdd);
             return "Item Added";
         }
-        public string fShowInventory()
+        public string fShowInventory() // Shows the player the current items in there inventory
         {
             for (int i = 0; i < Inventory.Count; i++)
             {
@@ -47,7 +50,7 @@ namespace Program
 
             return null;
         }
-        private string fDeleteItem(InventoryItem ItemToRemove, InventoryItem ItemToAdd)
+        private string fDeleteItem(InventoryItem ItemToRemove, InventoryItem ItemToAdd) // Remove item from the inventory
         {
             Inventory.Remove(ItemToRemove);
             return null;
@@ -64,7 +67,7 @@ namespace Program
         {
             this.sName = name;
             this.maxNoOfItem = maxNoOfItem;
-            this.noOfItem = 0;
+            this.noOfItem = 1;
         }
         public InventoryItem(string name, int maxNoOfItem, int noOfItem)
         {
