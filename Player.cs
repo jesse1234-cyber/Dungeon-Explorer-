@@ -30,7 +30,12 @@ namespace DungeonExplorer
         public string InventoryContents()
         {
             // Return the contents of the player's inventory
-            return string.Join(", ", inventory);
+            string output = "";
+            foreach (var item in inventory)
+            {
+                output = output + item.GetName() + ", ";
+            }
+            return output;
         }
     }
 }

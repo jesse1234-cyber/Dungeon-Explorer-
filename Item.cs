@@ -24,5 +24,16 @@ namespace DungeonExplorer
             Name = name;
             Description = description;
         }
+        // Getters
+        // GetName: returns the name of the item
+        public string GetName()
+        {
+            return Name;
+        }
+        // GetDescription: returns the description of the item
+        public string GetDescription()
+        {
+            return Description;
+        }
     }
 }
