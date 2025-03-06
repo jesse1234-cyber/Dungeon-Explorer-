@@ -62,10 +62,19 @@ namespace DungeonExplorer
         {
             // Ask user for their name
             Console.WriteLine("What is your name? ");
-            string inputName = Console.ReadLine() ?? "DefaultName";
 
-            // Assign name to Name
-            Name = inputName;
+            string inputName = Console.ReadLine();
+
+            //Prevent user from entering a blank name
+            do
+            {
+                Console.Write("Please enter a name ");
+                inputName = Console.ReadLine();
+            }
+            while (string.IsNullOrEmpty(inputName));
+
+        // Assign name to Name
+        Name = inputName;
 
             //Prevent user from entering a blank name
             Debug.Assert(Name != null, "Please enter a name");

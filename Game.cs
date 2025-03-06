@@ -6,7 +6,7 @@ namespace DungeonExplorer
 {
     /// <summary>
     /// Game class
-    /// Sets up the main gameplay
+    /// Initialises gameplay, begins game logic
     /// </summary>
     internal class Game
     {
