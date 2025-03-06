@@ -17,10 +17,10 @@ namespace DungeonExplorer
             Health = 5;
         }
 
-        public string GetName(string name)
+        public string GetName()
         {
             Console.WriteLine("What is your name?");
-            public string Name = Console.ReadLine();
+            Name = Console.ReadLine();
         }
 
         public void GetItem(string item)
