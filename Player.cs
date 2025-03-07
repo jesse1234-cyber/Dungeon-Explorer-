@@ -4,17 +4,21 @@ using System.Linq;
 
 namespace Program
 {
-
+    
     // Class for the player, with health attributes and an instance of the inventory object
     public class Player
     {
+        public int posX;
+        public int posY;
         public Player() {
             pInv = new PlayerInventory(5);
+            posX = 5;
+            posY = 10;
         }
         int Health { get; set; }
         int MaxHealth { get; set; }
         public PlayerInventory pInv;
-
+        
 
     }
 

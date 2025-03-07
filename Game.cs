@@ -8,7 +8,6 @@ namespace Program
     public class Game
     {
         static char[,] Map = new char[10, 20];
-        private int menuChoice;
 
         public static void Main(string[] Args)
         {
@@ -46,7 +45,14 @@ namespace Program
 
         static void gameLoop()
         {
+            Console.Clear();
+            Player P1 = new Player();
 
+
+            Map[P1.posX, P1.posY] = 'U';
+            Console.WriteLine("   Current Map:    ");
+            Console.WriteLine("[U]: Your Current Location");
+            Console.WriteLine("[?]: Not Visited Area");
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 19; j++)
@@ -55,9 +61,10 @@ namespace Program
                 }
                 Console.WriteLine();
             }
+            
+            Console.WriteLine("   Action Menu:    ");
 
-            Player P1 = new Player();
-            P1.pInv.fShowInventory();
+
 
             Console.ReadLine();
         }
