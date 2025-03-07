@@ -78,21 +78,6 @@ namespace DungeonExplorer
 
 
         // Method which returns the contents of the player's inventory.
-
-            if (inventory.Contains(item))
-            {
-                Console.WriteLine(item + " already in inventory!");
-            }
-            else
-            {
-                Console.WriteLine("Picked up: " + item);
-                inventory.Add(item);
-            }
-
-
-        }
-
-
         public string InventoryContents()
         {
             if (inventory.Count == 0)
