@@ -8,18 +8,20 @@ namespace DungeonExplorer
         public int Health { get; private set; }
         private List<string> inventory = new List<string>();
 
-        public Player(string name, int health) 
+        public Player(string name, int health)
         {
             Name = name;
             Health = health;
         }
+
         public void PickUpItem(string item)
         {
-
+            inventory.Add(item);
         }
+
         public string InventoryContents()
         {
-            return string.Join(", ", inventory);
+            return inventory.Count > 0 ? string.Join(", ", inventory) : "empty";
         }
     }
 }
