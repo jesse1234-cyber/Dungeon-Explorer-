@@ -122,7 +122,6 @@ namespace DungeonExplorer
                     Console.Write("\n4. West\n");
                     ConsoleKeyInfo movement = Console.ReadKey();
                     player.Travel(int.Parse(movement.KeyChar.ToString())-1, allRooms[player.GetRoomIndex()]);
-                    Console.Write("\nYou Enter a new room\n");
                 }
                 else if ("0" == valueTest.KeyChar.ToString())
                 {

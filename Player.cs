@@ -102,9 +102,10 @@ namespace DungeonExplorer
             if (availableDirections[direction] > -1 & availableDirections[direction] < 2)
             {
                 this.SetRoomIndex(availableDirections[direction]);
+                Console.Write("\nYou Enter a new room\n");
             }
-            else if (availableDirections[direction]<1){
-                Console.Write("\nThe door appears to be locked\nRoom not yet implemented."); 
+            else if (availableDirections[direction]>1){
+                Console.Write("\nThe door appears to be locked\nRoom not yet implemented.\n"); 
                 // This will be replace if I update the game further
             }
             else
