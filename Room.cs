@@ -1,4 +1,6 @@
-﻿namespace DungeonExplorer
+﻿using System;
+
+namespace DungeonExplorer
 {
     public class Room
     {
@@ -11,6 +13,7 @@
 
         public string GetDescription()
         {
+
             return description;
         }
     }
