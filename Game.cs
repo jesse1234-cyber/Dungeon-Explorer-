@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Media;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
@@ -89,7 +90,7 @@ namespace DungeonExplorer
 
             _Game_commands.ClearTerminal();
             Thread.Sleep(2000);
-            PrintLetterByLetter("*You hear a calm swoosh, a blazing tourch dimly lights up the room*", 50);
+            PrintLetterByLetter("*You seem to have woken up in damp decrepit dungeon, a solitary touch struggles to drown out the overwhelming darkness of the room.", 50);
             Thread.Sleep(2000);
 
             _Game_commands.ClearTerminal();
@@ -106,6 +107,7 @@ namespace DungeonExplorer
             PrintLetterByLetter("(2) Exit through the wooden door\n\n", 50);
         }
 
+        // Game choice utilizing Choice method
         public bool YouHaveAChoice()
         {
             return _Game_commands.Choice("Make your choice: ", "1", "2");    
@@ -116,7 +118,7 @@ namespace DungeonExplorer
 
             if (choice)
             {
-                PrintLetterByLetter("Logic", 50);
+                _Game_commands.ClearTerminal();
                 return false;
             }
             else
@@ -143,17 +145,39 @@ namespace DungeonExplorer
         {
             _game_Commands = new Game_commands();
             intro = new Intro();
-            currentRoom = new Room("A dark cold echoy chamber");
+            currentRoom = new Room();
         }
+
+        public void RoomIntro()
+        {
+            intro.PrintLetterByLetter(currentRoom.GetRoomIntro(), 50);
+            Thread.Sleep(2000);
+            Console.Clear();
+        }
+
+        public void IntroduceNewRoom()
+        {
+            intro.PrintLetterByLetter("You have entered:", 50);
+            intro.PrintLetterByLetter($" {currentRoom.GetTitle()}", 200);
+            Thread.Sleep(2000);
+            Console.Clear();
+        }
+
         public void Start()
         {
+            bool RoomLoop = true;
             bool playing = true;
             while (playing)
             {
                 Console.Clear();
-                // intro.Displayintro(); // Void function only shows text for intro
-                // playing = intro.HandleYouHaveAChoice(); // possible end to the game, see intro.HandleYouHaveAChoice();
-                Console.WriteLine(currentRoom.GetDescription());
+                //intro.Displayintro(); // Void function only shows text for intro
+                //playing = intro.HandleYouHaveAChoice(); // possible end to the game, see intro.HandleYouHaveAChoice();
+                while (RoomLoop)
+                {
+                    currentRoom = new Room();
+                    RoomIntro();
+                    IntroduceNewRoom();
+                }
             }
         }
     }
