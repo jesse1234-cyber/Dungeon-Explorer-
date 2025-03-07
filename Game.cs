@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Media;
-using System.Security.Cryptography.X509Certificates;
 
 namespace DungeonExplorer
 {
