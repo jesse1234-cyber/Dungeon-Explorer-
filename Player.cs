@@ -7,7 +7,8 @@ namespace DungeonExplorer
     {
         public string Name { get; private set; }
         private int health;
-        private List<string> inventory = new List<string>();
+        internal Item inventoryItem;
+        public bool FirstRoom { get; private set; } = true;
 
         public Player(string name, int health) 
         {
@@ -33,23 +34,39 @@ namespace DungeonExplorer
             }
             
         }
-        public void PickUpItem(string item)
+        public void PickUpItem(Item newItem)
         {
-            if (inventory.Count == 0)
+            if (inventoryItem == null)
             {
-                inventory.Add(item);
-                Console.WriteLine($"You found and picked up {item}");
+                inventoryItem = newItem;
+                Console.WriteLine($"You found and picked up {inventoryItem.Name}");
             }
             else
             {
-                Console.WriteLine("You can only have one item at a time.");
+                Console.WriteLine($"You already have {inventoryItem.Name}.");
             }
+        }
+
+        public void UseItem()
+        {
+            if (inventoryItem == null)
+            {
+                Console.WriteLine("You don't have items to use.");
+            }
+            
+            inventoryItem.UseItem(this);
+            inventoryItem = null;
         }
         public string InventoryContents()
         {
             // If there are no items in the list, return the message,
             // Otherwise output the content. 
-            return inventory.Count > 0 ? string.Join(", ", inventory) : "no items found.";
+            return inventoryItem != null ? inventoryItem.ToString() : "no items found.";
+        }
+
+        public void NextRoom()
+        {
+            FirstRoom = false;
         }
     }
 }
