@@ -3,7 +3,6 @@ using System.Media;
 
 namespace DungeonExplorer
 {
-    // Sausage roll fam
     internal class Game
     {
         private Player player;
