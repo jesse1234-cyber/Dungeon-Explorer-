@@ -27,11 +27,11 @@ namespace DungeonCrawler
             Special = special;  //describes special effect on console
         }
 
-        private void stashItem(Item item, List<Item> inventory) // player1.inventory?
+        private void StashItem(Item item, List<Item> inventory) // player1.inventory?
         {
             inventory.Add(item);
         }
-        private void stashWeapon(Weapon weapon, List<Weapon> weaponInventory)
+        private void StashWeapon(Weapon weapon, List<Weapon> weaponInventory)
         {
             weaponInventory.Add(weapon);
         }
@@ -146,13 +146,13 @@ namespace DungeonCrawler
                         {
                             if (item == null)
                             {
-                                stashWeapon(weapon, weaponInventory);
+                                StashWeapon(weapon, weaponInventory);
                                 Console.WriteLine($"{Name} has been stashed in inventory.");
                                 return;
                             }
                             else
                             {
-                                stashItem(item, inventory);
+                                StashItem(item, inventory);
                                 Console.WriteLine($"{Name} has been stashed in inventory.");
                                 return;
                             }
@@ -161,7 +161,7 @@ namespace DungeonCrawler
                         {
                             if (item == null)
                             {
-                                stashWeapon(weapon, weaponInventory);
+                                StashWeapon(weapon, weaponInventory);
                                 if (weapon.Name != "bowl fragments" && weapon.Name != "rusty chains" && weapon.Name != "garment")
                                 {
                                     roomItems.Remove(item);
@@ -172,7 +172,7 @@ namespace DungeonCrawler
                             }
                             else
                             {
-                                stashItem(item, inventory);
+                                StashItem(item, inventory);
                                 if (item.Name != "bowl fragments" && item.Name != "rusty chains" && item.Name != "garment")
                                 {
                                     roomItems.Remove(item);
@@ -186,7 +186,7 @@ namespace DungeonCrawler
                         {
                             if (item == null)
                             {
-                                stashWeapon(weapon, weaponInventory);
+                                StashWeapon(weapon, weaponInventory);
                                 featureItems.Remove(item);
                                 Console.WriteLine($"{Name} has been stashed in inventory.");
 
@@ -194,7 +194,7 @@ namespace DungeonCrawler
                             }
                             else
                             {
-                                stashItem(item, inventory);
+                                StashItem(item, inventory);
                                 featureItems.Remove(item);
                                 Console.WriteLine($"{Name} has been stashed in inventory.");
 
