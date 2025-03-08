@@ -40,8 +40,8 @@ namespace DungeonExplorer
                         player.SetHealth(player.GetHealth() + 20);
                         Console.WriteLine($"You used {Name}. Health is increased by 20.");
                     }
-
                     break;
+                
                 case ItemType.IgnoranceSpell:
                     Console.WriteLine($"You used {Name}. You skipped all the enemies by becoming invisible.");
                     break;

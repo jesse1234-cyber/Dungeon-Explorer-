@@ -52,6 +52,7 @@ namespace DungeonExplorer
             if (inventoryItem == null)
             {
                 Console.WriteLine("You don't have items to use.");
+                return;
             }
             
             inventoryItem.UseItem(this);

@@ -24,7 +24,7 @@ namespace DungeonExplorer
             possibleItems = new List<Item>
             {
                 new Item("Healing Spell", ItemType.HealSpell, Rarity.Common),
-                new Item("Invisibility Cloack", ItemType.IgnoranceSpell, Rarity.Rare),
+                new Item("Invisibility Cloak", ItemType.IgnoranceSpell, Rarity.Rare),
                 new Item("Elimination Spell", ItemType.EliminationSpell, Rarity.Rare),
                 new Item("Knife", ItemType.Weapon, Rarity.Rare),
                 new Item("Metal Axe", ItemType.Weapon, Rarity.Legendary)
@@ -36,19 +36,22 @@ namespace DungeonExplorer
             Random rndm = new Random();
             int chance = rndm.Next(1, 101);
 
+            List<Item> filteredItems;
+            
             if (chance <= 74) // 74 % chance for common
             {
-                return possibleItems.Find(x => x.Rarity == Rarity.Common);
+                filteredItems = possibleItems.FindAll(x => x.Rarity == Rarity.Common);
             }
             else if (chance <= 99) // 25 % chance for rare
             {
-                return possibleItems.Find(x => x.Rarity == Rarity.Rare);
+                filteredItems = possibleItems.FindAll(x => x.Rarity == Rarity.Rare);
             }
             else // 1 % chance for legendary
             {
-                return possibleItems.Find(x => x.Rarity == Rarity.Legendary);
+                filteredItems = possibleItems.FindAll(x => x.Rarity == Rarity.Legendary);
             }
 
+            return filteredItems[rndm.Next(filteredItems.Count)];
         }
         
         public void Start()
