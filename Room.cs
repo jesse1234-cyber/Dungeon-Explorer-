@@ -6,24 +6,17 @@ namespace DungeonExplorer
     public class Room
     {
         private string _description;
-        private Dictionary<string, int> _items;
+        private List<Item> _items;
+        private List<Creature> _creatures;
+        private bool _hasTreasure;
         private Random _random = new Random();
 
-        public Room(string description, List<string> items)
+        public Room(string description, List<Item> items, List<Creature> creatures, bool hasTreasure)
         {
-            this._description = description;
-            this._items = new Dictionary<string, int>();
-            foreach (var item in items)
-            {
-                if (_items.ContainsKey(item))
-                {
-                    _items[item]++;
-                }
-                else
-                {
-                    _items[item] = 1;
-                }
-            }
+            _description = description;
+            _items = items;
+            _creatures = creatures;
+            _hasTreasure = hasTreasure;
         }
 
         public string GetDescription()
@@ -31,25 +24,31 @@ namespace DungeonExplorer
             return $"Room Description: {_description}";
         }
 
-        public string GetRandomItem()
+        public Item GetRandomItem()
         {
             if (_items.Count == 0)
                 return null;
 
-            var itemList = new List<string>(_items.Keys);
-            int index = _random.Next(itemList.Count);
-            string item = itemList[index];
-
-            if (_items[item] > 1)
-            {
-                _items[item]--;
-            }
-            else
-            {
-                _items.Remove(item);
-            }
+            int index = _random.Next(_items.Count);
+            Item item = _items[index];
+            _items.RemoveAt(index);
 
             return item;
+        }
+
+        public List<Item> GetItems()
+        {
+            return _items;
+        }
+
+        public List<Creature> GetCreatures()
+        {
+            return _creatures;
+        }
+
+        public bool HasTreasure()
+        {
+            return _hasTreasure;
         }
     }
 }
