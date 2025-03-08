@@ -341,14 +341,33 @@ namespace DungeonCrawler
             }
             else { return false; }
         }
-        public bool useItem(Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null)
+        public List<bool> useItem(Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null)
         {
+            List<bool> tlist = new List<bool> { false, false };
             if (usesDictionary[item1].Contains(item2))
             {
                 item2.Attribute = !item2.Attribute; // key lock unlock, weapon intact broken, magical charm uncharmed charmed, etc
                 if (item2.Attribute == false)
                 {
                     item2.SpecifyAttribute = item2.SpecifyAttribute.Substring( 2, item2.SpecifyAttribute.Length-2);
+                    if (item1.Name == "magnifying glass" && item2.Name == "garment")
+                    {
+                        Console.WriteLine("You slump to the floor, if not exactly resigned then idling in an absent minded flight of fancy. You toy with the magnifying glass, a bored expression on your face as you twist it this way and that.\nIt's minutes before an acrid scent hits your nostrils. Is that fried bacon?");
+                        Console.ReadKey(true);
+                        Console.WriteLine($"You look down and yelp as you realise the magnifying glass had focused the light from the brazier. The garment you'd picked up has caught fire!");
+                        Console.ReadKey(true);
+                        Console.WriteLine("You flail it around trying to put out the flames like a crazed whirlwind of oafishness, spreading the fire in the process. Already a pool of dark, cloying smoke billows about the ceiling as the dank cell heats up like a furnace. You throw the garment at the door, before banging on it for all your worth. \nYou yell out that there's a fire. It's not long before boots stomp their way towards your door. Tumblers turn, then a powerful kick flings it open.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("You brace yourself for the fight of your life...");
+                        Console.ReadKey(true);
+                        bool fire = true;
+                        if (trialBattle.fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, fire))
+                        {
+                            tlist[0] = true;
+                            tlist[1] = true;
+                            return tlist;
+                        }
+                    }
                     if (item2.Name == "note" && item1.Name == "magnifying glass")
                     {
                         Console.WriteLine("  You peer through the magnifying glass and suddenly the note's mysterious, tiny scrawl starts to make sense...");
@@ -375,9 +394,10 @@ namespace DungeonCrawler
                 {
                     item2.SpecifyAttribute = "un" + item2.SpecifyAttribute;
                 }
-                return true;
+                tlist[0] = true;
+                return tlist;
             }
-            else { return false; }
+            else { return tlist; }
 
         }
         public bool useItem3(Item item1, Player player, Dictionary<Item, List<Player>> usesDictionary)

@@ -284,7 +284,7 @@ namespace DungeonCrawler
                 skill = skill - 2;
                 //
                 player1.Skill = skill;
-                //
+                player1.Skill = 2;
                 Console.WriteLine($"Your skill is {skill + 2} - 2 = {skill}");
                 //
                 
@@ -697,7 +697,7 @@ namespace DungeonCrawler
 
             // Dictionaries for items used on other effects (items or features)
             var usesDictionaryItemItem = new Dictionary<Item, List<Item>> { [magnifyingGlass]= new List<Item> { note} };
-            var usesDictionaryItemFeature = new Dictionary<Item, List<Feature>> { [steelKey] = new List<Feature> { rosewoodChest }, [note] = new List<Feature> { brazier }, [breadKnife] = new List<Feature> { skeleton, bookCase }, [scimitar] = new List<Feature> { skeleton, bookCase }, [dagger] = new List<Feature> { skeleton, bookCase }, [vanquisher] = new List<Feature> { skeleton, bookCase }, [garment] = new List<Feature> { brazier } };
+            var usesDictionaryItemFeature = new Dictionary<Item, List<Feature>> { [steelKey] = new List<Feature> { rosewoodChest }, [breadKnife] = new List<Feature> { skeleton, bookCase }, [scimitar] = new List<Feature> { skeleton, bookCase }, [dagger] = new List<Feature> { skeleton, bookCase }, [vanquisher] = new List<Feature> { skeleton, bookCase } };
 
             if (player1.Traits.ContainsKey("friends with fairies"))
             {
@@ -706,6 +706,10 @@ namespace DungeonCrawler
                 usesDictionaryItemFeature.Add(healPotion, new List<Feature> { skeleton });
                 usesDictionaryItemFeature.Add(FelixFelicis, new List<Feature> { skeleton });
                 usesDictionaryItemFeature.Add(elixirFeline, new List<Feature> { skeleton });
+            }
+            if (player1.Traits.ContainsKey("jinxed"))
+            {
+                usesDictionaryItemItem[magnifyingGlass].Add(garment);
             }
             Dictionary<Item, List<Player>> usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 } , [FelixFelicis] = new List<Player> { player1}, [elixirFeline] = new List<Player> { player1} };
             List<Feature> features = new List<Feature>();
@@ -729,7 +733,9 @@ namespace DungeonCrawler
             ///The previous choices are your base capabilities you'll keep returning to
             ///until more options open up. classes and their functions are repeatedly called 
             ///within each, making the game deeper than might first be expected.
-            while (true)
+            bool escapedRoom1 = false;
+            bool escapedThroughDoor = true;
+            while (!escapedRoom1)
             {
                 string reply = Console.ReadLine().Trim().ToLower();
                 ///If player answers by typing number in list...
@@ -783,13 +789,17 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("You rush through the door to escape!");
                                                 Console.ReadKey(true);
-                                                System.Environment.Exit(0);
+                                                escapedRoom1 = true;
+                                                break;
+                                                
                                             }
                                             else if (answ3r1 == 2)
                                             {
                                                 Console.WriteLine("You clamber up through the hole to escape!");
                                                 Console.ReadKey(true);
-                                                System.Environment.Exit(0);
+                                                escapedRoom1 = true;
+                                                escapedThroughDoor = false;
+                                                break;
                                             }
                                         }
                                         catch
@@ -802,7 +812,8 @@ namespace DungeonCrawler
                                 {
                                     Console.WriteLine("You rush through the door to escape!");
                                     Console.ReadKey(true);
-                                    System.Environment.Exit(0);
+                                    escapedRoom1 = true;
+                                    break;
                                 }
                                 
                             }
@@ -859,184 +870,23 @@ namespace DungeonCrawler
                     else if (reply1 == 4) // for when player has searched their pack and the room at least once.
                     {
                         e++;
-                        bool success = false;
-                        if (player1.Inventory.Count > 0)
-                        {
-                            Console.WriteLine("Which item in your pack do you wish to use?");
-                            int g = 1;
-                            foreach (Item item in player1.Inventory)
-                            {
-                                Console.WriteLine($"[{g}] {item.Name}");
-                                g++;
-                            }
-                            Item chosenItem = null;
-                            while (true)
-                            {
-                                string reply2 = Console.ReadLine().Trim().ToLower();
+                        List<bool> success = new List<bool>();
+                        success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, trialBattle);
 
-                                try
-                                {
-                                    int reply0 = int.Parse(reply2) - 1;
-                                    try
-                                    {
-                                        chosenItem = player1.Inventory[reply0];
-                                        break;
-                                    }
-                                    catch { Console.WriteLine("Please enter a number corresponding to an item listed above!"); }
-
-                                }
-                                catch
-                                {
-                                    foreach (Item item in player1.Inventory)
-                                    {
-                                        if (item.Name == reply2)
-                                        {
-                                            chosenItem = item;
-
-                                        }
-
-                                    }
-                                }
-                                if (chosenItem == null)
-                                {
-                                    Console.WriteLine($"{reply2} could not be found in your backpack. Select another item.");
-                                }
-                                else
-                                {
-                                    break;
-                                }
-                            }
-                            Console.WriteLine("What or who would you like to use it on?");
-
-
-                            g = 1;
-                            foreach (Item item in room.ItemList)
-                            {
-                                Console.WriteLine($"[{g}] {item.Name} in the room.");
-                                g++;
-                            }
-
-                            foreach (Item item in player1.Inventory)
-                            {
-                                Console.WriteLine($"[{g}] The {item.Name} in your backpack");
-                                g++;
-                            }
-                            foreach (Feature feature in room.FeatureList)
-                            {
-                                Console.WriteLine($"[{g}] {feature.Name} in the room.");
-                                g++;
-                            }
-                            Console.WriteLine($"[{g}] Yourself");
-                            
-
-                            while (true)
-                            {
-                                string effectedItemString = Console.ReadLine().Trim().ToLower();
-                                try
-                                {
-                                    int effectedItemNum = int.Parse(effectedItemString);
-                                    if (effectedItemNum < 1 || effectedItemNum > g) { Console.WriteLine("Please select a number that corresponds with an item listed above."); }
-                                    
-                                    else if (effectedItemNum == g)
-                                    {
-                                        try
-                                        {
-                                            success = chosenItem.useItem3(chosenItem, player1, usesDictionaryItemChar);
-
-                                            if (chosenItem.Name.Trim().ToLower() == "healing potion")
-                                            {
-                                                Console.WriteLine("Liquid rejuvenation trickles down your parched throat. A warm feeling swells from your heart as you feel your wounds salved and your flesh knitting itself back together.");
-                                            }
-                                            else if (chosenItem.Name.Trim().ToLower() == "elixir of feline guile")
-                                            {
-                                                Console.WriteLine("You glug the potent elixir down. Your stomach ties itself in knots for a moment, before you feel your instincts and reflexes sharpen.");
-                                            }
-                                            else if (chosenItem.Name.Trim().ToLower() == "felix felicis") // luck potion grants boon to all weapons.
-                                            {
-                                                Console.WriteLine("The sweet liquid tastes like nirvana. It's effervescent body dances on your tongue and delights the senses. Suddenly you feel like anything is possible...");
-                                            }
-                                            else
-                                            {
-                                                Console.WriteLine($"You try using the {chosenItem.Name} on yourself. Whatever results you were hoping for, sufficed to say they haven't materialised...");
-                                            }
-                                            break;
-                                        }
-                                        catch { Console.WriteLine("Ermm...No. Upon reflection, you'd rather not use that on yourself."); break; }
-
-                                    }
-                                    else if (effectedItemNum < g && effectedItemNum > room.ItemList.Count + player1.Inventory.Count)
-                                    {
-                                        try
-                                        {
-                                            success = chosenItem.useItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - player1.Inventory.Count], usesDictionaryItemFeature, player1.Inventory, player1.WeaponInventory, binkySkull);
-                                            if (!success)
-                                            {
-                                                if (chosenItem.Name == "steel key" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - player1.Inventory.Count].Name == "rosewood door")
-                                                {
-                                                    Console.WriteLine("This key clearly doesn't open *this* door...");
-                                                }
-                                                else
-                                                {
-                                                    Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
-                                                }
-                                            }
-                                            break;
-                                        }
-                                        catch { 
-                                            Console.WriteLine($"You try using the {chosenItem.Name} on the {room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - player1.Inventory.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
-                                            if (chosenItem.Name == "steel key" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - player1.Inventory.Count].Name == "rosewood door") 
-                                            { 
-                                                Console.WriteLine("This key clearly doesn't open this door."); 
-                                            }
-                                            Console.WriteLine(); 
-                                            break; 
-                                        }
-                                    }
-                                    else if (effectedItemNum > room.ItemList.Count)
-                                    {
-                                        if(player1.Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == chosenItem.Name)
-                                        {
-                                            Console.WriteLine($"You attempt using the {chosenItem.Name} on itself but try as hard as you might, it just doesn't seem possible. Maybe you should try this item on something else?");
-                                            continue;
-                                        }
-                                        try
-                                        {
-                                            success = chosenItem.useItem(chosenItem, player1.Inventory[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, rosewoodChest, musicBox, room, player1, holeInCeiling);
-                                            if (!success)
-                                            {
-                                                Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
-                                            }
-                                            break;
-                                        }
-                                        catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {player1.Inventory[effectedItemNum - 1 - room.ItemList.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised..."); break; }
-                                    }
-                                    else
-                                    {
-                                        try
-                                        {
-                                            success = chosenItem.useItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, rosewoodChest, musicBox, room, player1, holeInCeiling);
-                                            if (!success)
-                                            {
-                                                Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
-                                            }
-                                            break;
-                                        }
-                                        catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised..."); break; }
-                                    }
-                                }
-                                catch { Console.WriteLine("Please enter the number corresponding to the list above!"); }
-                            }
-
-                        }
-                        else
-                        {
-                            Console.WriteLine("You've no items in your backpack!");
-                        }
                         if (room.FeatureList.Contains(holeInCeiling))
                         {
                             Console.WriteLine("Without further delay, you scramble up the mound of debris left by the hole and up into the next room.");
                             Console.ReadKey(true);
-                            System.Environment.Exit(0);
+                            escapedRoom1 = true;
+                            escapedThroughDoor = false;
+                            continue;
+                        }
+                        if (success[1])
+                        {
+                            Console.WriteLine("With the whole cell blazing around you, you flee through the door. a fiery haze billows in your wake as you throw yourself into a corridor and slam the rosewood door shut behind you. The door will only hold for so long against the flames and time is not your friend. What will you do?");
+                            escapedRoom1 = true;
+                            escapedThroughDoor = true;
+                            continue;
                         }
                     }
                     else if (reply1 == 5) // The player solved the puzzle and must fight the goblin.
@@ -1085,13 +935,16 @@ namespace DungeonCrawler
                                                 {
                                                     Console.WriteLine("You rush through the door to escape!");
                                                     Console.ReadKey(true);
-                                                    System.Environment.Exit(0);
+                                                    escapedRoom1 = true;
+                                                    break;
                                                 }
                                                 else if (answ3r1 == 2)
                                                 {
                                                     Console.WriteLine("You clamber up through the hole to escape!");
                                                     Console.ReadKey(true);
-                                                    System.Environment.Exit(0);
+                                                    escapedRoom1 = true;
+                                                    escapedThroughDoor = false;
+                                                    break;
                                                 }
                                             }
                                             catch
@@ -1104,7 +957,8 @@ namespace DungeonCrawler
                                     {
                                         Console.WriteLine("You rush through the door to escape!");
                                         Console.ReadKey(true);
-                                        System.Environment.Exit(0);
+                                        escapedRoom1 = true;
+                                        break;
                                     }
                                 }
 
@@ -1137,18 +991,21 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         System.Environment.Exit(0);
                     }
-                    Console.WriteLine("Now what will you do?");
-                    Console.WriteLine("[1] Check what items are still on your person?");
-                    Console.WriteLine("[2] Investigate the room?");
-                    Console.WriteLine("[3] Try calling for help?");
-                    
-                    if (a > 0 && b > 0) 
+                    if (!escapedRoom1)
                     {
-                        Console.WriteLine("[4] Try using one of your items on something...");
-                    }
-                    if (player1.Inventory.Contains(musicBox))
-                    {
-                        Console.WriteLine("[5] Open the music box?");                        
+                        Console.WriteLine("Now what will you do?");
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine("[2] Investigate the room?");
+                        Console.WriteLine("[3] Try calling for help?");
+
+                        if (a > 0 && b > 0)
+                        {
+                            Console.WriteLine("[4] Try using one of your items on something...");
+                        }
+                        if (player1.Inventory.Contains(musicBox))
+                        {
+                            Console.WriteLine("[5] Open the music box?");
+                        }
                     }
                     
                 }
@@ -1160,7 +1017,15 @@ namespace DungeonCrawler
                 
 
             }
+            ///Past this point is the next room 
+            if (escapedThroughDoor)
+            {
 
+            }
+            else
+            {
+
+            }
 
 
             if (trialBattle.fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling))

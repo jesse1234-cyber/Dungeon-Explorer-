@@ -73,7 +73,7 @@ namespace DungeonCrawler
         /// <param name="usesDictionaryItemChar"></param>
         /// <param name="holeInCeiling"></param>
         /// <returns>boolean: true or false</returns>
-        public bool fight(Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling)
+        public bool fight(Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, bool fire = false)
         {
             player = Player;
             Dice D2 = new Dice(2);
@@ -100,6 +100,33 @@ namespace DungeonCrawler
                     pugilism.Add(D5);
                 }
                 i++;
+            }
+            if (fire)
+            {
+                List<string> fireString = new List<string>
+                    {
+                        "blazing ",
+                        "burning ",
+                        "smouldering ",
+                        "smoking ",
+                        "fiery "
+                    };
+                int firenum = D5.Roll(D5);
+                foreach (Feature x in room.FeatureList)
+                {
+                    firenum = D5.Roll(D5);
+                    Thread.Sleep(7);
+                    x.Name = $"{fireString[firenum - 1]}{x.Name}";
+                }
+                foreach (Item x in room.ItemList)
+                {
+                    firenum = D5.Roll(D5);
+                    Thread.Sleep(3);
+                    x.Name = $"{fireString[firenum - 1]}{x.Name}";
+                }
+                
+                room.Name = "cell";
+                room.Name = $"{fireString[firenum - 1]}{room.Name}";
             }
             List<string> jinxedMisses = new List<string>
             {
@@ -228,9 +255,13 @@ namespace DungeonCrawler
                 };
 
             Console.WriteLine(Monster.Description);
+            if (fire)
+            {
+                Console.WriteLine("The goblin doesn't recoil from the heat. A veteran of many pillages and raids, the goblin is undaunted by fire and immune to the choking smoke...\nBut you aren't!\nYou'll suffer damage for each turn this fight lasts!");
+            }
             Dice D20 = new Dice(20);
             bool initiative = false;
-            if (Player.Skill + D20.Roll(D20) >= Monster.Skill + D20.Roll(D20))
+            if (Player.Skill + D20.Roll(D20) >= Monster.Skill + D20.Roll(D20) && !fire)
             {
                 Console.WriteLine($"The {Monster.Name} is caught off guard. You take the initiative!");
                 initiative = true;
@@ -240,19 +271,22 @@ namespace DungeonCrawler
                 Console.WriteLine($"Your reactions aren't fast enough. {Monster.Name} takes the initiative!");
             }
             int turn = 0;
+            int round = 0;
             if (initiative)
             {
 
                 int damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling);
                 Monster.Stamina -= damageDealt;
                 Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
-                turn = 1;
+                turn = 1;               
                 Console.ReadKey(true);
             }
 
             while (Monster.Stamina > 0 && Player.Stamina > 0)
             {
                 bool start = false;
+                
+                
                 if (turn == 0)
                 {
                     start = true;
@@ -270,6 +304,83 @@ namespace DungeonCrawler
                     Monster.Stamina += damageDealt;
                     
                 }
+                if (Monster.Stamina < 1) { break; }
+                if (Player.Stamina < 1) { break; }
+                if (round == 0 && fire)
+                {
+                    round++;
+                }
+                else if (round < 2 && fire)
+                {
+                    Console.WriteLine("The smouldering flames plume with smoke, stinging your eyes!");
+                    int burnt = D5.Roll(D5);
+                    Player.Stamina -= burnt;
+                    Console.WriteLine($"You lost {burnt} stamina!");
+                    round++;
+                }
+                else if (round < 3 && fire)
+                {
+                    Console.WriteLine($"The {room.Name} swells with smoke. You splutter and cough as the {Monster.Name}'s {Monster.Veapon.Name} slashes at you through the swirling haze!");
+                    int burnt = D5.Roll(D5) + D3.Roll(D3);
+                    Player.Stamina -= burnt;
+                    Console.WriteLine($"You lost {burnt} stamina!");
+                    round++;
+                }
+                else if (round < 4 && fire)
+                {
+                    Console.WriteLine($"The flames in the {room.Name} now begin to roar as they climb the walls!");
+                    int burnt = D5.Roll(D5) + D3.Roll(D3) + D5.Roll(D5);
+                    player.Stamina -= burnt;
+                    Console.WriteLine($"You lost {burnt} stamina!");
+                    round++;
+                }
+                else if (round < 5 && fire)
+                {
+                    Console.WriteLine($"The fire shows no sign of stopping. If you don't hurry t won't matter who wins this fight - the flames will engulf you both!");
+                    int burnt = D5.Roll(D5) + D3.Roll(D3) + D5.Roll(D3) + D4.Roll(D4);
+                    player.Stamina -= burnt;
+                    Console.WriteLine($"You lost {burnt} stamina!");
+                    round++;
+                }
+                else if (round < 6 && fire)
+                {
+                    Console.WriteLine("Between parries and blows you can only gaze in horror as the fire turns into a raging inferno. You hold your breath, your lungs aching for air...");
+                    int burnt = D5.Roll(D5) + D3.Roll(D3) + D5.Roll(D3) + D4.Roll(D4) + D3.Roll(D3);
+                    player.Stamina -= burnt;
+                    Console.WriteLine($"You've lost {burnt} stamina!");
+                    round++;
+                }
+                else if (round < 7 && fire)
+                {
+                    Console.WriteLine("The blazing cell begins to spin around you as you fight with mounting desperation. Flames lick at your exposed skin. You feel the hairs on the back of your neck singe.");
+                    int burnt = D5.Roll(D5) + D3.Roll(D3) + D5.Roll(D3) + D4.Roll(D4) + D3.Roll(D3);
+                    player.Stamina -= burnt;
+                    Console.WriteLine($"You've lost {burnt} stamina!");
+                    round++;
+                }
+                else if (round < 8 && fire)
+                {
+                    Console.WriteLine("You can hold your breath no longer! You begin inhaling the smoke only to stagger and splutter in a fit of hacking coughs. You can scarcely dodge the enemy's attacks as you double over, the furnace-like heat beating against you relentlessly from all sides.\n The end is near...");
+                    int burnt = D5.Roll(D5);
+                    player.Stamina -= burnt;
+                    if (player.Skill > 2)
+                    {
+                        player.Skill -= 2;
+                    }
+                    Console.WriteLine($"You've lost {burnt} stamina and 2 skill points!");
+                    round++;
+                }
+                else
+                {
+                    int burnt = 9999;
+                    player.Stamina -= burnt;
+                    if (Monster.Stamina > 0)
+                    {
+                        Monster.Stamina -= burnt;
+                    }
+                    Console.WriteLine($"The flames finally envelop and engulf your body. If there is one small mercy, it is that cremation is a far kinder fate than what your captors had in store for you, not that you'll ever know what that would've been...");
+                }
+                Console.ReadKey(true);
                 if (Monster.Stamina < 1) { break; }
                 if (Player.Stamina < 1) { break; }
                 
@@ -564,7 +675,7 @@ namespace DungeonCrawler
                                                     {
                                                         if (w.Equipped)
                                                         {
-                                                            success = w.useItem(chosenItem, w, usesDictionaryItemItem);
+                                                            success = w.useItem(chosenItem, w, usesDictionaryItemItem)[0];
                                                             Console.WriteLine($"You coat your {playerWeapon} in the {chosenItem}");
                                                             player.Inventory.Remove(chosenItem);
                                                             break;
@@ -611,7 +722,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    success = chosenItem.useItem(chosenItem, Monster.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, null, null, room, player, holeInCeiling);
+                                                    success = chosenItem.useItem(chosenItem, Monster.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, null, null, room, player, holeInCeiling)[0];
                                                     if (room.FeatureList.Contains(holeInCeiling)) 
                                                     {
                                                         Console.WriteLine(jinxedMisses[9]);
@@ -625,7 +736,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    success = chosenItem.useItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, null, null, room, player, holeInCeiling);
+                                                    success = chosenItem.useItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, null, null, room, player, holeInCeiling)[0];
                                                     if (room.FeatureList.Contains(holeInCeiling))
                                                     {
                                                         Console.WriteLine(jinxedMisses[9]);
@@ -687,9 +798,14 @@ namespace DungeonCrawler
                 Console.WriteLine("Congratulations! You've slain the monster!");
                 return true;
             }
-            else
+            else if (Monster.Stamina > 0)
             {
                 Console.WriteLine($"The {Monster.Name}'s last attack proves fatal. You collapse in shameful defeat, a trickle of blood running from your mouth as your limp body drops to its knees. The {Monster.Name} has proven too much for you. Your adventure ends here...");
+                return false;
+            }
+            else
+            {
+                Console.WriteLine("The fire consumes you both!");
                 return false;
             }
         }
