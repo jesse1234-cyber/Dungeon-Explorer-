@@ -8,8 +8,12 @@ namespace Program
     // Class for the player, with health attributes and an instance of the inventory object
     public class Player
     {
-        public int posX;
-        public int posY;
+        public void ActionMenu()
+        {
+            Console.WriteLine("");
+        }
+        int posX; public void setPosX(int i) { posX = i; } public int getPosX() { return posX; }
+        int posY; public void setPosY(int i) { posY = i; } public int getPosY() { return posY; }
         public Player() {
             pInv = new PlayerInventory(5);
             posX = 5;
@@ -33,7 +37,11 @@ namespace Program
              Inventory.Add(new InventoryItem("Sausage Roll", 10, 3)); // Initializes the list of inventory items
             
         }
-        private int iCapacity { get; set; }
+        private int iCapacity;
+        public int getICapacity() { return iCapacity;  }
+        public void setICapacity(int setV) { iCapacity = setV; }
+
+
         private List<InventoryItem> Inventory = new List<InventoryItem>();
 
         public string fPickUpItem(InventoryItem ItemToAdd) // Adds an item to players inventory (Checking its not full first)
