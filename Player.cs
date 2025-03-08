@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
@@ -15,11 +16,19 @@ namespace DungeonExplorer
         }
         public void PickUpItem(string item)
         {
-
+            if (!string.IsNullOrEmpty(item))
+            {
+                inventory.Add(item);
+                Console.WriteLine($"{Name} picked up: {item}");
+            }
+            else
+            {
+                Console.WriteLine("There is nothing to pick up.");
+            }
         }
         public string InventoryContents()
         {
-            return string.Join(", ", inventory);
+            return inventory.Count > 0 ? string.Join(", ", inventory) : "Inventory is empty.";
         }
     }
 }

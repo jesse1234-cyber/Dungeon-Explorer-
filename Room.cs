@@ -2,16 +2,18 @@
 {
     public class Room
     {
-        private string description;
+        private string _description;
+        public string Item { get; private set; }
 
-        public Room(string description)
+        public Room(string description, string item = "")
         {
-            this.description = description;
+            this._description = description;
+            Item = item;
         }
 
         public string GetDescription()
         {
-            return description;
+            return $"Room Description: {_description}";
         }
     }
 }
