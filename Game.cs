@@ -1,64 +1,123 @@
 ﻿using System;
+using System.Globalization;
 using System.Media;
 using System.Runtime.CompilerServices;
+using System.Xml.Linq;
 
 namespace DungeonExplorer
 {
     internal class Game
     {
         private Player player;
+        private Player enemy;
         private Room currentRoom;
 
         public Game()
         {
             // Initialize the game with one room and one player
-            currentRoom = new Room("a dark and cold dungeon room");
+
             Console.WriteLine("Please enter a username: ");
             player = new Player(Console.ReadLine(), 100);
             Console.WriteLine($"Welcome {player.Name}");
+            currentRoom = new Room("A cold and dark room of goblins");
+            enemy = new Player("goblin", 50); 
         }
+            
+            
         public void Start()
         {
             // Change the playing logic into true and populate the while loop
+            Console.WriteLine("Entering Dungeon...");
+            Console.WriteLine(currentRoom.GetDescription()); 
             bool playing = true;
             while (playing)
             {
                 // Code your playing logic here
-                Console.WriteLine("Entering Dungeon...");
-                currentRoom.GetDescription();
-                Console.WriteLine("Press A to move right, D to move left or W to move forward");
-                string userMoveInput = Console.ReadLine();
-                if (userMoveInput == "A")
-                {
-                    Console.WriteLine("Moving to the right");
-                    Console.WriteLine("You have found a golden sword");
-                    player.PickUpItem("A golden sword");
-                    player.InventoryContents();
-                }
 
-                else if (userMoveInput == "D")
-                {
-                    Console.WriteLine("Moving to the left");
-                    Console.WriteLine("You have found a bow and arrow");
-                    player.PickUpItem("A bow and arrow");
-                    player.InventoryContents();
-                }
 
-                else if(userMoveInput == "W")
+                bool lootingRoom = true;
+                while (lootingRoom)
                 {
-                    Console.WriteLine("Moving forwards");
-                    Console.WriteLine("You have found armour");
-                    player.PickUpItem("Armour");
-                    player.InventoryContents();
-                }
+                    Console.WriteLine("Press A to move right, D to move left or W to move forward");
+                    string userMoveInput = Console.ReadLine();
+                    if (userMoveInput == "A")
+                    {
+                        Console.WriteLine("Moving to the right");
+                        Console.WriteLine("You have found a golden sword");
+                        player.PickUpItem("A golden sword");
+                        Console.WriteLine($"The contents of your inventory are: {player.InventoryContents()}");
+                        break;
+                    }
 
-                else
-                {
-                    Console.WriteLine("You must enter an appropriate input (A, D or W)");
-                }
+                    else if (userMoveInput == "D")
+                    {
+                        Console.WriteLine("Moving to the left");
+                        Console.WriteLine("You have found a bow and arrow");
+                        player.PickUpItem("A bow and arrow");
+                        Console.WriteLine($"The contents of your inventory are: {player.InventoryContents()}");
+                        break ;
+                    }
 
-                break;
+                    else if (userMoveInput == "W")
+                    {
+                        Console.WriteLine("Moving forwards");
+                        Console.WriteLine("You have found an axe");
+                        player.PickUpItem("Axe");
+                        Console.WriteLine($"The contents of your inventory are: {player.InventoryContents()}");
+                        break ;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("You must enter an appropriate input (A, D or W)");
+                    }
+                }
                 
+
+                Console.WriteLine($"a {enemy.Name} is approaching...");
+                bool battle = true;
+
+                while (battle)
+                {
+                    Random enemyRandomAttack = new Random();
+                    int enemyDamage = enemyRandomAttack.Next(10, 30);
+                    Console.WriteLine("The goblin has attacked");
+                    player.Health -= enemyDamage;
+                    Console.WriteLine($"{player.Name} current health is {player.Health}");
+                    if (player.Health <= 0)
+                    {
+                        Console.WriteLine("You died, Game Over");
+                        Console.WriteLine("Press any key to exit");
+                        Console.ReadKey();
+                    }
+
+                    Random playerRandomAttack = new Random();
+                    int playerDamage = playerRandomAttack.Next(5, 20);
+
+                    string playerAttackInput = Console.ReadLine();
+
+                    if (playerAttackInput == "F")
+                    {
+                        enemy.Health -= playerDamage;
+                        Console.WriteLine($"{enemy.Name} current health is {enemy.Health}");
+                        if (enemy.Health <= 0)
+                        {
+                            Console.WriteLine($"{enemy.Name} has died, you win");
+                            break;
+                        }
+
+                    }
+
+                    else
+                    {
+                        Console.WriteLine($"You did not attack");
+                    }
+
+
+
+                }
+
+
             }
         }
     }

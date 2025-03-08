@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace DungeonExplorer
 {
     public class Player
     {
         public string Name { get; private set; } 
-        public int Health { get; private set; }
+        public int Health { get; set; }
         private List<string> inventory = new List<string>();
 
         //initializes new instance of the player
@@ -25,7 +26,6 @@ namespace DungeonExplorer
 
         public string InventoryContents()
         {
-            Console.WriteLine("The contents of your inventory are: ");
             return string.Join(", ", inventory);
         }
 
@@ -33,6 +33,15 @@ namespace DungeonExplorer
         {
             Console.WriteLine($"Username: {Name}");
             Console.WriteLine($"Health: {Health}");
+        }
+
+        
+
+
+        public void PlayerAttack(int damage)
+        {
+            Console.WriteLine($"{Name} Attack: {damage} damage");
+            
         }
     }
 }
