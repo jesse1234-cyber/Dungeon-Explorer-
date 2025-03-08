@@ -10,11 +10,20 @@ namespace DungeonExplorer
     {
         static void Main(string[] args)
         {
-            Game game = new Game();
-            game.Start();
-            Console.WriteLine("Waiting for your Implementation");
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
+            try
+            {
+                Game game = new Game(); // Create a game object
+                game.Start();   // Runs it
+            }
+            catch(Exception ex) // Error check, if an exception is thrown, a message is displayed
+            {
+                Console.WriteLine($"An error occurred {ex.Message}");
+            }
+            finally // Once the game is finished running, we await for a user key input and end the program
+            {
+                Console.WriteLine("Press any key to continue");
+                Console.ReadKey();
+            }
         }
     }
 }
