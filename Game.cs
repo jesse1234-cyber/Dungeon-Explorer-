@@ -10,26 +10,23 @@ namespace DungeonExplorer
     {
         private Player player;
         private Room currentRoom;
+        public string Username { get; private set; }
+        private GameTests testing = new GameTests();
 
         public Game()
         {
             currentRoom = new Room();
             player = new Player("Username", 10);
-
-
         }
+
+
         public void Start()
         {
             bool playing = true;
             while (playing)
             {
-                Console.WriteLine("Please enter a username: ");
-                string name = Console.ReadLine();
-                if (string.IsNullOrEmpty(name)){
-                    name = "Blank";
-                }
-                Console.WriteLine($"Hello {name}!");
-
+                Username = player.GetName();
+                Console.WriteLine($"Hello, {Username}!");
                 ConsoleKey Key;
                 do
                 {
@@ -43,19 +40,25 @@ namespace DungeonExplorer
                 {
                     Console.WriteLine(currentRoom.GetDescription());
                     string item = currentRoom.GetItems();
+
                     Console.WriteLine($"\nIn the room there is a {item}." +
-                        " Press Space to pick it up, or Enter to carry on...");
+                        " Press Space to pick it up, I to check your inventory, or Enter to carry on...");
                     ConsoleKey PickupInput;
+                    PickupInput = Console.ReadKey(true).Key;
 
                     bool condition = true;
                     while (condition == true)
                     {
-                        PickupInput = Console.ReadKey(true).Key;
                         if (PickupInput == ConsoleKey.Spacebar)
                         {
                             player.PickUpItem(item);
-                            player.InventoryContents();
                             condition = false;
+                        }
+                        else if (PickupInput == ConsoleKey.I)
+                        {
+                            Console.WriteLine($"Your inventory currently has: {player.InventoryContents()}");
+                            Console.WriteLine($"Press Space to pick up {item}, or Enter to continue");
+                            PickupInput = Console.ReadKey(true).Key;
                         }
                         else if (PickupInput == ConsoleKey.Enter)
                         {
@@ -71,10 +74,9 @@ namespace DungeonExplorer
                 }
 
 
-
-
-
-                Console.WriteLine("\nPress any key to end the game...");
+                Console.WriteLine("\nYou made it throught the dungeon! Thanks for playing." +
+                    $"\nIn the end you collected: {player.InventoryContents()}" +
+                    "\nPress any key to end the game...");
                 Console.ReadKey();
                 playing = false;
 
