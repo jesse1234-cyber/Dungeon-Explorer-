@@ -2,7 +2,7 @@
 {
     public class Room
     {
-        private string description;
+        private string description; // Each object for this class would be each room. How would the descriptions change?
 
         public Room(string description)
         {

@@ -3,14 +3,26 @@ using System.Media;
 
 namespace DungeonExplorer
 {
-    internal class Game
+    class NewPlayer
     {
-        private Player player;
-        private Room currentRoom;
-
-        public Game()
+        private static Player player;
+        public static void InputName(string[] args)
         {
-            // Initialize the game with one room and one player
+           Console.WriteLine("Please enter the player's name: ");
+           string playerName = Console.ReadLine(); 
+           player = new Player(playerName, 100);
+        }
+    }
+  
+
+    internal class Game
+    {   
+        private Room currentRoom; // Aim for four rooms, game can be simple and easy
+
+        public Game() // Constructor 
+        {
+            // Initialize the game with one room and one player (making them as objects?)/Welcome message
+            
 
         }
         public void Start()
@@ -20,6 +32,7 @@ namespace DungeonExplorer
             while (playing)
             {
                 // Code your playing logic here
+                //Print 
             }
         }
     }
