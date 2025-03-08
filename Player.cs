@@ -15,7 +15,7 @@ namespace DungeonExplorer
         }
         public void PickUpItem(string item)
         {
-
+            // sausage roll !
         }
         public string InventoryContents()
         {
