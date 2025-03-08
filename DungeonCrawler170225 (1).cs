@@ -632,7 +632,9 @@ namespace DungeonCrawler
                     }
                     else if (nextAnswer == "no" || nextAnswer == "n")
                     {
-                        player1.Traits = new Dictionary<string, string>();                        
+                        player1.Traits = new Dictionary<string, string>();
+                        Console.WriteLine("\x1b[3J");
+                        Console.Clear();
                         break;
                     }
                     else
@@ -707,10 +709,10 @@ namespace DungeonCrawler
                 usesDictionaryItemFeature.Add(FelixFelicis, new List<Feature> { skeleton });
                 usesDictionaryItemFeature.Add(elixirFeline, new List<Feature> { skeleton });
             }
-            if (player1.Traits.ContainsKey("jinxed"))
-            {
-                usesDictionaryItemItem[magnifyingGlass].Add(garment);
-            }
+           
+            
+            usesDictionaryItemItem[magnifyingGlass].Add(garment);
+            
             Dictionary<Item, List<Player>> usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 } , [FelixFelicis] = new List<Player> { player1}, [elixirFeline] = new List<Player> { player1} };
             List<Feature> features = new List<Feature>();
 

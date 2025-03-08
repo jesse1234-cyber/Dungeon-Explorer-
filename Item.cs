@@ -350,13 +350,36 @@ namespace DungeonCrawler
                 if (item2.Attribute == false)
                 {
                     item2.SpecifyAttribute = item2.SpecifyAttribute.Substring( 2, item2.SpecifyAttribute.Length-2);
-                    if (item1.Name == "magnifying glass" && item2.Name == "garment")
+                    if (item1.Name == "magnifying glass" && item2.Name == "garment" && player.Traits.ContainsKey("jinxed"))
                     {
                         Console.WriteLine("You slump to the floor, if not exactly resigned then idling in an absent minded flight of fancy. You toy with the magnifying glass, a bored expression on your face as you twist it this way and that.\nIt's minutes before an acrid scent hits your nostrils. Is that fried bacon?");
                         Console.ReadKey(true);
                         Console.WriteLine($"You look down and yelp as you realise the magnifying glass had focused the light from the brazier. The garment you'd picked up has caught fire!");
                         Console.ReadKey(true);
                         Console.WriteLine("You flail it around trying to put out the flames like a crazed whirlwind of oafishness, spreading the fire in the process. Already a pool of dark, cloying smoke billows about the ceiling as the dank cell heats up like a furnace. You throw the garment at the door, before banging on it for all your worth. \nYou yell out that there's a fire. It's not long before boots stomp their way towards your door. Tumblers turn, then a powerful kick flings it open.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("You brace yourself for the fight of your life...");
+                        Console.ReadKey(true);
+                        bool fire = true;
+                        if (trialBattle.fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, fire))
+                        {
+                            tlist[0] = true;
+                            tlist[1] = true;
+                            return tlist;
+                        }
+                    }
+                    else if(item1.Name == "magnifying glass" && item2.Name == "garment")
+                    {
+                        Console.WriteLine("If you can't start a fire with the naked flame, then you guess the only way will be with the magnifying glass.\nHolding it close to the brazier to capture and harness the most light, you focus its rays upon the garment, beads of nervous sweat prickling your brow as you concentrate.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("It's not before too long that you've managed to get the garment to smoulder. Cupping it in your hands you gently breathe over it, teasing forth the flames.\nOnce its burning you tuck the blazing garment under the door, letting the smoke billow out into the corridor. Now, at last, you hammer upon the door, yelling that the room's ablaze...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("You planned for it to burn slowly.");
+                        Thread.Sleep(500);
+                        Console.WriteLine("You planned for the fire to be controlled.");
+                        Thread.Sleep(500);
+                        Console.WriteLine("However, its not long before your feigned panic congeals into very real terror. Before your eyes, and in spite of your frantic attempts to stomp it out, the fire has spread to the other garments littered throughout the room.");
+                        Console.WriteLine("You begin to scream out for help, when your yells are answered. Heavy boots stomp their way towards your door. Tumblers turn, then a powerful kick flings it wide.");
                         Console.ReadKey(true);
                         Console.WriteLine("You brace yourself for the fight of your life...");
                         Console.ReadKey(true);
