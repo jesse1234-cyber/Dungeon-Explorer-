@@ -20,7 +20,7 @@ namespace DungeonExplorer
 
             Game game = new Game();
 
-            game.Menu();
+            game.Start();
 
             Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey();
