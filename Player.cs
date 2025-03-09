@@ -4,25 +4,53 @@ using System.Linq;
 
 namespace Program
 {
-    
+    class AMAactions
+    {
+        
+    }
+    class ActionMenuAction
+    {
+        public Action A;
+        public string N;
+        public ActionMenuAction(Action iA, string iN)
+        {
+            A = iA;
+            N = iN;
+        }
+    }
+
     // Class for the player, with health attributes and an instance of the inventory object
     public class Player
     {
-        public void ActionMenu()
-        {
-            Console.WriteLine("");
-        }
+        
+        List<ActionMenuAction> ActionMenuFunctions = new List<ActionMenuAction>();
         int posX; public void setPosX(int i) { posX = i; } public int getPosX() { return posX; }
         int posY; public void setPosY(int i) { posY = i; } public int getPosY() { return posY; }
+        int Health { get; set; }
+        int MaxHealth { get; set; }
+        public PlayerInventory pInv;
+
+
         public Player() {
             pInv = new PlayerInventory(5);
             posX = 5;
             posY = 10;
+            ActionMenuFunctions.Add(new ActionMenuAction(pInv.fShowInventory, "Show Inventory"));
+
         }
-        int Health { get; set; }
-        int MaxHealth { get; set; }
-        public PlayerInventory pInv;
-        
+
+        public void ActionMenu()
+        {
+            Console.WriteLine("   Action Menu:    ");
+            for (int i = 0; i < ActionMenuFunctions.Count; i++)
+            {
+                Console.WriteLine("[" + (i+1) + "] " + ActionMenuFunctions[i].N);
+            }
+            ActionMenuFunctions[(GameInputs.V(ActionMenuFunctions.Count()) - 1)].A();
+
+            
+            
+        }
 
     }
 
@@ -53,14 +81,13 @@ namespace Program
             Inventory.Add(ItemToAdd);
             return "Item Added";
         }
-        public string fShowInventory() // Shows the player the current items in there inventory
+        public void fShowInventory() // Shows the player the current items in there inventory
         {
             for (int i = 0; i < Inventory.Count; i++)
             {
                 Console.WriteLine("[" + (i + 1).ToString() + "] " + Inventory[i].sName + ": " + Inventory[i].noOfItem.ToString() + "/" + Inventory[i].maxNoOfItem.ToString());
             }
 
-            return null;
         }
         private string fDeleteItem(InventoryItem ItemToRemove, InventoryItem ItemToAdd) // Remove item from the inventory
         {

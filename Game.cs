@@ -30,7 +30,7 @@ namespace Program
                 case 1:
                     Console.WriteLine("Starting Game");
                     gameLoop();
-                    break;
+                    break;  
                 case 2:
                     Console.WriteLine("Sausage roll");
                     break;
@@ -49,7 +49,7 @@ namespace Program
             Player P1 = new Player();
 
 
-            Map[P1.posX, P1.posY] = 'U';
+            Map[P1.getPosX(), P1.getPosY()] = 'U';
             Console.WriteLine("   Current Map:    ");
             Console.WriteLine("[U]: Your Current Location");
             Console.WriteLine("[?]: Not Visited Area");
@@ -61,8 +61,8 @@ namespace Program
                 }
                 Console.WriteLine();
             }
-            
-            Console.WriteLine("   Action Menu:    ");
+
+            P1.ActionMenu();
 
 
 
