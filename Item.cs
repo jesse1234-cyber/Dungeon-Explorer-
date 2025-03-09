@@ -288,7 +288,7 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="binkySkull"></param>
         /// <returns></returns>
-        public bool useItem1(Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Item binkySkull = null)
+        public bool useItem1(Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Item binkySkull = null)
         {
             if (usesDictionary[item].Contains(feature))
             {
@@ -346,6 +346,17 @@ namespace DungeonCrawler
                         inventory.Add(binkySkull);
                         return true;
 
+                    }
+                    else if (item.Name == "rusty chain-flail" && feature.Name == "bookcase")
+                    {
+                        room.FeatureList.Remove(feature);
+                        Feature debris = new Feature("debris", "The bookcase has been smashed into nothing more than a crumpled heap of wooden planks.", false, "unburned");
+                        room.FeatureList.Add(debris);
+                        Console.WriteLine($"You heft the rusty chain-flail and start swinging. It doesn't take much until the dilapidated feature is crushed and your {item.Name} is broken. {debris.Description} Whatever you might've found within will be destroyed now too...");
+                        List<Item> weaponList = new List<Item> { item };
+                        List<Weapon> weaponSplice = weaponList.Cast<Weapon>().ToList();
+
+                        player.WeaponInventory.Remove(weaponSplice[0]);
                     }
                     else
                     {

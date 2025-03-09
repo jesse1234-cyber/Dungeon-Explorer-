@@ -418,11 +418,11 @@ namespace DungeonCrawler
                             {
                                 if (chosenItem.Name == "rusty chain-flail")
                                 {
-                                    success[0] = chosenItem.useItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, steelKey);
+                                    success[0] = chosenItem.useItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, steelKey);
                                 }
                                 else
                                 {
-                                    success[0] = chosenItem.useItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, binkySkull);
+                                    success[0] = chosenItem.useItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, binkySkull);
                                 }
                                 if (!success[0])
                                 {
@@ -436,9 +436,9 @@ namespace DungeonCrawler
                                             Console.WriteLine("As you oafishly attempt to jostle the key free from the lock, you hear something snap!\nThe steel key has broken inside the lock. It's pieces tinkle as they fall to the bottom of the tumblers...\nOops.");
                                         }
                                     }
-                                    else if (chosenItem.Name == "garment" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "brazier")
+                                    else if ((chosenItem.Name == "garment" || chosenItem.Name == "note") && (room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "left brazier" || room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "right brazier"))
                                     {
-                                        Console.WriteLine($"You rack your brains trying to come up with an escape from your prison. With a tincture of desperation you conclude the only way is to start a fire. Maybe, just maybe, you can ambush the guard when they try to put it out...\nIf they come to put it out.\nWith not a small number of misgivings winching around your tight chest, you feverishly begin trying to light the garment you picked up on fire with the brazier. However, the low flickering flame seems to burn with an unnatural frostiness. This is no ordinary flame but something magical, casting only chilly light into the room and sharing none of the heat you'd otherwise expect. The garment refuses to burn.\nIf you truly believe arson is your only means to escape, then you'll have to deploy some greater ingenuity, and do so before your time runs out...");
+                                        Console.WriteLine($"You rack your brains trying to come up with an escape from your prison. With a tincture of desperation you conclude the only way is to start a fire. Maybe, just maybe, you can ambush the guard when they try to put it out...\nIf they come to put it out.\nWith not a small number of misgivings winching around your tight chest, you feverishly begin trying to light the {chosenItem.Name} on fire with the brazier. However, the low flickering flame seems to burn with an unnatural frostiness. This is no ordinary flame but something magical, casting only chilly light into the room and sharing none of the heat you'd otherwise expect. The {chosenItem.Name} refuses to burn.\nIf you truly believe arson is your only means to escape, then you'll have to deploy some greater ingenuity, and do so before your time runs out...");
                                     }
                                     else
                                     {
@@ -454,9 +454,9 @@ namespace DungeonCrawler
                                 {
                                     Console.WriteLine("This key clearly doesn't open this door.");
                                 }
-                                else if (chosenItem.Name == "garment" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "brazier")
+                                else if ((chosenItem.Name == "garment" || chosenItem.Name == "note") && (room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "left brazier" || room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "right brazier"))
                                 {
-                                    Console.WriteLine($"You rack your brains trying to come up with an escape from your prison. With a tincture of desperation you conclude the only way is to start a fire. Maybe, just maybe, you can ambush the guard when they try to put it out...\nIf they come to put it out.\nWith not a small number of misgivings winching around your tight chest, you feverishly begin trying to light the garment you picked up on fire with the brazier. However, the low flickering flame seems to burn with an unnatural frostiness. This is no ordinary flame but something magical, casting only chilly light into the room and sharing none of the heat you'd otherwise expect. The garment refuses to burn.\nIf you truly believe arson is your only means to escape, then you'll have to deploy some greater ingenuity, and do so before your time runs out...");
+                                    Console.WriteLine($"You rack your brains trying to come up with an escape from your prison. With a tincture of desperation you conclude the only way is to start a fire. Maybe, just maybe, you can ambush the guard when they try to put it out...\nIf they come to put it out.\nWith not a small number of misgivings winching around your tight chest, you feverishly begin trying to light the {chosenItem.Name} on fire with the brazier. However, the low flickering flame seems to burn with an unnatural frostiness. This is no ordinary flame but something magical, casting only chilly light into the room and sharing none of the heat you'd otherwise expect. The {chosenItem.Name} refuses to burn.\nIf you truly believe arson is your only means to escape, then you'll have to deploy some greater ingenuity, and do so before your time runs out...");
                                 }
                                 else
                                 {

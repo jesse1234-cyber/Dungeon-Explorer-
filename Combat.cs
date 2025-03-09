@@ -717,7 +717,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    success = chosenItem.useItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count], usesDictionaryItemFeature, player.Inventory, player.WeaponInventory);
+                                                    success = chosenItem.useItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count], usesDictionaryItemFeature, player.Inventory, player.WeaponInventory, room, player);
                                                     break;
                                                 }
                                                 catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {room.FeatureList[effectedItemNum - 1-room.ItemList.Count-Monster.Items.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");break; }
