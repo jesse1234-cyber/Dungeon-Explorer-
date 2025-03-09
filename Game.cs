@@ -11,6 +11,42 @@ namespace DungeonExplorer
         private Room currentRoom;
         private List<Item> possibleItems;
 
+        private List<Enemy> GenerateEnemies()
+        {
+            Random rndm = new Random();
+            List<Enemy> enemies = new List<Enemy>();
+
+            for (int i = 0; i < 3; i++)
+            {
+                enemies.Add(new Enemy((EnemyClass)rndm.Next(0, 3)));
+                // Add random enemies to the list
+            }
+            return enemies;
+        }
+        public void Enemies()
+        {
+            List<Enemy> enemies = GenerateEnemies();
+            Console.WriteLine("\nOh no! You stumbled upon 3 enemies!");
+
+            foreach (var x in enemies)
+            {
+                Console.WriteLine($"{x.Name} -- {x.Health} HP -- {x.Damage} DMG");
+            }
+        }
+
+        private void EnemyAttacks(List<Enemy> enemies)
+        {
+            foreach (var x in enemies)
+            {
+                if (Enemy.Alive())
+                {
+                    // Finish off the function
+                }
+            }
+        }
+        
+        // ADD FUNCTION FOR PLAYER ATTACKS AND BATTLE COMBATS
+        
         public Game()
         {
             // Initialize the game with one room and one player
