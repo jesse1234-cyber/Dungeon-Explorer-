@@ -130,13 +130,13 @@ namespace DungeonCrawler
             }
             List<string> jinxedMisses = new List<string>
             {
-                $"The {Monster.Name} has you now! Finally, relishing it's soon-to-be freedom from your cursed, jinxy hide, it raises its {Monster.Items[0].Name} to strike... and gets it stuck in the {room.FeatureList[D3.Roll(D3) - 1].Name}. You scurry away as the {Monster.Name} curses, trying to free it. \nThe {Monster.Name} loses 1 stamina.",
+                $"The {Monster.Name} has you now! Finally, relishing it's soon-to-be freedom from your cursed, jinxy hide, it raises its {Monster.Items[0].Name} to strike... and gets it stuck in the {room.FeatureList[D4.Roll(D4) - 1].Name}. You scurry away as the {Monster.Name} curses, trying to free it. \nThe {Monster.Name} loses 1 stamina.",
                 $"The ever-increasingly vexed {Monster.Name} attacks, misses, and gets really bad tennis-elbow. Ooh! that's gotta hurt... \nThe {Monster.Name} loses 2 stamina.",
-                $"The {Monster.Name} lunges at you! As you trip over yourself, clumsily scrambling for cover, you hear a tremendous crash. \nThe {Monster.Name} ran into the {room.FeatureList[D3.Roll(D3) - 1].Name}. Ow! It loses 5 Stamina.",
+                $"The {Monster.Name} lunges at you! As you trip over yourself, clumsily scrambling for cover, you hear a tremendous crash. \nThe {Monster.Name} ran into the {room.FeatureList[D4.Roll(D4) - 1].Name}. Ow! It loses 5 Stamina.",
                 $"The {Monster.Name} at last has you pinned. It looms over you with a leer, ready to deliver the killing blow, when part of the {room.Name}'s ceiling caves in upon its head. \nThe {Monster.Name} loses 7 stamina!",
                 $"The {Monster.Name} bellows a string of foul curses as each frenzied attack miraculously leaves you unscathed. It bites its own tongue in the process. Youch! \nAs you slip away, the {Monster.Name} loses 1 stamina...",
                 $"The {Monster.Name} bounds after you in circles, flailing wildly. It careers into a {room.ItemList[D3.Roll(D3) - 1].Name}, grazing its knee. Oof! That's a nasty splinter! \nThe {Monster.Name} loses 3 stamina.",
-                $"You stammer as you try reasoning with the {Monster.Name}. Surely you can just talk things out over a lovely cup of mead... The {Monster.Name} doesn't listen. It lunges at you, only to crash into the {room.FeatureList[D3.Roll(D3) - 1].Name}. Yikes! \nThe {Monster.Name} loses 11 stamina.",
+                $"You stammer as you try reasoning with the {Monster.Name}. Surely you can just talk things out over a lovely cup of mead... The {Monster.Name} doesn't listen. It lunges at you, only to crash into the {room.FeatureList[D4.Roll(D4) - 1].Name}. Yikes! \nThe {Monster.Name} loses 11 stamina.",
                 $"In frustration the {Monster.Name} hurls its {Monster.Items[0].Name} at you! It bounces off your armour back at the {Monster.Name}. \n The {Monster.Name} loses 6 stamina.",
                 $"The {Monster.Name} attacks wildly, wanting nothing more than to end the whirlwind of chaos your ill-fortune brings. It trips. Ouch! That's going to need a bandage... \nThe {Monster.Name} loses 7 stamina.",
                 $"The {Monster.Name} at last has you cornered. It looms over you with a leer, ready to at last deliver the killing blow. Then the {room.Name}'s ceiling caves in.\n The {Monster.Name}'s engulfed by an avalanche of cascading debris. A trickle of dust takes a moment to stop. Then finally, one loose floorboard topples from the floor above and crowns the heap."
@@ -370,7 +370,7 @@ namespace DungeonCrawler
                     Console.WriteLine($"You've lost {burnt} stamina and 2 skill points!");
                     round++;
                 }
-                else
+                else if (fire)
                 {
                     int burnt = 9999;
                     player.Stamina -= burnt;
@@ -699,10 +699,14 @@ namespace DungeonCrawler
                                                     {
                                                         Console.WriteLine("You glug the potent elixir down. Your stomach ties itself in knots for a moment, before you feel your instincts and reflexes sharpen.");
                                                     }
-                                                    else // luck potion grants boon to all weapons.
+                                                    else if (success) // luck potion grants boon to all weapons.
                                                     {
                                                         Console.WriteLine("The sweet liquid tastes like nirvana. It's effervescent body dances on your tongue and delights the senses. Suddenly you feel like anything is possible...");
                                                         playerWeapon.Boon = 10;
+                                                    }
+                                                    else
+                                                    {
+                                                        Console.WriteLine("Ermm...No. Upon reflection, you'd rather not use that on yourself.");
                                                     }
                                                     break;
                                                 }
@@ -743,7 +747,7 @@ namespace DungeonCrawler
                                                         Monster.Stamina -= 9999;
                                                     }
                                                     break;
-                                                    break;
+                                                    
                                                 }
                                                 catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum -1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");break; }
                                             }

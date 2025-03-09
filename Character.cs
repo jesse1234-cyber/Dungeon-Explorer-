@@ -269,7 +269,7 @@ namespace DungeonCrawler
 
             }
         }
-        public List<bool> UseItemOutsideCombat(Room room, Item musicBox, Item binkySkull, Feature rosewoodChest, Feature holeInCeiling, Dictionary<Item, List<Player>> usesDictionaryItemChar, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Combat trialBattle = null)
+        public List<bool> UseItemOutsideCombat(Room room, Item musicBox, Item binkySkull, Item steelKey, Feature rosewoodChest, Feature holeInCeiling, Dictionary<Item, List<Player>> usesDictionaryItemChar, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Combat trialBattle = null)
         {
 
             List<bool> success = new List<bool> { false, false }; //{successful use of item, fire}
@@ -281,6 +281,14 @@ namespace DungeonCrawler
                 {
                     Console.WriteLine($"[{g}] {item.Name}");
                     g++;
+                }
+                if (room.Name == "dank cell")
+                {
+                    foreach (Item weapon in WeaponInventory)
+                    {
+                        Console.WriteLine($"[{g}] {weapon.Name}");
+                        g++;
+                    }
                 }
                 Item chosenItem = null;
                 while (true)
@@ -295,7 +303,24 @@ namespace DungeonCrawler
                             chosenItem = Inventory[reply0];
                             break;
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to an item listed above!"); }
+                        catch {
+                            if (room.Name == "dank cell") 
+                            { 
+                                try
+                                {
+                                    chosenItem = WeaponInventory[reply0 - Inventory.Count];
+                                    break;
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("Please enter a number corresponding to an item listed above!");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Please enter a number corresponding to an item listed above!");
+                            }
+                        }
 
                     }
                     catch
@@ -308,6 +333,16 @@ namespace DungeonCrawler
 
                             }
 
+                        }
+                        if (chosenItem == null && room.Name == "dank cell")
+                        {
+                            foreach (Item weapon in WeaponInventory)
+                            {
+                                if (weapon.Name == reply2)
+                                {
+                                    chosenItem = weapon;
+                                }
+                            }
                         }
                     }
                     if (chosenItem == null)
@@ -381,12 +416,25 @@ namespace DungeonCrawler
                         {
                             try
                             {
-                                success[0] = chosenItem.useItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, binkySkull);
+                                if (chosenItem.Name == "rusty chain-flail")
+                                {
+                                    success[0] = chosenItem.useItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, steelKey);
+                                }
+                                else
+                                {
+                                    success[0] = chosenItem.useItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, binkySkull);
+                                }
                                 if (!success[0])
                                 {
                                     if (chosenItem.Name == "steel key" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "rosewood door")
                                     {
                                         Console.WriteLine("This key clearly doesn't open *this* door...");
+                                        if (Traits.ContainsKey("jinxed"))
+                                        {
+                                            Inventory.Remove(chosenItem);
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("As you oafishly attempt to jostle the key free from the lock, you hear something snap!\nThe steel key has broken inside the lock. It's pieces tinkle as they fall to the bottom of the tumblers...\nOops.");
+                                        }
                                     }
                                     else if (chosenItem.Name == "garment" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "brazier")
                                     {

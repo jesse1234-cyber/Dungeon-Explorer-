@@ -91,8 +91,8 @@ namespace DungeonCrawler
             // and features remain in place unless shattered or unlocked or burned depending on
             // their special attribute.
             List<Item> inRosewoodChest = new List<Item> { };
-            List<Item> onSkeleton = new List<Item> { healPotion, steelKey, magnifyingGlass};
-            Feature skeleton = new Feature("skeleton", "Its empty sockets fasten you with a stern gaze. It serves as a macabre reminder of what might yet befall you...", true, "unshattered", onSkeleton);
+            List<Item> onSkeleton = new List<Item> { healPotion, magnifyingGlass};
+            Feature skeleton = new Feature("skeleton", "Its empty sockets fasten you with a stern gaze. It's been bound by chains to the wall, making it difficult to move. Something shiny is trapped out of reach behind it.", false, "unshattered", onSkeleton);
             Feature brazier = new Feature("brazier", "If these braziers do indeed burn it is not with any normal fire. Upon closer inspection, their dim flickering glow seemingly cannot be expunged. They barely keep the looming shadows at bay.", true, "lit", null);
             Feature rosewoodDoor = new Feature("rosewood door", "It's a curiously ornate door with smooth well-polished panels. The wood's warmth is somewhat diminished by the heavy iron hinges holding it in place.");
             Feature rosewoodChest = new Feature("rosewood chest", "Its smooth, burnished surface matches the grain and style of the door and like the door its elegance is jarred by the heavy steel lock sealing it. It makes you wonder if this room hadn't always been a dank cell.", true, "locked", inRosewoodChest);
@@ -101,7 +101,7 @@ namespace DungeonCrawler
             Feature holeInCeiling = new Feature("hole in the ceiling", "You gaze from the heap of debris that has buried the creature alive to the hole through the ceiling above. You bet you could climb the heap and enter the room above yours.");
             
             // I instantiate a room with a list of items and features inside it and a description and room name
-            List<Feature> cellfeatures = new List<Feature> {rosewoodDoor, brazier, brazier, rosewoodChest, bookCase, skeleton };
+            List<Feature> cellfeatures = new List<Feature> {rosewoodDoor, rosewoodChest, bookCase, skeleton, brazier, brazier };
             Room room = new Room("dank cell", "The foreboding cell is bathed in the earthy glow of lit braziers, barely lighting cold stony walls, a heavy rosewood door studded with iron hinges, and only the sparsest of furnishings.\nThe door is set within the north wall, two flickering braziers casting orbs of low light either side of it so as to look like great fiery eyes watching you from the murk.\t\nTo the west wall there is a large chest, mingled with a cascade of rusted and disused iron shackles.\t\nTo the south wall is a small bookcase and some garments haphazardly strewn about you.\t\nTo the east wall is the last occupant; a skeleton with a permanent grin that  almost seems to watch you from dark wells where once there were its eyes. It holds something in its bony fist.\t\t", cellInventory, cellfeatures);
             
             ///
@@ -284,7 +284,7 @@ namespace DungeonCrawler
                 skill = skill - 2;
                 //
                 player1.Skill = skill;
-                player1.Skill = 2;
+                //player1.Skill = 2;
                 Console.WriteLine($"Your skill is {skill + 2} - 2 = {skill}");
                 //
                 
@@ -698,8 +698,10 @@ namespace DungeonCrawler
             Combat tougherBattle = new Combat(gnoll, player1);
 
             // Dictionaries for items used on other effects (items or features)
+            List<Dice> rustyDamage = new List<Dice> { D6 };
+            Weapon yourRustyChains = new Weapon("rusty chain-flail", "Compared to the rest of the chains littered throughout the room these are relatively sturdy. A lone manacle at the end serves as an almost-effective morning-star.", rustyDamage, defaultCritHits, defaultGoodHits);
             var usesDictionaryItemItem = new Dictionary<Item, List<Item>> { [magnifyingGlass]= new List<Item> { note} };
-            var usesDictionaryItemFeature = new Dictionary<Item, List<Feature>> { [steelKey] = new List<Feature> { rosewoodChest }, [breadKnife] = new List<Feature> { skeleton, bookCase }, [scimitar] = new List<Feature> { skeleton, bookCase }, [dagger] = new List<Feature> { skeleton, bookCase }, [vanquisher] = new List<Feature> { skeleton, bookCase } };
+            var usesDictionaryItemFeature = new Dictionary<Item, List<Feature>> { [steelKey] = new List<Feature> { rosewoodChest }, [yourRustyChains] = new List<Feature> { skeleton, bookCase },[breadKnife] = new List<Feature> { skeleton, bookCase }, [scimitar] = new List<Feature> { skeleton, bookCase }, [dagger] = new List<Feature> { skeleton, bookCase }, [vanquisher] = new List<Feature> { skeleton, bookCase } };
 
             if (player1.Traits.ContainsKey("friends with fairies"))
             {
@@ -737,6 +739,7 @@ namespace DungeonCrawler
             ///within each, making the game deeper than might first be expected.
             bool escapedRoom1 = false;
             bool escapedThroughDoor = true;
+            bool fieryEscape = false;
             while (!escapedRoom1)
             {
                 string reply = Console.ReadLine().Trim().ToLower();
@@ -756,8 +759,29 @@ namespace DungeonCrawler
                         a++;
                     }
                     else if (reply1 == 2) 
-                    { 
-                        room.investigate(player1.Inventory, player1.WeaponInventory, b, player1); 
+                    {
+                        ///when player discards rusty chains they may appear more than once. 
+                        ///This system is present to preempt that and prevent duplicates.
+                        int fungShui = 0;
+                        foreach(Item x in room.ItemList)
+                        {
+                            if(x.Name == "rusty chains")
+                            {
+                                fungShui++;
+                            }
+                        }
+                        if (fungShui > 1)
+                        {
+                                                       
+                            foreach (Item x in room.ItemList)
+                            {
+                                if(x.Name == "rusty chains" && fungShui > 1)
+                                {
+                                    room.ItemList.Remove(x);
+                                }
+                            }
+                        }
+                        room.investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains); 
                         b++;
                     }
                     else if (reply1 == 3) 
@@ -819,6 +843,7 @@ namespace DungeonCrawler
                                 }
                                 
                             }
+                            else { System.Environment.Exit(0); }
                         }
                         else {
                             if (c == 1 && player1.Traits.ContainsKey("friends with fairies") && !player1.Traits.ContainsKey("thespian"))
@@ -873,7 +898,7 @@ namespace DungeonCrawler
                     {
                         e++;
                         List<bool> success = new List<bool>();
-                        success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, trialBattle);
+                        success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, trialBattle);
 
                         if (room.FeatureList.Contains(holeInCeiling))
                         {
@@ -885,9 +910,14 @@ namespace DungeonCrawler
                         }
                         if (success[1])
                         {
-                            Console.WriteLine("With the whole cell blazing around you, you flee through the door. a fiery haze billows in your wake as you throw yourself into a corridor and slam the rosewood door shut behind you. The door will only hold for so long against the flames and time is not your friend. What will you do?");
+                            Console.WriteLine("With the whole cell blazing around you, you flee through the door. A fiery haze billows in your wake as you throw yourself into a corridor and slam the rosewood door shut behind you.");
+                            if (player1.Inventory.Contains(bowlFragments)) { Console.WriteLine($"It's a moment before you realise your backpack is still smoking!\nOpening it up you scramble to save the contents, fishing out the {bowlFragments.Name} before they can burn everything, but it's too late. \nEverything inside your pack is burned and unusable!"); player1.Inventory.Clear(); Console.ReadKey(true); } 
+                            
                             escapedRoom1 = true;
                             escapedThroughDoor = true;
+                            fieryEscape = true;
+                            foreach (Item x in player1.Inventory) { while (x.Name.Contains("blazing") || x.Name.Contains("fiery") || x.Name.Contains("burning") || x.Name.Contains("smouldering") || x.Name.Contains("smoking")) { x.Name = x.Name.Substring(x.Name.IndexOf(" ")).Trim(); } }
+                            foreach (Weapon x in player1.WeaponInventory) { while (x.Name.Contains("blazing") || x.Name.Contains("fiery") || x.Name.Contains("burning") || x.Name.Contains("smouldering") || x.Name.Contains("smoking")) { x.Name = x.Name.Substring(x.Name.IndexOf(" ")).Trim(); } }
                             continue;
                         }
                     }
@@ -963,6 +993,7 @@ namespace DungeonCrawler
                                         break;
                                     }
                                 }
+                                else { System.Environment.Exit(0); }
 
                             }
                             else { Console.WriteLine("Please enter either 'yes' or 'no'."); }
@@ -1020,13 +1051,22 @@ namespace DungeonCrawler
 
             }
             ///Past this point is the next room 
+            
             if (escapedThroughDoor)
             {
+                if (fieryEscape) 
+                { 
+                    Console.WriteLine("Looking back, the door will only hold for so long against the flames and time is not your friend. What will you do?"); 
+                }
+                else
+                {
+                    Console.WriteLine("With the way ahead clear, what will you do?");
+                }
 
             }
             else
             {
-
+                Console.WriteLine("Finding yourself in a new room and on a new level of this perplexing (tower?), what will you decide to do next?");
             }
 
 

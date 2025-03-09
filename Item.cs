@@ -59,7 +59,7 @@ namespace DungeonCrawler
         /// <param name="weapon"></param>
         /// <param name="featureItems"></param>
         /// <param name="roomItems"></param>
-        public void pickUpItem(List<Item> inventory, List<Weapon> weaponInventory,  int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null)
+        public void pickUpItem(List<Item> inventory, List<Weapon> weaponInventory,  int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null, Weapon yourRustyChains = null)
         {
             //the following are customised messages for when an item is picked up. 
             List<string> messages = new List<string> { $"The {Name} now rests in your hands.", $"You reach over and pick up the {Name}.", $"You grasp the {Name} in your hands.", $"The {Name} is now clasped firmly in your hands.", $"With some trepidation, your clammy hand grips the {Name}.", $"You prise the {Name} from it's resting place", $"You slide the {Name} into your hands.", $"The {Name} is now nestled in your hands." };
@@ -129,7 +129,7 @@ namespace DungeonCrawler
                         else//if item is a weapon
                         {
                             Console.WriteLine(studyItem(weapon));
-                            if (range == 3 || range == 4)
+                            if (range == 3 || range == 4 || range == 6)
                             {
                                 Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it upon your person \n[3]place it back where you found it?");
                             }
@@ -161,10 +161,29 @@ namespace DungeonCrawler
                         {
                             if (item == null)
                             {
-                                StashWeapon(weapon, weaponInventory);
+                                if (weapon.Name == "rusty chains")
+                                {
+                                    
+                                    
+                                    
+                                    
+                                    StashWeapon(yourRustyChains, weaponInventory);
+                                }
+                                else
+                                {
+
+
+                                    StashWeapon(weapon, weaponInventory);
+                                }
                                 if (weapon.Name != "bowl fragments" && weapon.Name != "rusty chains" && weapon.Name != "garment")
                                 {
-                                    roomItems.Remove(item);
+                                    roomItems.Remove(weapon);
+                                    
+                                }
+                                if (weapon.Name == "rusty chains") 
+                                { 
+                                    Item rustyChains = new Item("rusty chains", "The rest of these chains crumble underfoot. They're of no use to anyone."); 
+                                    roomItems.Add(rustyChains); 
                                 }
                                 Console.WriteLine($"{Name} has been stashed in inventory.");
 
@@ -331,13 +350,49 @@ namespace DungeonCrawler
                     else
                     {
                         feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                        
                     }
                     return true;
                 }
                 else
                 {
                     feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
-                    return false; }
+                    if (feature.Name == "skeleton")
+                    {
+                        feature.ItemList.Add(binkySkull);//binkySkull in this instance is steel key
+                        feature.Description = "Its empty sockets fasten you with a stern gaze. It serves as a macabre reminder of what might yet befall you...";
+                        Console.WriteLine($"Using your weapon you smash the skeleton's bones from the constricting chains. You succeed, but in the process your {item.Name} shatters into pieces. Finally you can move the {feature.SpecificAttribute} skeleton, piece by piece, out of the way, revealing something glimmering underneath...");
+                        List<Item> weaponList = new List<Item> { item };
+                        List<Weapon> weaponSplice = weaponList.Cast<Weapon>().ToList();
+
+                        weaponInventory.Remove(weaponSplice[0]);
+                        Console.WriteLine("Would you now like to search the skeleton?");
+                        while (true)
+                        {
+                            string answer = Console.ReadLine().Trim().ToLower();
+                            if (string.IsNullOrWhiteSpace(answer))
+                            {
+                                Console.WriteLine("Would you now like to search the skeleton?");
+                                continue;
+                            }
+                            else if (answer == "yes" || answer == "y")
+                            {
+                                feature.search(inventory, weaponInventory);
+                                break;
+                            }
+                            else if (answer == "no" || answer == "n")
+                            {
+                                Console.WriteLine("You decide on some other course of action for now...");
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Please enter 'yes' or 'no'.");
+                                continue;
+                            }
+                        }
+                    }
+                    return true; }
             }
             else { return false; }
         }
@@ -360,13 +415,18 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         Console.WriteLine("You brace yourself for the fight of your life...");
                         Console.ReadKey(true);
+                        player.Inventory.Remove(item2);
                         bool fire = true;
                         if (trialBattle.fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, fire))
                         {
                             tlist[0] = true;
                             tlist[1] = true;
+                            
                             return tlist;
                         }
+
+                        
+                        else { System.Environment.Exit(0); }
                     }
                     else if(item1.Name == "magnifying glass" && item2.Name == "garment")
                     {
@@ -375,14 +435,15 @@ namespace DungeonCrawler
                         Console.WriteLine("It's not before too long that you've managed to get the garment to smoulder. Cupping it in your hands you gently breathe over it, teasing forth the flames.\nOnce its burning you tuck the blazing garment under the door, letting the smoke billow out into the corridor. Now, at last, you hammer upon the door, yelling that the room's ablaze...");
                         Console.ReadKey(true);
                         Console.WriteLine("You planned for it to burn slowly.");
-                        Thread.Sleep(500);
+                        Thread.Sleep(3000);
                         Console.WriteLine("You planned for the fire to be controlled.");
-                        Thread.Sleep(500);
+                        Thread.Sleep(3000);
                         Console.WriteLine("However, its not long before your feigned panic congeals into very real terror. Before your eyes, and in spite of your frantic attempts to stomp it out, the fire has spread to the other garments littered throughout the room.");
                         Console.WriteLine("You begin to scream out for help, when your yells are answered. Heavy boots stomp their way towards your door. Tumblers turn, then a powerful kick flings it wide.");
                         Console.ReadKey(true);
                         Console.WriteLine("You brace yourself for the fight of your life...");
                         Console.ReadKey(true);
+                        player.Inventory.Remove(item2);
                         bool fire = true;
                         if (trialBattle.fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, fire))
                         {
@@ -390,8 +451,9 @@ namespace DungeonCrawler
                             tlist[1] = true;
                             return tlist;
                         }
+                        else { System.Environment.Exit(0); }
                     }
-                    if (item2.Name == "note" && item1.Name == "magnifying glass")
+                    else if (item2.Name == "note" && item1.Name == "magnifying glass")
                     {
                         Console.WriteLine("  You peer through the magnifying glass and suddenly the note's mysterious, tiny scrawl starts to make sense...");
                         item2.Description = "Someone has scrawled upon the note in hasty erratic cursive. It reads, 'I don't have long now. If you're reading this then you're likely another foolhardy adventurer like myself who got his'self kidnapped just as I woz. I don' have much space so mark my words. Whatever they tell you - its a lie. They're going to harm you. They're most likely going to kill you in one of their mad experiments. There's a music box. I kept it locked away and hidden from sight. It's in the chest. It may look empty but set in its bottom is a panel that can be removed. You'll find it there. If you play it the guard loses his marbles about it. Can't stand the tune, the little blighter! It's like nails on a chalkboard to 'em creatures. When it enters, subdue the loathsome thing. It's the only way out of 'ere. Hopefully, if I don't make it, at least someone else will...' The rest deteriorates into an illegible scribble at the bottom of the page.";
@@ -402,7 +464,7 @@ namespace DungeonCrawler
                         Console.WriteLine(item2.Description);
                         Console.WriteLine($"After having finally read the note, you eye the rosewood chest with renewed interest...");
                     }
-                    if ((item2.Name == "other half of a cracked bowl" && item1.Name == "half a cracked bowl")||(item1.Name == "other half of a cracked bowl" && item2.Name == "half a cracked bowl"))
+                    else if ((item2.Name == "other half of a cracked bowl" && item1.Name == "half a cracked bowl")||(item1.Name == "other half of a cracked bowl" && item2.Name == "half a cracked bowl"))
                     {
                         Console.WriteLine("Your tongue parts your lips just slightly as you pick up the two halves of the bowl, one in each hand.\nYour shrewd gaze turns from one to the other, tongue still protruding slightly in derpy concentration. Then you place the two halves together to make a (w)hole. \nYou then place this (w)hole in the ceiling creating an exit to the room above.\nWait? You catch yourself. Does this make sense? \n\t'Sure it does!' your fairy friends assure you. \nYeah...yeah, of course. Thanks guys!");
                         room.FeatureList.Add(addFeature);// feature = holeInCeiling
@@ -554,11 +616,11 @@ namespace DungeonCrawler
                     else { Console.WriteLine($"~~{item1.Name} is an unknown quantity~~"); return false; }
 
                     }
-                    else
-                    {
-                        Console.WriteLine("You can't use that item on yourself or anything to hand!");
-                        return false;
-                    }
+                else
+                {
+                    Console.WriteLine("You can't use that item on yourself or anything to hand!");
+                    return false;
+                }
             }
             catch
             {
@@ -605,22 +667,23 @@ namespace DungeonCrawler
         {
             Dice D18 = new Dice(18);
             Dice D3 = new Dice(3);
+            Dice D4 = new Dice(4);
             System.Diagnostics.Debug.Assert(room.ItemList.Count > 2, "Items in the room must number at least three if there is any chance of combat occuring else an ArgumentNullException will occur for the 6th element of jinxedMisses.");
             List<string> jinxedMisses = new List<string>
             {
-                $"The {monsterName.Name} has you now! Finally, relishing it's soon-to-be freedom from your cursed, jinxy hide, it raises its {monsterName.Items[0].Name} to strike... and gets it stuck in the {room.FeatureList[D3.Roll(D3) - 1].Name}. You scurry away as the {monsterName.Name} curses, trying to free it. \nThe {monsterName.Name} loses 1 stamina.",
+                $"The {monsterName.Name} has you now! Finally, relishing it's soon-to-be freedom from your cursed, jinxy hide, it raises its {monsterName.Items[0].Name} to strike... and gets it stuck in the {room.FeatureList[D4.Roll(D4) - 1].Name}. You scurry away as the {monsterName.Name} curses, trying to free it. \nThe {monsterName.Name} loses 1 stamina.",
                 $"The ever-increasingly vexed {monsterName.Name} attacks, misses, and gets really bad tennis-elbow. Ooh! that's gotta hurt... \nThe {monsterName.Name} loses 2 stamina.",
-                $"The {monsterName.Name} lunges at you! As you trip over yourself, clumsily scrambling for cover, you hear a tremendous crash. \nThe {monsterName.Name} ran into the {room.FeatureList[D3.Roll(D3) - 1].Name}. Ow! It loses 5 Stamina.",
+                $"The {monsterName.Name} lunges at you! As you trip over yourself, clumsily scrambling for cover, you hear a tremendous crash. \nThe {monsterName.Name} ran into the {room.FeatureList[D4.Roll(D4) - 1].Name}. Ow! It loses 5 Stamina.",
                 $"The {monsterName.Name} at last has you pinned. It looms over you with a leer, ready to deliver the killing blow, when part of the {room.Name}'s ceiling caves in upon its head. \nThe {monsterName.Name} loses 7 stamina!",
                 $"The {monsterName.Name} bellows a string of foul curses as each frenzied attack miraculously leaves you unscathed. It bites its own tongue in the process. Youch! \nAs you slip away, the {monsterName.Name} loses 1 stamina...",
                 $"The {monsterName.Name} bounds after you in circles, flailing wildly. It careers into a {room.ItemList[D3.Roll(D3) - 1].Name}, grazing its knee. Oof! That's a nasty splinter! \nThe {monsterName.Name} loses 3 stamina.",
-                $"You stammer as you try reasoning with the {monsterName.Name}. Surely you can just talk things out over a lovely cup of mead... The {monsterName.Name} doesn't listen. It lunges at you, only to crash into the {room.FeatureList[D3.Roll(D3) - 1].Name}. Yikes! \nThe {monsterName.Name} loses 11 stamina.",
+                $"You stammer as you try reasoning with the {monsterName.Name}. Surely you can just talk things out over a lovely cup of mead... The {monsterName.Name} doesn't listen. It lunges at you, only to crash into the {room.FeatureList[D4.Roll(D4) - 1].Name}. Yikes! \nThe {monsterName.Name} loses 11 stamina.",
                 $"In frustration the {monsterName.Name} hurls its {monsterName.Items[0].Name} at you! It bounces off your armour back at the {monsterName.Name}. \n The {monsterName.Name} loses 6 stamina.",
                 $"The {monsterName.Name} attacks wildly, wanting nothing more than to end the whirlwind of chaos your ill-fortune brings. It trips. Ouch! That's going to need a bandage... \nThe {monsterName.Name} loses 7 stamina.",
                 $"The {monsterName.Name} at last has you cornered. It looms over you with a leer, ready to at last deliver the killing blow. Then the {room.Name}'s ceiling caves in.\n The {monsterName.Name}'s engulfed by an avalanche of cascading debris. A trickle of dust takes a moment to stop. Then finally, one loose floorboard topples from the floor above and crowns the heap.",
                 $"The {monsterName.Name} gets hit by a random meteorite - or was it a shooting star? Either way, what are the chances? \n The {monsterName.Name}'s head falls off as you make a wish... ",
                 $"The {monsterName.Name} stubs its toe on the {room.ItemList[D3.Roll(D3) - 1].Name}...\nShortly afterwards it is crushed by the full force of the extreme probability wave generated by the Felix Felicis you drank, blasting the creature apart like an abstract nuclear device of pure mathematics. Paradoxes open and close in the underlying fabric of reality, swallowing the {monsterName.Name} whole before burping out the toe.\nHuh, you say as you take a second glance at the potion's ingredients list...",
-                $"The {monsterName.Name}'s armour attracts a bolt of lightning from, uh, somewhere(?)... \nThat was sure unlucky. You ponder the odds as the {monsterName.Name} is fried to a crisp."
+                $"The {monsterName.Name}'s armour chafes, building up a freakish amount of static charge. A bolt of lightning strikes the {monsterName.Name} from, uh, somewhere(?)... \nThat was sure unlucky. You ponder the odds as more lightning bolts repeatedly fry the {monsterName.Name} to a crisp."
                 
                 
             };
