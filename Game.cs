@@ -9,10 +9,10 @@ namespace DungeonExplorer
     internal class Game
     {
         // Private sets.
-        private Player player { get; private set; }
-        private Room currentRoom { get; private set; }
+        public Player player { get; private set; }
+        public Room currentRoom { get; private set; }
+        public Test testing = new Test();
         public string Username { get; private set; }
-        private GameTests testing = new GameTests();
 
         public Game()
         {
@@ -26,6 +26,7 @@ namespace DungeonExplorer
             bool playing = true;
             while (playing)
             {
+                testing.RunTests();
                 // Gets the users name.(Calls GetName())
                 Username = player.GetName();
                 Console.WriteLine($"Hello, {Username}!");
