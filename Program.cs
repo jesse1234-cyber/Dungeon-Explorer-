@@ -6,6 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// MUST add "debug.assert" as part of the CRG
+// Need to include: explanation on encapuslation (within video; making things private to a specific class- get and set methods)
+// Item ideas in template.py (need to write out the rest here and delete the file)
+
 namespace DungeonExplorer
 {
     internal class Program
