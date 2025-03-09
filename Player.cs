@@ -35,13 +35,34 @@ namespace Program
             pInv = new PlayerInventory(5);
             posX = 5;
             posY = 10;
+            ActionMenuFunctions.Add(new ActionMenuAction(MoveMenu, "Move Menu"));
             ActionMenuFunctions.Add(new ActionMenuAction(pInv.fShowInventory, "Show Inventory"));
 
+        }
+
+        public void MoveMenu()
+        {
+            List<ConsoleKeyInfo> Valids = new List<ConsoleKeyInfo>()
+            {
+                new ConsoleKeyInfo('W', ConsoleKey.W, false, false, false),  
+                new ConsoleKeyInfo('S', ConsoleKey.S, false, false, false),  
+                new ConsoleKeyInfo('A', ConsoleKey.A, false, false, false),  
+                new ConsoleKeyInfo('D', ConsoleKey.D, false, false, false)   
+            };
+
+
+            Console.WriteLine("Skibidi Toilet");
+
+            //switch (GameInputs.K(Valids))
+            //{
+
+            //}
         }
 
         public void ActionMenu()
         {
             Console.WriteLine("   Action Menu:    ");
+            Console.WriteLine("Press W, A, S or D to move to the adjacnt room in that direction");
             for (int i = 0; i < ActionMenuFunctions.Count; i++)
             {
                 Console.WriteLine("[" + (i+1) + "] " + ActionMenuFunctions[i].N);

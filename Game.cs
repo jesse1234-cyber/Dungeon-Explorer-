@@ -7,18 +7,14 @@ namespace Program
     // Main game class, main code in here and entry point.
     public class Game
     {
-        static char[,] Map = new char[10, 20];
 
         public static void Main(string[] Args)
         {
-            for (int i = 0; i < 9; i++)
-                for (int j = 0; j < 19; j++)
-                    Map[i, j] = '?';
-
-
-
+            Map.Init(4, 2);
             titleScreen();
         }
+
+
 
         public static void titleScreen()
         {
@@ -49,18 +45,10 @@ namespace Program
             Player P1 = new Player();
 
 
-            Map[P1.getPosX(), P1.getPosY()] = 'U';
             Console.WriteLine("   Current Map:    ");
             Console.WriteLine("[U]: Your Current Location");
             Console.WriteLine("[?]: Not Visited Area");
-            for (int i = 0; i < 9; i++)
-            {
-                for (int j = 0; j < 19; j++)
-                {
-                    Console.Write(Map[i, j]);
-                }
-                Console.WriteLine();
-            }
+            Map.Show();
 
             P1.ActionMenu();
 

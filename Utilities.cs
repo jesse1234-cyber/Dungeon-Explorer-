@@ -1,4 +1,5 @@
 ﻿ using System;
+using System.Collections.Generic;
 using System.Linq;
 
 
@@ -44,7 +45,7 @@ namespace Program
         }
 
         // Some times in the game key inputs are used. This function gets key inputs and checks that they are valid, in the array given to it.
-        public static ConsoleKeyInfo K(ConsoleKeyInfo[] ValidKeys)
+        public static ConsoleKeyInfo K(List<ConsoleKeyInfo> ValidKeys)
         {
             ConsoleKeyInfo key = Console.ReadKey();
             if (ValidKeys.Contains(key)) { return key; };
