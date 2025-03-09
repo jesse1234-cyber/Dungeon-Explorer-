@@ -26,7 +26,7 @@ namespace DungeonExplorer
             bool playing = true;
             while (playing)
             {
-                testing.RunTests();
+                testing.RunTests()
                 // Gets the users name.(Calls GetName())
                 Username = player.GetName();
                 Console.WriteLine($"Hello, {Username}!");
@@ -84,7 +84,7 @@ namespace DungeonExplorer
                 }
 
                 // Displays the inventory before ending the game.
-                Console.WriteLine("\nYou made it throught the dungeon! Thanks for playing." +
+                Console.WriteLine("\nYou made it through the dungeon! Thanks for playing." +
                     $"\nIn the end you collected: {player.InventoryContents()}" +
                     "\nPress any key to end the game...");
                 Console.ReadKey();
