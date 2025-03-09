@@ -29,7 +29,7 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="b"></param>
         /// <param name="player"></param>
-        public void investigate(List<Item> inventory, List<Weapon> weaponInventory, int b, Player player)
+        public void investigate(List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains)
         {
             Dice D20 = new Dice(20);
             Dice D6 = new Dice(6);
@@ -75,6 +75,7 @@ namespace DungeonCrawler
                 Console.WriteLine("[2] Westernmost wall?");
                 Console.WriteLine("[3] South wall?");
                 Console.WriteLine("[4] Eastern Wall?");
+                
                 bool continueInvestigate = true;
                 int reply2 = 0;
                 while (continueInvestigate)
@@ -262,7 +263,7 @@ namespace DungeonCrawler
 
                                 foreach (Weapon x in weaponInventory)
                                 {
-                                    if (x.Name == itemList[answer1 - FeatureList.Count].Name)
+                                    if (x.Name == itemList[answer1 - FeatureList.Count].Name || (x.Name == "rusty chain-flail" && itemList[answer1 - FeatureList.Count].Name == "rusty chains"))
                                     {
                                         Console.WriteLine($"You've already taken the {x.Name}.");
                                         freshLoop = true;
@@ -272,7 +273,7 @@ namespace DungeonCrawler
                                 if (freshLoop) { continue; }
                                 List<Item> weaponSplice = new List<Item> { itemList[answer1 - FeatureList.Count] };
                                 List<Weapon> weapon1 = weaponSplice.Cast<Weapon>().ToList();
-                                weapon1[0].pickUpItem(inventory, weaponInventory, 4, 0, null, weapon1[0], null, ItemList);
+                                weapon1[0].pickUpItem(inventory, weaponInventory, 4, 0, null, weapon1[0], null, ItemList, yourRustyChains);
                             }
                             catch // if not a weapon that is to be picked up...
                             {
