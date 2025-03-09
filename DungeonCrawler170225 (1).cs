@@ -672,11 +672,11 @@ namespace DungeonCrawler
                 if (fungShui > 1)
                 {
 
-                    foreach (Item x in room.ItemList)
+                    for (int i = room.ItemList.Count - 1;i>=0; i-- )
                     {
-                        if (x.Name == itemName && fungShui > 1)
+                        if (room.ItemList[i].Name == itemName && fungShui > 1)
                         {
-                            room.ItemList.Remove(x);
+                            room.ItemList.Remove(room.ItemList[i]);
                             fungShui--;
                         }
                     }
@@ -764,6 +764,10 @@ namespace DungeonCrawler
             bool fieryEscape = false;
             while (!escapedRoom1)
             {
+                for (int i = room.ItemList.Count - 1; i>=0; i--)
+                {
+                    fungShui(room.ItemList[i].Name);
+                }
                 string reply = Console.ReadLine().Trim().ToLower();
                 ///If player answers by typing number in list...
                 try
@@ -784,10 +788,7 @@ namespace DungeonCrawler
                     {
                         ///when player discards rusty chains they may appear more than once. 
                         ///fungshui() is present to preempt that and prevent duplicates.
-                        foreach (Item x in room.ItemList)
-                        {
-                            fungShui(x.Name);
-                        }
+                        
                         room.investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains); 
                         b++;
                     }
@@ -1055,6 +1056,7 @@ namespace DungeonCrawler
                     continue; 
                 }
                 
+
 
             }
             ///Past this point is the next room 

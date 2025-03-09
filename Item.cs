@@ -175,7 +175,7 @@ namespace DungeonCrawler
 
                                     StashWeapon(weapon, weaponInventory);
                                 }
-                                if (weapon.Name != "bowl fragments" && weapon.Name != "rusty chains" && weapon.Name != "garment")
+                                if (weapon.Name != "bowl fragments" && weapon.Name != "garment")
                                 {
                                     roomItems.Remove(weapon);
                                     
