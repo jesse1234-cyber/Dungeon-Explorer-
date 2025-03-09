@@ -12,6 +12,7 @@ namespace DungeonExplorer
     {
         private Player _player;
         private Room _currentRoom;
+        private Room _newRoom;
 
         /// <summary>
         /// Creates new objects for the Room and Player class
@@ -20,6 +21,7 @@ namespace DungeonExplorer
         {
             // Initialize the game with one room and one player
             _currentRoom = new Room("Room 1", "Sword");
+            _newRoom = new Room("Room 2", "Sword");
             List<string> playerInventory = new List<string>();
             _player = new Player("Default Name", 100, playerInventory);
         }
