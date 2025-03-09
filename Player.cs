@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
 
 namespace DungeonExplorer
 {
@@ -8,14 +10,28 @@ namespace DungeonExplorer
         public int Health { get; private set; }
         private List<string> inventory = new List<string>();
 
-        public Player(string name, int health) 
+        public Player(string name, int health)
         {
             Name = name;
             Health = health;
+            health = 100;
         }
+
+        static void Damage(int damage, int health)
+        {
+            health = health - damage;
+            damage = 20;
+
+        }
+
+        static void ShowHealth(int health);
+        
+
+
+ 
         public void PickUpItem(string item)
         {
-            // sausage roll !
+            
         }
         public string InventoryContents()
         {
