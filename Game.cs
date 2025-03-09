@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Media;
+using Microsoft.Win32;
 
 namespace DungeonExplorer
 {
     internal class Game
     {
-        private Player player;
-        private Room currentRoom;
+        public Player player { get; set; }
+        public Room currentRoom { get; set; }
 
-        public string Game()
+        public Game(string userName)
         {
-            Console.WriteLine("Please input your name:");
-            string userName = Console.ReadLine();
-            Player user = new Player(userName, 15);
-
-
+            player = new Player(userName, 15);
+            currentRoom = new Room("Kitchen.");
         }
         public void Start()
         {
@@ -22,10 +20,8 @@ namespace DungeonExplorer
             bool playing = true;
             while (playing)
             {
-                Console.WriteLine("Please input your name:");
-                string userName = Console.ReadLine();
-                Game();
-                Console.WriteLine("Hello " + user.Name)
+                Console.WriteLine("Welcome " + player.Name);
+                Console.WriteLine("You are in " + currentRoom.GetDescription());
             }
         }
     }
