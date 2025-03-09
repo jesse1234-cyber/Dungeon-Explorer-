@@ -60,10 +60,7 @@ namespace DungeonExplorer
         /// </summary>
         public void ChooseName()
         {
-            // Ask user for their name
-            Console.WriteLine("What is your name? ");
-
-            string inputName = Console.ReadLine();
+            string inputName;
 
             //Prevent user from entering a blank name
             do
