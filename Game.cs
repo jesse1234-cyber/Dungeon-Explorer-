@@ -26,7 +26,7 @@ namespace DungeonExplorer
             bool playing = true;
             while (playing)
             {
-                testing.RunTests()
+                testing.RunTests();
                 // Gets the users name.(Calls GetName())
                 Username = player.GetName();
                 Console.WriteLine($"Hello, {Username}!");
