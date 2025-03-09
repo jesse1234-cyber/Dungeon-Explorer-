@@ -45,15 +45,16 @@ namespace Program
         }
 
         // Some times in the game key inputs are used. This function gets key inputs and checks that they are valid, in the array given to it.
-        public static ConsoleKeyInfo K(List<ConsoleKeyInfo> ValidKeys)
+        public static Char K(List<char> ValidKeys)
         {
             ConsoleKeyInfo key = Console.ReadKey();
-            if (ValidKeys.Contains(key)) { return key; };
-            while (ValidKeys.Contains(key) == false)
+            
+            if (ValidKeys.Contains(key.KeyChar)) { return key.KeyChar; };
+            while (ValidKeys.Contains(key.KeyChar) == false)
             {
                 key = Console.ReadKey();
             }
-            return key;
+            return key.KeyChar;
         }
     }
     

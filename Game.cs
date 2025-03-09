@@ -1,16 +1,19 @@
 ﻿using System.Runtime.InteropServices;
 using System.Linq;
 using System;
+using System.Security.Cryptography;
 
 namespace Program
 {
     // Main game class, main code in here and entry point.
     public class Game
     {
-
+        static Player P1;
         public static void Main(string[] Args)
         {
-            Map.Init(4, 2);
+            P1 = new Player();
+
+            Map.Init(P1.getPosX(), P1.getPosY());
             titleScreen();
         }
 
@@ -41,20 +44,20 @@ namespace Program
 
         static void gameLoop()
         {
-            Console.Clear();
-            Player P1 = new Player();
+            do
+            {
+                Console.Clear();
 
 
-            Console.WriteLine("   Current Map:    ");
-            Console.WriteLine("[U]: Your Current Location");
-            Console.WriteLine("[?]: Not Visited Area");
-            Map.Show();
+                Console.WriteLine("   Current Map:    ");
+                Console.WriteLine("[U]: Your Current Location");
+                Console.WriteLine("[?]: Not Visited Area");
+                Map.Show();
 
-            P1.ActionMenu();
+                P1.ActionMenu();
 
 
-
-            Console.ReadLine();
+            } while (true);
         }
     }
 

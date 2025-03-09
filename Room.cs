@@ -9,9 +9,9 @@ namespace Program
         
         static public void Init(int startingposX, int startingposY)
         {
-            for (int i = 0; i < (sizeX - 1); i++)
+            for (int i = 0; i < sizeX; i++)
             {
-                for (int j = 0; j < (sizeY - 1); j++)
+                for (int j = 0; j < sizeY; j++)
                 {
                     Arr[i, j] = new Room('?', '?', "Description Example."); 
                 }
@@ -21,9 +21,9 @@ namespace Program
 
         static public void Show()
         {
-            for (int i = 0; i < (sizeX - 1); i++)
+            for (int i = 0; i < sizeX; i++)
             {
-                for (int j = 0; j < (sizeY - 1); j++)
+                for (int j = 0; j < sizeY; j++)
                 {
                     Console.Write(Arr[i, j].getC());
                 }
@@ -33,8 +33,16 @@ namespace Program
 
         static public void UpdateMap(int posX, int posY, int NposX, int NposY)
         {
-            Arr[posX, posY].setC(Arr[posX, posY].getFilledIn());
-            Arr[NposX, NposY].setC('U');
+            if (IsValidPosition(posX, posY) && IsValidPosition(NposX, NposY))
+            {
+                Arr[posX, posY].setC(Arr[posY, posX].getFilledIn()); // Restore previous state
+                Arr[NposX, NposY].setC('U'); // Mark new position
+            }
+        }
+
+        static public bool IsValidPosition(int x, int y)
+        {
+            return x >= 0 && y >= 0 && x < Arr.GetLength(0) && y < Arr.GetLength(1);
         }
 
     }

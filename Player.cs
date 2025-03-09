@@ -40,23 +40,64 @@ namespace Program
 
         }
 
-        public void MoveMenu()
+        void MovePlayer(string direction)
         {
-            List<ConsoleKeyInfo> Valids = new List<ConsoleKeyInfo>()
+            int newX = posX;
+            int newY = posY;
+
+            switch (direction.ToLower()) // Convert input to lowercase for case insensitivity
             {
-                new ConsoleKeyInfo('W', ConsoleKey.W, false, false, false),  
-                new ConsoleKeyInfo('S', ConsoleKey.S, false, false, false),  
-                new ConsoleKeyInfo('A', ConsoleKey.A, false, false, false),  
-                new ConsoleKeyInfo('D', ConsoleKey.D, false, false, false)   
+                case "up":
+                    newY--; // Move up
+                    break;
+                case "down":
+                    newY++; // Move down
+                    break;
+                case "left":
+                    newX--; // Move left
+                    break;
+                case "right":
+                    newX++; // Move right
+                    break;
+                default:
+                    return; // Ignore invalid input
+            }
+
+            // Check if new position is within valid bounds before updating
+            if (Map.IsValidPosition(newX, newY))
+            {
+                Map.UpdateMap(posX, posY, newX, newY);
+                posX = newX;
+                posY = newY;
+            }
+        }
+
+        
+
+
+        private void MoveMenu()
+        {
+
+            List<char> Valids = new List<char>
+            {
+                'w', 'a', 's', 'd'
             };
+            switch (GameInputs.K(Valids))
+            {
+                case 'w':
 
-
-            Console.WriteLine("Skibidi Toilet");
-
-            //switch (GameInputs.K(Valids))
-            //{
-
-            //}
+                    MovePlayer("up");
+                    break;
+                case 'a':
+                    MovePlayer("left");
+                    break;
+                case 's':
+                    MovePlayer("down");
+                    break;
+                case 'd':
+                    MovePlayer("right");
+                    break;
+            }            
         }
 
         public void ActionMenu()
