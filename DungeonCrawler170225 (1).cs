@@ -659,7 +659,29 @@ namespace DungeonCrawler
             //
 
             
-            
+            void fungShui(string itemName)
+            {
+                int fungShui = 0;
+                foreach (Item x in room.ItemList)
+                {
+                    if (x.Name == itemName)
+                    {
+                        fungShui++;
+                    }
+                }
+                if (fungShui > 1)
+                {
+
+                    foreach (Item x in room.ItemList)
+                    {
+                        if (x.Name == itemName && fungShui > 1)
+                        {
+                            room.ItemList.Remove(x);
+                            fungShui--;
+                        }
+                    }
+                }
+            }
             //
             
             //
@@ -761,25 +783,10 @@ namespace DungeonCrawler
                     else if (reply1 == 2) 
                     {
                         ///when player discards rusty chains they may appear more than once. 
-                        ///This system is present to preempt that and prevent duplicates.
-                        int fungShui = 0;
-                        foreach(Item x in room.ItemList)
+                        ///fungshui() is present to preempt that and prevent duplicates.
+                        foreach (Item x in room.ItemList)
                         {
-                            if(x.Name == "rusty chains")
-                            {
-                                fungShui++;
-                            }
-                        }
-                        if (fungShui > 1)
-                        {
-                                                       
-                            foreach (Item x in room.ItemList)
-                            {
-                                if(x.Name == "rusty chains" && fungShui > 1)
-                                {
-                                    room.ItemList.Remove(x);
-                                }
-                            }
+                            fungShui(x.Name);
                         }
                         room.investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains); 
                         b++;
