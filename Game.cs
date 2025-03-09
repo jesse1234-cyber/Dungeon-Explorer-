@@ -21,7 +21,11 @@ namespace DungeonExplorer
             while (playing)
             {
                 Console.WriteLine("Welcome " + player.Name);
-                Console.WriteLine("You are in " + currentRoom.GetDescription());
+                Console.WriteLine("Player Stastictics:" + "\n" + "Health: " + player.Health);
+                Console.WriteLine(currentRoom.GetDescription());
+                player.PickUpItem("Jar");
+                Console.WriteLine(player.InventoryContents());
+                playing = false;
             }
         }
     }
