@@ -16,7 +16,7 @@ namespace DungeonExplorer
             try
             {
                 // Create a starting room with an item
-                currentRoom = new Room("You are in a dark, damp dungeon room. There is a door to the north.", "key");
+                currentRoom = new Room("You are in a dark, damp dungeon room. There is a door to the north.", "key"); 
 
                 // Ask for player name and create player
                 Console.WriteLine("Welcome to Dungeon Explorer!");
