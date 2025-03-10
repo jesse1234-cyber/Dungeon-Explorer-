@@ -26,7 +26,7 @@ namespace DungeonExplorer
             inventory.Add(item);
             Console.WriteLine($"{item} was added to your inventory!");
         }
-        public string InventoryContents() // Allows player to check inventory
+        public string InventoryContents() // Allows player to see inventory
         {
             return string.Join(", ", inventory);
         }

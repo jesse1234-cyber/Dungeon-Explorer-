@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Media;
 
 namespace DungeonExplorer
@@ -6,7 +7,7 @@ namespace DungeonExplorer
     class NewPlayer // New class to allow for player to enter their own name
     {
         private static Player player;
-        public static void InputName(string[] args)
+        public static void InputName()
         {
            Console.WriteLine("Please enter the player's name: ");
            string playerName = Console.ReadLine(); 
@@ -20,23 +21,27 @@ namespace DungeonExplorer
 
         public string startMessage; // attribute for Game()
 
-        public Game() // Constructor 
+        private Room.Items items; // Adding Items as an instance here
+
+        public Game() // Constructor- these are the initial values
         {
-            // Initialize the game with one room and one player (making them as objects?)/Welcome message
+            // Initialize the game with one room and one player
             startMessage = "Welcome to Dungeon Explorer! You find yourself in a strange room.";
+            currentRoom = Room.room1; 
         }
         
         // Try execept for erroneous input (within "Start" method)
         // Should there be a new method for a main gameplay loop?- and just have Start() as intialisation of a Room- or would the code base be too small?
         public void Start()
         {
-            // Change the playing logic into true and populate the while loop
             bool playing = true; // Changed to true (away from example). Return to false to end program? (condition; if false, "break")
             while (playing) // assumes playing is true for this to execute
             {
                 // !Code your playing logic here
-                Game currentPlay = new Game(); // currentPlay = object of Game, representative of a current playthrough when the program runs
-                Console.WriteLine(currentPlay.startMessage);
+                Game currentPlay = new Game(); // currentPlay = object of Game, representative of a current playthrough during the running program
+                Console.WriteLine(currentPlay.startMessage); //Welcomes user
+                Console.WriteLine(currentRoom.description);
+                currentRoom.InitializeRoomItems();
             }
         }
     }
