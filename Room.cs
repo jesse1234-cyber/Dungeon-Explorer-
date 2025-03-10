@@ -5,7 +5,7 @@ namespace DungeonExplorer
     public class Room
     {
         private string description;
-        private List<string> items;
+        private List<string> items = new List<string>();
         private readonly string roomName;
 
         public Room(string roomName, string description, List<string> items) {

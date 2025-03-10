@@ -5,21 +5,19 @@ namespace DungeonExplorer {
     internal class Game {
         private Player player;
         private Room currentRoom;
-
+        Room Library = RoomFactory.CreateRoomInstance("Library");
         //private List<string> dialogue = new List<string>();
 
         public Game() {
-            Player player1 = new Player("User", 5);
-            Room Library = RoomFactory.CreateRoomInstance("Library");
             this.currentRoom = Library;
-            this.player = player1;
             // Initialize the game with one room and one player
         }
 
         public void Start() {
             Console.WriteLine("Welcome to the Dungeon Explorer!\n");
-            string username = player.GetName();
-            Console.WriteLine($"Hello {username}!\nBeginning your adventure...\n");
+            Console.WriteLine("What is your name?");
+            this.player = new Player(Console.ReadLine(), 5);
+            Console.WriteLine($"\nHello {player.GetName()}!\n\nBeginning your adventure...\n");
             Thread.Sleep(1000);
             bool playing = true;
             Console.WriteLine("You finally wake up. Your head is pounding, and the suffocating air, thick with dust, " +
@@ -52,7 +50,6 @@ namespace DungeonExplorer {
                         if (inv != "") {
                             Console.WriteLine($"Your backpack contents are now {inv}!");
                         }
-
                     }
 
                     else if (userChoice == "B") {

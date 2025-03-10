@@ -9,19 +9,16 @@ namespace DungeonExplorer
         private string name;
         private int health;
         private List<string> inventory = new List<string>();
-        private bool hasKey = false;
 
         public Player(string name, int health)
         {
-            this.name = "default";
+            this.name = name;
             this.health = 5;
         }
 
         public string GetName()
         {
-            Console.WriteLine("What is your name?");
-            name = Console.ReadLine();
-            return name;
+            return this.name;
         }
 
         public int GetHealth()
