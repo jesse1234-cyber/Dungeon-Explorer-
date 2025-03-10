@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Media;
+using System.Security.Policy;
 
 namespace DungeonExplorer
 {
@@ -10,6 +11,8 @@ namespace DungeonExplorer
 
         public Game()
         {
+            //Handles the game flow and initializes the player and one simple room.
+
             // Initialize the game with one room and one player
 
         }
