@@ -9,13 +9,12 @@ namespace DungeonExplorer
     public class Game
     {
         private readonly Player _player;
-        internal readonly List<Room> _rooms;
+        public List<Room> Rooms { get; }
         public int CurrentRoomIndex { get; private set; }
         public bool Playing { get; private set; }
         private readonly Random _random;
         private Dictionary<string, Creature> _creaturePrototypes;
         private Dictionary<string, Item> _itemPrototypes;
-        public bool HasWon = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Game"/> class.
@@ -24,7 +23,7 @@ namespace DungeonExplorer
         public Game(Player player)
         {
             _player = player;
-            _rooms = new List<Room>();
+            Rooms = new List<Room>();
             CurrentRoomIndex = 0;
             Playing = true;
             _random = new Random();
@@ -60,13 +59,13 @@ namespace DungeonExplorer
         /// </summary>
         public void InitializeRooms()
         {
-            _rooms.Add(CreateRoom("A dark cellar. There is a Goblin awaiting your approach.",
+            Rooms.Add(CreateRoom("A dark cellar. There is a Goblin awaiting your approach.",
                 new List<string> { "Rusty Knife", "Apple" }, new List<string> { "Goblin", "Goblin" }, false));
-            _rooms.Add(CreateRoom("A damp cave. There is an Orc awaiting your approach.",
+            Rooms.Add(CreateRoom("A damp cave. There is an Orc awaiting your approach.",
                 new List<string> { "Shield", "Potion", "Apple" }, new List<string> { "Orc" }, false));
-            _rooms.Add(CreateRoom("A narrow corridor. There is a Skeleton awaiting your approach.",
+            Rooms.Add(CreateRoom("A narrow corridor. There is a Skeleton awaiting your approach.",
                 new List<string> { "Sword", "Apple" }, new List<string> { "Skeleton" }, false));
-            _rooms.Add(CreateRoom("A treasure room. There is a Dragon awaiting your approach.",
+            Rooms.Add(CreateRoom("A treasure room. There is a Dragon awaiting your approach.",
                 new List<string> { "Chestplate", "Potion" }, new List<string> { "Dragon" }, true));
         }
 
@@ -98,6 +97,7 @@ namespace DungeonExplorer
         /// <summary>
         /// Starts the game loop.
         /// </summary>
+        /// <returns><c>true</c> if the player wins and <c>false</c> if the player loses.</returns>
         public bool Start()
         {
             while (Playing)
@@ -110,14 +110,14 @@ namespace DungeonExplorer
                 switch (command)
                 {
                     case "look":
-                        Console.WriteLine(_rooms[CurrentRoomIndex].GetDescription());
+                        Console.WriteLine(Rooms[CurrentRoomIndex].GetDescription());
                         break;
                     case "pickup":
-                        Item item = _rooms[CurrentRoomIndex].GetRandomItem();
+                        Item item = Rooms[CurrentRoomIndex].GetRandomItem();
                         if (item != null)
                         {
                             _player.PickUpItem(item);
-                            Console.WriteLine($"Items left in the room: {_rooms[CurrentRoomIndex].GetItems().Count}");
+                            Console.WriteLine($"Items left in the room: {Rooms[CurrentRoomIndex].GetItems().Count}");
                         }
                         else
                         {
@@ -142,9 +142,8 @@ namespace DungeonExplorer
                         Console.WriteLine(_player.GetStats());
                         break;
                     case "next":
-                        if (_rooms[CurrentRoomIndex].HasTreasure())
+                        if (Rooms[CurrentRoomIndex].HasTreasure())
                         {
-                            HasWon = true;
                             Playing = false;
                             return true;
                         }
@@ -168,9 +167,10 @@ namespace DungeonExplorer
         /// <summary>
         /// Handles the battle logic between the player and creatures in the current room.
         /// </summary>
+        /// <returns><c>true</c> if the player defeats the creature or <c>false</c> if the player is defeated by the creature.</returns>
         internal bool BattleCreatures()
         {
-            var creatures = _rooms[CurrentRoomIndex].GetCreatures();
+            var creatures = Rooms[CurrentRoomIndex].GetCreatures();
             if (creatures.Count == 0)
             {
                 Console.WriteLine("There are no creatures to battle.");
@@ -242,14 +242,14 @@ namespace DungeonExplorer
         /// </summary>
         internal void MoveToNextRoom()
         {
-            var creatures = _rooms[CurrentRoomIndex].GetCreatures();
+            var creatures = Rooms[CurrentRoomIndex].GetCreatures();
             if (creatures.Count > 0 && creatures.Exists(c => c.IsAlive()))
             {
                 Console.WriteLine("You must defeat all creatures before moving to the next room.");
                 return;
             }
 
-            if (CurrentRoomIndex < _rooms.Count - 1)
+            if (CurrentRoomIndex < Rooms.Count - 1)
             {
                 CurrentRoomIndex++;
                 Console.WriteLine("You move to the next room.");

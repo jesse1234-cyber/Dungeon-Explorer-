@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
-    internal class Program
+    internal abstract class Program
     {
         static void Main(string[] args)
         {

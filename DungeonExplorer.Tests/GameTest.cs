@@ -29,7 +29,7 @@ namespace DungeonExplorer.Tests
         [Test]
         public void TestInitializeRooms()
         {
-            Assert.That(_game._rooms, Has.Count.EqualTo(4));
+            Assert.That(_game.Rooms, Has.Count.EqualTo(4));
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace DungeonExplorer.Tests
         public void BattleCreatures_RemovesCreatureFromListWhenDefeated()
         {
             _game.BattleCreatures();
-            Assert.That(_game._rooms[_game.CurrentRoomIndex].GetCreatures().Count, Is.EqualTo(0));
+            Assert.That(_game.Rooms[_game.CurrentRoomIndex].GetCreatures().Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -70,8 +70,8 @@ namespace DungeonExplorer.Tests
         {
             var input = new StringReader("next\nbattle\nnext\nbattle\nnext\nbattle\nnext\nbattle\nnext");
             Console.SetIn(input);
-            _game.Start();
-            Assert.That(_game.HasWon, Is.EqualTo(true));
+            
+            Assert.That(_game.Start(), Is.EqualTo(true));
         }
         
 
