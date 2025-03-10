@@ -10,6 +10,22 @@ namespace DungeonExplorer
     {
         private List<Weapon> Weapon = new List<Weapon>();
         private List<Potion> Potion = new List<Potion>();
+        public int WeaponCount()
+        {
+            return Weapon.Count;
+        }
+        public int PotionCount()
+        {
+            return Potion.Count;
+        }
+        public Weapon GetWeapon(int index)
+        {
+            return Weapon[index];
+        }
+        public Potion GetPotion(int index)
+        {
+            return Potion[index];
+        }
         public void AddWeapon(Weapon weapon)
         {
             Weapon.Add(weapon);
@@ -28,7 +44,28 @@ namespace DungeonExplorer
         }
         public string Contents()
         {
-            return string.Join(", ", Weapon.Select(w => w.Name).Concat(Potion.Select(p => p.Name)));
+            string contents = "";
+            if (WeaponCount() > 0)
+            {
+                contents += "\nWeapons: ";
+                for (int i = 0; i < Weapon.Count; i++)
+                {
+                    contents += $"{i + 1}) {Weapon[i].Name} \n";
+                }
+            }
+            if (PotionCount() > 0)
+            {
+                contents += "\nPotions: ";
+                for (int i = 0; i < Potion.Count; i++)
+                {
+                    contents += $"{i + 1}) {Potion[i].Name} \n";
+                }
+            }
+            if contents == ""
+            {
+                contents = "Your inventory is empty.";
+            }
+            return contents;
         }
     }
 }

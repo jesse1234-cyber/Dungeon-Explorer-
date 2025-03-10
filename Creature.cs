@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
@@ -36,9 +37,12 @@ namespace DungeonExplorer
         }
         public virtual void AttackTarget(Creature target)
         {
-            if (target.CurrentHealth - Attack > 0)
+            Random dice = new Random();
+            int damage = (Attack * dice.Next(1,21)) / 20;
+            Console.WriteLine($"It deals {damage} damage.");
+            if (target.CurrentHealth - damage > 0)
             {
-                target.CurrentHealth -= Attack;
+                target.CurrentHealth -= damage;
             }
             else
             {
@@ -71,6 +75,107 @@ namespace DungeonExplorer
                 SetCurrentHealth(CurrentHealth + potion.HealthRestore);
             }
             SetAttack(Attack + potion.HealthBonus);
+        }
+        public void Menu()
+        {
+            while (true)
+            {
+                Console.WriteLine("\nInventory:");
+                Console.WriteLine(PlayerInventory.Contents());
+                string actions = "\nActions:";
+                if (PlayerInventory.WeaponCount() > 0)
+                {
+                    actions += "\nW) Equip Weapon";
+                }
+                if (EquippedWeapon != null)
+                {
+                    actions += "\nU) Unequip Weapon";
+                }
+                if (PlayerInventory.PotionCount() > 0)
+                {
+                    actions += "\nP) Drink Potion";
+                }
+                actions += "\nQ) Quit Menu";
+                Console.WriteLine(actions);
+                Console.Write(">");
+                string userChoice = Console.ReadLine().ToUpper();
+                if (userChoice == "W" && PlayerInventory.WeaponCount() > 0)
+                {
+                    while (true)
+                    { 
+                        Console.Write("Select the weapon you want to equip, or enter Q to exit: ");
+                        userChoice = Console.ReadLine().ToUpper();
+                        if (userChoice == "Q")
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            try
+                            {
+                                int weaponChoice = Convert.ToInt32(userChoice) - 1;
+                                if (0 <= weaponChoice && weaponChoice <= PlayerInventory.WeaponCount())
+                                {
+                                    EquipWeapon(PlayerInventory.GetWeapon(weaponChoice));
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Your input was out of range.");
+                                }
+                            }
+                            catch (FormatException)
+                            {
+                                Console.WriteLine("Please enter a valid input.");
+                            }
+                        }
+                    }
+                }
+                else if (userChoice == "U" && EquippedWeapon != null)
+                {
+                    UnequipWeapon();
+                }
+                else if (userChoice == "P" && PlayerInventory.PotionCount() > 0)
+                {
+                    while (true)
+                    {
+                        Console.Write("Select the potion you want to drink, or enter Q to exit: ");
+                        userChoice = Console.ReadLine().ToUpper();
+                        if (userChoice == "Q")
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            try
+                            {
+                                int potionChoice = Convert.ToInt32(userChoice) - 1;
+                                if (0 <= potionChoice && potionChoice <= PlayerInventory.PotionCount())
+                                {
+                                    UsePotion(PlayerInventory.GetPotion(potionChoice));
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Your input was out of range.");
+                                }
+                            }
+                            catch (FormatException)
+                            {
+                                Console.WriteLine("Please enter a valid input.");
+                            }
+                        }
+                    }
+                }
+                else if (userChoice == "Q")
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a valid input.");
+                }
+            }
         }
         public void EquipWeapon(Weapon weapon)
         {

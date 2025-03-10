@@ -12,10 +12,10 @@
             Monster = monster;
             Potion = potion;
             Weapon = weapon;
-            Description = CreateDescription();
+            Description = "";
         }
 
-        public string CreateDescription()
+        public void CreateDescription()
         {
             string description = "Room Contents:";
             description += "\nMonster: ";
@@ -45,11 +45,24 @@
             {
                 description += Weapon.Name;
             }
-            return description;
+            Description = description;
         }
         public string GetDescription()
         {
+            CreateDescription();
             return Description;
+        }
+        public void RemoveWeapon()
+        {
+            Weapon = null;
+        }
+        public void RemovePotion()
+        {
+            Potion = null;
+        }
+        public bool IsEmpty()
+        {
+            return Monster == null && Potion == null && Weapon == null;
         }
     }
 }
