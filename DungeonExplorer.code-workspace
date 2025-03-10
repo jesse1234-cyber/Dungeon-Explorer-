@@ -6,5 +6,8 @@
 		{
 			"path": "."
 		}
-	]
+	],
+	"settings": {
+		"dotnet.preferCSharpExtension": true
+	}
 }
