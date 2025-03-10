@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Media;
+using System.Security.Cryptography.X509Certificates;
 using DungeonExplorer;
 
 namespace DungeonExplorer
@@ -180,6 +181,18 @@ namespace DungeonExplorer
             }
             potionChoice = false;
         }
+
+        public string DisplayInventory()
+        {
+            if (player1.Inventory.Count == 0)
+            {
+                return ($"{player1.Name}'s inventory is empty");
+            }
+            else
+            {
+                return ($"{player1.Name}'s inventory consists of {player1.InventoryContents()}");
+            }
+        }
         //Start of game
         public void Start()
         {
@@ -245,9 +258,8 @@ namespace DungeonExplorer
                 if (playerChoice == "S")
                 {
                     Console.WriteLine($"{player1.Name}'s health = " +
-                        $"{player1.Health} health points \n{player1.Name}'s " +
-                        $"inventory consists of: " +
-                        $"{player1.InventoryContents()} ");
+                        $"{player1.Health} health points \n" +
+                        $"{DisplayInventory()}");
                 }
                 else if (playerChoice == "C")
                 {
@@ -255,8 +267,8 @@ namespace DungeonExplorer
                     //want to use any items
                     while (itemUsed == false)
                     {
-                        Console.WriteLine("Would you like to use an item from" +
-                            " your inventory? (Enter 'y' or 'n')");
+                        Console.WriteLine("Would you like to use an item" +
+                            " from your inventory? (Enter 'y' or 'n')");
                         string playerUseitem = Console.ReadLine().ToLower();
                         if (playerUseitem == "y")
                         {
