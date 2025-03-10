@@ -8,11 +8,11 @@ namespace DungeonExplorer
     /// </summary>
     public class Room
     {
-        private string _description;
-        private List<Item> _items;
-        private List<Creature> _creatures;
-        private bool _hasTreasure;
-        private Random _random = new Random();
+        private readonly string _description;
+        private readonly List<Item> _items;
+        private readonly List<Creature> _creatures;
+        private readonly bool _hasTreasure;
+        private readonly Random _random = new Random();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Room"/> class.
