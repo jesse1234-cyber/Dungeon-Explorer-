@@ -7,22 +7,31 @@ namespace DungeonExplorer
     {
         public string Name { get; private set; }
         public int Health { get; private set; }
-        private List<string> inventory = new List<string>();
+        private List<string> _inventory = new List<string>();
 
         public Player(string name, int health) 
         {
             Name = name;
             Health = health;
+            _inventory.Add("Sword");
         }
 
         public void PickUpItem(string item)
         {
-            inventory.Add(item);
+             // add item to player inventory array
+            _inventory.Add(item);
         }
 
         public void InventoryContents()
         {
-            Console.WriteLine(string.Join(", ", inventory));
+             // display player inventory
+            Console.WriteLine(string.Join(", ", _inventory));
+        }
+
+        public void PlayerHealth()
+        {
+             // display player health
+            Console.WriteLine(Health);
         }
     }
 }
