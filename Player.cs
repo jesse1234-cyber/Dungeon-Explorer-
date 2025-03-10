@@ -15,11 +15,14 @@ namespace DungeonExplorer
         }
         public void PickUpItem(string item)
         {
-
+            if (!inventory.Contains(item))
+            {
+                inventory.Add(item);
+            }
         }
         public string InventoryContents()
         {
-            return string.Join(", ", inventory);
+            return inventory.Count == 0 ? "Empty" : string.Join(", ", inventory);
         }
     }
 }
