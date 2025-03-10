@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace DungeonExplorer
 {
@@ -13,9 +14,15 @@ namespace DungeonExplorer
             Name = name;
             Health = health;
         }
+
+        public Player(string v)
+        {
+        }
+
         public void PickUpItem(string item)
         {
-
+            // Add the item to the player's inventory
+            inventory.Add(item);
         }
         public string InventoryContents()
         {
