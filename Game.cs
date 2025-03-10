@@ -4,14 +4,7 @@ using System.Threading;
 namespace DungeonExplorer {
     internal class Game {
         private Player player;
-        private Room currentRoom;
-        Room Library = RoomFactory.CreateRoomInstance("Library");
-        //private List<string> dialogue = new List<string>();
-
-        public Game() {
-            this.currentRoom = Library;
-            // Initialize the game with one room and one player
-        }
+        private Room currentRoom = RoomFactory.CreateRoomInstance("Library");
 
         public void Start() {
             Console.WriteLine("Welcome to the Dungeon Explorer!\n");
@@ -22,7 +15,8 @@ namespace DungeonExplorer {
             bool playing = true;
             Console.WriteLine("You finally wake up. Your head is pounding, and the suffocating air, thick with dust, " +
                 "clings to your lungs. Where are you? How did you get here? \n" +
-                "(When prompted for a choice, you may type S, I or R into the console to see info about your Status, Inventory, or the Room you are in! Or exit... :()");
+                "(When prompted for a choice, you may type S, I or R into the console to see info about your" +
+                "Status, Inventory, or the Room you are in! Or exit... :()");
 
             while (playing) {
                 Thread.Sleep(3000);

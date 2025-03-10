@@ -45,7 +45,8 @@ namespace DungeonExplorer
             }
             else
             {
-                Console.WriteLine($"Oops! A huge spider crawls out from behind the {item}, startling you. You drop the {item} onto the floor, and it gets stuck under a bookshelf.\n");
+                Console.WriteLine($"Oops! A huge spider crawls out from behind the {item}, startling you." +
+                    $"You drop the {item} onto the floor, and it gets stuck under a bookshelf.\n");
             }
         }
 
