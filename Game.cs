@@ -232,6 +232,7 @@ namespace DungeonExplorer
             //Controls flow of game after player object is created
             playing = true;
             int roomsPassed = 1;
+            bool itemUsed = false;
             while (playing == true)
             {
                 //At the start of each turn the user can either move into the
@@ -252,22 +253,28 @@ namespace DungeonExplorer
                 {
                     //If user continues to next room they are asked if they
                     //want to use any items
-                    Console.WriteLine("Would you like to use an item from" +
-                        " your inventory? (Enter 'yes' or 'no')");
-                    string playerUseitem = Console.ReadLine().ToLower();
-                    if (playerUseitem == "yes")
+                    while (itemUsed == false)
                     {
-                        UseItem(player1.Inventory);
+                        Console.WriteLine("Would you like to use an item from" +
+                            " your inventory? (Enter 'y' or 'n')");
+                        string playerUseitem = Console.ReadLine().ToLower();
+                        if (playerUseitem == "y")
+                        {
+                            UseItem(player1.Inventory);
+                            itemUsed = true;
+                        }
+                        else if (playerUseitem == "n")
+                        {
+                            Console.WriteLine("");
+                            itemUsed = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid selection");
+                            itemUsed= false;
+                        }
                     }
-                    else if (playerUseitem == "no")
-                    {
-                        Console.WriteLine("");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid selection, confused, you" +
-                            " continue through the dungeon\n");
-                    }
+                    itemUsed = false;
 
                     //Instantiating currentRoom game object
                     currentRoom.Description = currentRoom.ChooseRoom();
@@ -320,7 +327,7 @@ namespace DungeonExplorer
                         if (PlayerDeath() == true)//game ends if player runs
                             //out of health
                         {
-                            Console.WriteLine($"GAME OVER! {player1.Name}" +
+                            Console.WriteLine($"GAME OVER! {player1.Name.ToUpper()}" +
                                 $" has died...");
                             playing = false;
                         }
