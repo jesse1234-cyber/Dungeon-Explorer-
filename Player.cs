@@ -9,6 +9,7 @@ namespace DungeonExplorer
         private string name;
         private int health;
         private List<string> inventory;
+
         static Random rnd = new Random();
 
         //Using getters and setters for player class' attributes

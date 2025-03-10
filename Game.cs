@@ -174,30 +174,30 @@ namespace DungeonExplorer
                     " a dungeon. To escape you must pass through 10" +
                     " \nrooms, fighting any monsters you may come across..." +
                     " \nPress any key to continue\n");
-                Console.ReadKey();
+                Console.ReadKey(true);
 
                 Console.WriteLine("When you enter each room you will search" +
                     " it for monsters or items. \nMonsters may damage" +
                     " you and you will lose health points \nItems such as" +
                     " health potions will replenish your health when" +
                     " consumed\n");
-                Console.ReadKey();
+                Console.ReadKey(true);
 
                 Console.WriteLine("Potions: \nSmall health potion: grants" +
                     " 5 health points when consumed\nRegular health " +
                     "potion: grants 10 health points when consumed \nLarge " +
                     "health potion: grants 20 health points when consumed \n");
-                Console.ReadKey();
+                Console.ReadKey(true);
 
                 Console.WriteLine($"Now, {player1.Name}, your adventure" +
                     $" begins. Good luck!\n");
-                Console.ReadKey();
+                Console.ReadKey(true);
 
                 Console.WriteLine($"Player's name is {player1.Name}" +
                     $" \n{player1.Name}'s health is: {player1.Health}" +
                     $" \nInventory is empty\nPress any key to begin" +
                     $" your adventure...\n");
-                Console.ReadKey();
+                Console.ReadKey(true);
 
                 creatingPlayer = false;
             }
@@ -245,7 +245,7 @@ namespace DungeonExplorer
                     //Instantiating currentRoom game object
                     currentRoom.Description = currentRoom.ChooseRoom();
                     Console.WriteLine(currentRoom.Description);
-                    Console.ReadKey();
+                    Console.ReadKey(true);
 
                     if (ItemGeneration() == true)
                     {
@@ -258,7 +258,7 @@ namespace DungeonExplorer
                             $" room and finds a {currentRoom.Item} \nThis" +
                             $" has been added to your inventory \nPress" +
                             $" any key to continue \n");
-                        Console.ReadKey();
+                        Console.ReadKey(true);
                     }
                     else
                     {
@@ -266,7 +266,7 @@ namespace DungeonExplorer
                         Console.WriteLine($"{player1.Name} searches" +
                             $" the room but finds no items \nPress any" +
                             $" key to continue \n");
-                        Console.ReadKey();
+                        Console.ReadKey(true);
                     }
 
                     //Randomly determines if a monster will be present
@@ -281,13 +281,13 @@ namespace DungeonExplorer
 
                         Console.WriteLine("There is a monster in this room!" +
                             " \nPress any key to fight the monster!");
-                        Console.ReadKey();
+                        Console.ReadKey(true);
 
                         Console.WriteLine($"{player1.Name} attacks the" +
                             $" monster! \n{player1.Name} takes {damageValue}"+
                             $" damage from the battle! \n");
                         player1.Health = player1.Health - damageValue;
-                        Console.ReadKey();
+                        Console.ReadKey(true);
 
                         if (PlayerDeath() == true)//game ends if player runs
                             //out of health
@@ -309,7 +309,7 @@ namespace DungeonExplorer
                                 $"DUNGEON! You had {player1.Health}" +
                                 $" health points remaining");
                             playing = false;
-                            Console.ReadKey();
+                            Console.ReadKey(true);
                         }
                     }
                     //runs if no monster is generated for the room
@@ -326,7 +326,7 @@ namespace DungeonExplorer
                                 $" DUNGEON! You had {player1.Health} health" +
                                 $" points remaining");
                             playing = false;
-                            Console.ReadKey();
+                            Console.ReadKey(true);
                         }
                     }
                 }
