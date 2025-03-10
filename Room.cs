@@ -1,4 +1,4 @@
-﻿namespace DungeonExplorer
+namespace DungeonExplorer
 {
     public class Room
     {
@@ -23,7 +23,7 @@
         // Get the item in the room
         public string GetItem()
         {
-            return item;
+            return item ?? "No items in this room.";
         }
 
         // Allow player to pick up the item (if there's an item in the room)
@@ -33,15 +33,15 @@
             {
                 string pickedItem = item;
                 item = null;  // Once picked up, the item is removed from the room
-                return pickedItem;
+                return $"{pickedItem} picked up!";
             }
             else
             {
-                return null;  // No item to pick up
+                return "There is nothing to pick up here.";
             }
         }
 
-        // Optional: Provide a method to check if the room contains an item
+        // Check if the room contains an item
         public bool HasItem()
         {
             return item != null;
