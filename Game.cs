@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace DungeonExplorer
 {
@@ -9,49 +9,54 @@ namespace DungeonExplorer
 
         public Game()
         {
-            // Initialize the game with one room and one player
-            player = new Player("Player1", 100); // Assuming Player has a constructor for Name and Health
-
-            // Initialize the first room with a description
-            currentRoom = new Room("A dark, quiet room. There seems to be something in the corner.");
+            // Initialize the game with one player and one room
+            player = new Player("Player1", 100);
+            currentRoom = new Room("The First Room", "A dark and quiet room.", "Ancient Sword"); // Example room with an item
         }
 
         public void Start()
         {
-            // Start the game loop
-            bool playing = true; 
+            bool playing = true;  // Start the game
 
             while (playing)
             {
-                // Display the room's description
+                // Display the room description
                 Console.WriteLine(currentRoom.GetDescription());
-                
-                // Display the player's current status
+
+                // Display player status and inventory
                 DisplayPlayerStatus();
 
                 // Ask the player what they want to do
                 Console.WriteLine("\nWhat would you like to do?");
                 Console.WriteLine("1. View Status");
-                Console.WriteLine("2. Pick up Item");
+                Console.WriteLine("2. Pick up item");
                 Console.WriteLine("3. Exit Game");
-                
                 string input = Console.ReadLine();
 
                 // Handle user input
                 switch (input)
                 {
                     case "1":
+                        // View player status
                         DisplayPlayerStatus();
                         break;
 
                     case "2":
-                        Console.WriteLine("Enter the name of the item you want to pick up:");
-                        string item = Console.ReadLine();
-                        player.PickUpItem(item);
-                        Console.WriteLine($"{item} has been added to your inventory.");
+                        // Pick up the item in the room
+                        if (currentRoom.HasItem())
+                        {
+                            string pickedItem = currentRoom.PickUpItem();  // Pickup the item
+                            player.PickUpItem(pickedItem);  // Add it to the player's inventory
+                            Console.WriteLine(pickedItem);  // Show feedback to the player
+                        }
+                        else
+                        {
+                            Console.WriteLine("No items to pick up in this room.");
+                        }
                         break;
 
                     case "3":
+                        // Exit the game
                         Console.WriteLine("Exiting game...");
                         playing = false;
                         break;
@@ -65,7 +70,8 @@ namespace DungeonExplorer
 
         public void DisplayPlayerStatus()
         {
-            Console.WriteLine($"\nPlayer: {player.Name}");
+            // Display the player's current name, health, and inventory contents
+            Console.WriteLine($"Player: {player.Name}");
             Console.WriteLine($"Health: {player.Health}");
             Console.WriteLine($"Inventory: {player.InventoryContents()}");
         }
