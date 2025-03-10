@@ -231,7 +231,7 @@ namespace DungeonExplorer
 
             //Controls flow of game after player object is created
             playing = true;
-            int roomsPassed = 0;
+            int roomsPassed = 1;
             while (playing == true)
             {
                 //At the start of each turn the user can either move into the
@@ -271,6 +271,7 @@ namespace DungeonExplorer
 
                     //Instantiating currentRoom game object
                     currentRoom.Description = currentRoom.ChooseRoom();
+                    Console.WriteLine($"This is room number {roomsPassed}");
                     Console.WriteLine(currentRoom.Description);
                     Console.ReadKey(true);
 
@@ -328,7 +329,7 @@ namespace DungeonExplorer
                             roomsPassed++;
 
                         }
-                        if (roomsPassed >= 10)
+                        if (roomsPassed >= 11)
                         {
                             //game ends if player has passed 10 rooms
                             Console.WriteLine($"CONGRATULATIONS " +
@@ -346,7 +347,7 @@ namespace DungeonExplorer
                         Console.WriteLine("There is no monster in this" +
                             " room!");
                         roomsPassed++;
-                        if (roomsPassed >= 10)
+                        if (roomsPassed >= 11)
                         {
                             Console.WriteLine($"CONGRATULATIONS" +
                                 $" {player1.Name} YOU HAVE ESCAPED THE" +
