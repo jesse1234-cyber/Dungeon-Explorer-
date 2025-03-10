@@ -39,6 +39,7 @@ namespace Program
        
         private void MoveMenu()
         {
+            Console.WriteLine("Press W, A, S or D to move to the adjacnt room in that direction");
             List<char> Valids = new List<char> { 'w', 'a', 's', 'd' };
 
             // Get a valid key input for movement (W, A, S, D)
@@ -84,7 +85,7 @@ namespace Program
         public void ActionMenu()
         {
             Console.WriteLine("   Action Menu:    ");
-            Console.WriteLine("Press W, A, S or D to move to the adjacnt room in that direction");
+            
             for (int i = 0; i < ActionMenuFunctions.Count; i++)
             {
                 Console.WriteLine("[" + (i+1) + "] " + ActionMenuFunctions[i].N);
@@ -126,16 +127,45 @@ namespace Program
         }
         public void fShowInventory() // Shows the player the current items in there inventory
         {
+            if (Inventory.Count == 0)
+            {
+                Console.WriteLine("Inventory Empty!!");
+                return;
+            }
             for (int i = 0; i < Inventory.Count; i++)
             {
                 Console.WriteLine("[" + (i + 1).ToString() + "] " + Inventory[i].sName + ": " + Inventory[i].noOfItem.ToString() + "/" + Inventory[i].maxNoOfItem.ToString());
             }
+            Console.WriteLine("Type the number to inspect, or 0 to skip");
+            int MChoice = (GameInputs.V(Inventory.Count, 0) - 1);
+            if (MChoice == -1)
+                return;
+            Console.WriteLine(Inventory[MChoice].sName + ": " + Inventory[MChoice].sDescription);
+            Console.WriteLine("[1] Remove One\n[2] Remove All");
+            if (GameInputs.V(2) == 2)
+            {
+                fDeleteItem(Inventory[MChoice], true);
+            } else
+            {
+                fDeleteItem(Inventory[MChoice], false);
+            }
 
+            
         }
-        private string fDeleteItem(InventoryItem ItemToRemove, InventoryItem ItemToAdd) // Remove item from the inventory
+        private void fDeleteItem(InventoryItem ItemToRemove, bool All) // Remove item from the inventory
         {
-            Inventory.Remove(ItemToRemove);
-            return null;
+            if (All)
+                Inventory.Remove(ItemToRemove);
+            for (int i = 0; i < Inventory.Count; i++)
+            {
+                if (Inventory[i] == ItemToRemove)
+                {
+                    Inventory[i].noOfItem--;
+                }
+            }
+
+            
+
         }
 
     }
@@ -145,14 +175,17 @@ namespace Program
         public int maxNoOfItem { get; set; }
         public int noOfItem { get; set; }
         public string sName { get; set; }
+        public string sDescription;
         public InventoryItem(string name, int maxNoOfItem)
         {
+            sDescription = "PLACEHOLDER";
             this.sName = name;
             this.maxNoOfItem = maxNoOfItem;
             this.noOfItem = 1;
         }
         public InventoryItem(string name, int maxNoOfItem, int noOfItem)
         {
+            sDescription = "A lethal Weapon given to you by the hand of god - Be careful man! I dont Know!";
             this.sName = name;
             this.maxNoOfItem = maxNoOfItem;
             this.noOfItem = noOfItem;

@@ -25,6 +25,9 @@ namespace Program
 
         static public void Show()
         {
+            Console.WriteLine("   Current Map:    ");
+            Console.WriteLine("[U]: Your Current Location");
+            Console.WriteLine("[?]: Not Visited Area");
             // Loop through all the rooms on the map and display their current character (? if user hasnt been there yet)
             for (int i = 0; i < sizeX; i++) // Loop through the X axis (width)
             {
@@ -38,14 +41,9 @@ namespace Program
 
 
         static public void UpdateMap(int posX, int posY, int NposX, int NposY)
-        {
-            // Check if both the old and new positions are valid
-            if (IsValidPosition(posX, posY) && IsValidPosition(NposX, NposY))
-            {
-                // Restore the previous room's state by using the "filled-in" character
-                Arr[posX, posY].setC(Arr[posX, posY].getFilledIn());                
-                Arr[NposX, NposY].setC('U');
-            }
+        {           
+            Arr[posX, posY].setC(Arr[posX, posY].getFilledIn());    // Reset old room position            
+            Arr[NposX, NposY].setC('U');          // Put U in new space
         }
 
         static public bool IsValidPosition(int x, int y)

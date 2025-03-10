@@ -12,7 +12,6 @@ namespace Program
         public static void Main(string[] Args)
         {
             P1 = new Player();
-
             Map.Init(P1.getPosX(), P1.getPosY());
             Map.UpdateMap(P1.getPosX(), P1.getPosY(), P1.getPosX(), P1.getPosY());
             titleScreen();
@@ -38,23 +37,14 @@ namespace Program
 
             Console.ReadLine();
         }
-        static void newGame()
-        {
-
-        }
+        
 
         static void gameLoop()
         {
             do
             {
                 Console.Clear();
-
-
-                Console.WriteLine("   Current Map:    ");
-                Console.WriteLine("[U]: Your Current Location");
-                Console.WriteLine("[?]: Not Visited Area");
                 Map.Show();
-
                 P1.ActionMenu();
 
 
