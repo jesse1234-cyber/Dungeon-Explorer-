@@ -60,7 +60,7 @@ namespace DungeonExplorer
                         }
                         else
                         {
-                            //Prints if item is blank
+                            //Prints if there is no Item
                             Console.WriteLine("There is no item to pick up");
                         }
                         break;
@@ -69,7 +69,7 @@ namespace DungeonExplorer
                         playing = false;
                         break;
                     default:
-                        //Prints if no valid input is put in 
+                        //Prints if there is an incorrect input
                         Console.WriteLine("Please Input a valid control");
                         break;
                 }
