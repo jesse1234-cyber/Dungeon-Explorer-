@@ -3,25 +3,37 @@ using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
-    internal class Game
+    /// <summary>
+    /// Represents the main game logic and controls the game flow.
+    /// </summary>
+    public class Game
     {
         private Player _player;
         private List<Room> _rooms;
-        private int _currentRoomIndex;
-        private bool _playing;
-        private static readonly Random _random = new Random();
+        public int CurrentRoomIndex { get; private set; }
+        public bool Playing { get; private set; }
+        private Random _random;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Game"/> class.
+        /// </summary>
+        /// <param name="player">The player character.</param>
+        /// <param name="rooms">The list of rooms in the dungeon.</param>
         public Game(Player player, List<Room> rooms)
         {
             _player = player;
             _rooms = rooms;
-            _currentRoomIndex = 0;
-            _playing = true;
+            CurrentRoomIndex = 0;
+            Playing = true;
+            _random = new Random();
         }
 
+        /// <summary>
+        /// Starts the game loop and processes player commands.
+        /// </summary>
         public void Start()
         {
-            while (_playing)
+            while (Playing)
             {
                 Console.WriteLine($"Player: {_player.Name}, Health: {_player.Health}");
                 Console.WriteLine("Commands: look, pickup, inventory, battle, heal, stats, next, quit");
@@ -31,14 +43,14 @@ namespace DungeonExplorer
                 switch (command)
                 {
                     case "look":
-                        Console.WriteLine(_rooms[_currentRoomIndex].GetDescription());
+                        Console.WriteLine(_rooms[CurrentRoomIndex].GetDescription());
                         break;
                     case "pickup":
-                        Item item = _rooms[_currentRoomIndex].GetRandomItem();
+                        Item item = _rooms[CurrentRoomIndex].GetRandomItem();
                         if (item != null)
                         {
                             _player.PickUpItem(item);
-                            Console.WriteLine($"Items left in the room: {_rooms[_currentRoomIndex].GetItems().Count}");
+                            Console.WriteLine($"Items left in the room: {_rooms[CurrentRoomIndex].GetItems().Count}");
                         }
                         else
                         {
@@ -50,10 +62,10 @@ namespace DungeonExplorer
                         break;
                     case "battle":
                         BattleCreatures();
-                        if (_rooms[_currentRoomIndex].HasTreasure())
+                        if (_rooms[CurrentRoomIndex].HasTreasure())
                         {
                             Console.WriteLine("Congratulations! You found the treasure! You win!");
-                            _playing = false;
+                            Playing = false;
                         }
                         break;
                     case "heal":
@@ -66,7 +78,7 @@ namespace DungeonExplorer
                         MoveToNextRoom();
                         break;
                     case "quit":
-                        _playing = false;
+                        Playing = false;
                         Console.WriteLine("Exiting game...");
                         break;
                     default:
@@ -77,9 +89,12 @@ namespace DungeonExplorer
             }
         }
 
-        private void BattleCreatures()
+        /// <summary>
+        /// Handles combat between the player and creatures in the current room.
+        /// </summary>
+        internal void BattleCreatures()
         {
-            var creatures = _rooms[_currentRoomIndex].GetCreatures();
+            var creatures = _rooms[CurrentRoomIndex].GetCreatures();
             if (creatures.Count == 0)
             {
                 Console.WriteLine("There are no creatures to battle.");
@@ -128,34 +143,41 @@ namespace DungeonExplorer
                 if (_player.Health <= 0)
                 {
                     Console.WriteLine("You have been defeated.");
-                    _playing = false;
+                    Playing = false;
                     return;
                 }
             }
         }
 
+        /// <summary>
+        /// Determines if an attack results in a critical hit.
+        /// </summary>
+        /// <returns><c>true</c> if the attack is a critical hit; otherwise, <c>false</c>.</returns>
         private bool IsCriticalHit()
         {
             return _random.Next(100) < 15;
         }
 
-        private void MoveToNextRoom()
+        /// <summary>
+        /// Moves the player to the next room if conditions are met.
+        /// </summary>
+        internal void MoveToNextRoom()
         {
-            var creatures = _rooms[_currentRoomIndex].GetCreatures();
+            var creatures = _rooms[CurrentRoomIndex].GetCreatures();
             if (creatures.Count > 0 && creatures.Exists(c => c.IsAlive()))
             {
                 Console.WriteLine("You must defeat all creatures before moving to the next room.");
                 return;
             }
 
-            if (_currentRoomIndex < _rooms.Count - 1)
+            if (CurrentRoomIndex < _rooms.Count - 1)
             {
-                _currentRoomIndex++;
+                CurrentRoomIndex++;
                 Console.WriteLine("You move to the next room.");
             }
             else
             {
-                    Console.WriteLine("There are no more rooms.");
+                Console.WriteLine("There are no more rooms.");
             }
         }
     }
