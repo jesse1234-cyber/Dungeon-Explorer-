@@ -4,10 +4,6 @@ using System.Linq;
 
 namespace Program
 {
-    class AMAactions
-    {
-        
-    }
     class ActionMenuAction
     {
         public Action A;
@@ -34,71 +30,56 @@ namespace Program
         public Player() {
             pInv = new PlayerInventory(5);
             posX = 5;
-            posY = 10;
+            posY = 8;
             ActionMenuFunctions.Add(new ActionMenuAction(MoveMenu, "Move Menu"));
             ActionMenuFunctions.Add(new ActionMenuAction(pInv.fShowInventory, "Show Inventory"));
 
         }
 
-        void MovePlayer(string direction)
+       
+        private void MoveMenu()
         {
+            List<char> Valids = new List<char> { 'w', 'a', 's', 'd' };
+
+            // Get a valid key input for movement (W, A, S, D)
+            char input = GameInputs.K(Valids);
+
             int newX = posX;
             int newY = posY;
 
-            switch (direction.ToLower()) // Convert input to lowercase for case insensitivity
+            // Handle movement based on the key pressed
+            switch (input)
             {
-                case "up":
-                    newY--; // Move up
-                    break;
-                case "down":
-                    newY++; // Move down
-                    break;
-                case "left":
-                    newX--; // Move left
-                    break;
-                case "right":
-                    newX++; // Move right
-                    break;
-                default:
-                    return; // Ignore invalid input
-            }
-
-            // Check if new position is within valid bounds before updating
-            if (Map.IsValidPosition(newX, newY))
-            {
-                Map.UpdateMap(posX, posY, newX, newY);
-                posX = newX;
-                posY = newY;
-            }
-        }
-
-        
-
-
-        private void MoveMenu()
-        {
-
-            List<char> Valids = new List<char>
-            {
-                'w', 'a', 's', 'd'
-            };
-            switch (GameInputs.K(Valids))
-            {
-                case 'w':
-
-                    MovePlayer("up");
-                    break;
                 case 'a':
-                    MovePlayer("left");
+                    newY--;
                     break;
-                case 's':
-                    MovePlayer("down");
+                case 'w':
+                    newX--;
                     break;
                 case 'd':
-                    MovePlayer("right");
+                    newY++;
                     break;
-            }            
+                case 's':
+                    newX++;
+                    break;
+                default:
+                    break;
+            }
+
+            // Check if the new position is valid
+            if (Map.IsValidPosition(newX, newY))
+            {
+                // Update the map and player position
+                Map.UpdateMap(posX, posY, newX, newY);
+                posX = newX; // Update player's X position
+                posY = newY; // Update player's Y position
+
+                // Clear the screen and show the updated map
+                Console.Clear();
+                Map.Show();
+            }
         }
+
 
         public void ActionMenu()
         {

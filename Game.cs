@@ -14,6 +14,7 @@ namespace Program
             P1 = new Player();
 
             Map.Init(P1.getPosX(), P1.getPosY());
+            Map.UpdateMap(P1.getPosX(), P1.getPosY(), P1.getPosX(), P1.getPosY());
             titleScreen();
         }
 
