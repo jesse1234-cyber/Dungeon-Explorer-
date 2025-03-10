@@ -135,6 +135,7 @@ namespace DungeonExplorer
                         Console.WriteLine("Press any key to exit");
                         Console.ReadKey();
                         playing = false;
+                        break;
                     }
 
                     Random playerRandomAttack = new Random();
@@ -149,6 +150,7 @@ namespace DungeonExplorer
                         if (enemy.Health <= 0)
                         {
                             Console.WriteLine($"{enemy.Name} has died, you win");
+                            playing = false;
                             break;
                         }
 
