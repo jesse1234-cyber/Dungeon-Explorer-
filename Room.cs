@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Remoting.Messaging;
 
 namespace DungeonExplorer
 {
     public class Room
     {
-        private string description; // Description of the room.
+        private string description; // Description of the room.  
+        public string Name { get; set; }
 
         // Property used to get and set the room's description.
         public string Description
@@ -27,8 +30,17 @@ namespace DungeonExplorer
 
 
         private List<string> roomItems = new List<string>(); // List of items within the room.
+        private List<string> roomPaths = new List<string>();
 
 
+        // Method used to add paths to the room.
+        public void AddPath(string path)
+        {
+            if (!roomPaths.Contains(path))
+            {
+                roomPaths.Add(path);
+            }
+        }
 
         // Method used to add items to the room.
         public void AddItem(string item)
@@ -54,9 +66,17 @@ namespace DungeonExplorer
             return roomItems; // Return list of items in the room.
         }
 
-        // Method that returns the description of the room along with what items are inside of it.
-        public void GetDescription()
+        // Method that returns all the paths to other rooms.
+        public List<string> GetRoomPaths()
         {
+            return roomPaths;
+        }
+
+
+        // Method that returns the description of the room along with what items are inside of it.
+        public void GetDescription(Room currentRoom)
+        {
+            List<string> paths = roomPaths.Where(path => path != currentRoom.Name).ToList();
             Console.WriteLine(description);
             if (roomItems.Count == 0)
             {
@@ -66,6 +86,7 @@ namespace DungeonExplorer
             {
                 Console.WriteLine("There are the following items in the room: " + string.Join(", ", roomItems));
             }
+            Console.WriteLine("Following paths in the room: " + string.Join(", ", paths));
         }
     }
 }
