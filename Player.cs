@@ -13,9 +13,18 @@ namespace DungeonExplorer
             Name = name;
             Health = health;
         }
+
+        public Player()
+        {
+        }
+
+        public Player(string v)
+        {
+        }
+
         public void PickUpItem(string item)
         {
-
+            inventory.Add(item);
         }
         public string InventoryContents()
         {
