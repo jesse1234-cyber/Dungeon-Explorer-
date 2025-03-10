@@ -31,48 +31,47 @@ namespace DungeonExplorer
             {
                 //Reads a key input and stores it as variable "input"
                 var input = Console.ReadKey(true).Key;
-                //The start of an If statement that checks for each Key on the control scheme and provides its output.
-                if (input == ConsoleKey.Q)
+                //The beginning of a switch case to check through all possible inputs from the player
+               switch (input)
                 {
-                    //Displays player Name, and Health
-                    Console.WriteLine(player.Name + " Statistics:" + "\n" + "Health: " + player.Health);
-                }
-                else if (input == ConsoleKey.F)
-                {
-                    //Prints players current inventory 
-                    Console.WriteLine("Inventory:");
-                    Console.WriteLine(player.InventoryContents());
-                }
-                else if (input == ConsoleKey.E)
-                {
-                    //Prints room description
-                    Console.WriteLine(currentRoom.GetDescription());
-                }
-                else if (input == ConsoleKey.G)
-                {
-                    //Checks if the Item Variable has an item in it or is empty
-                    if (item != "")
-                    {
-                        //If there is an item, adds it to inventory and sets the item variable to empty. 
-                        Console.WriteLine("Picked up " + item);
-                        player.PickUpItem(item);
-                        item = "";
-                    }
-                    else
-                    {
-                        //Prints if there is nothing stored in Item Variable.
-                        Console.WriteLine("There is no item to pick up.");
-                    }
-                }
-                else if (input == ConsoleKey.R)
-                {
-                    //Quits the gameplay loop
-                    playing = false;
-                }
-                else
-                {
-                    //Prints if a Non-Valid input is used 
-                    Console.WriteLine("Please input a valid control");
+                    //Case is used to check the potential inputs from the player.
+                    case ConsoleKey.Q:
+                        //Prints the players UserName and Stats
+                        Console.WriteLine(player.Name + " Statistics" + "\n" + "Health " + player.Health);
+                        break;
+                    case ConsoleKey.F:
+                        //Prints the players inventory
+                        Console.WriteLine("Inventory:");
+                        Console.WriteLine(player.InventoryContents());
+                        break;
+                    case ConsoleKey.E:
+                        //Prints the description of the room.
+                        Console.WriteLine(currentRoom.GetDescription());
+                        break;
+                    case ConsoleKey.G:
+                        //If statement to check the Item variable has a value
+                        if (item != "")
+                        {
+                            //Prints Picked Up and the item name, as well as adding the item to the inventory. 
+                            Console.WriteLine("Picked Up " + item);
+                            player.PickUpItem(item);
+                            //Sets Item Variable to be blank
+                            item = "";
+                        }
+                        else
+                        {
+                            //Prints if item is blank
+                            Console.WriteLine("There is no item to pick up");
+                        }
+                        break;
+                    case ConsoleKey.R:
+                        //Ends the play loop
+                        playing = false;
+                        break;
+                    default:
+                        //Prints if no valid input is put in 
+                        Console.WriteLine("Please Input a valid control");
+                        break;
                 }
             }
         }
