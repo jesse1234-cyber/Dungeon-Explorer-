@@ -18,7 +18,7 @@ namespace Program
     // Class for the player, with health attributes and an instance of the inventory object
     public class Player
     {
-        
+        public Room CurrentRoom;
         List<ActionMenuAction> ActionMenuFunctions = new List<ActionMenuAction>();
         int posX; public void setPosX(int i) { posX = i; } public int getPosX() { return posX; }
         int posY; public void setPosY(int i) { posY = i; } public int getPosY() { return posY; }
@@ -31,11 +31,46 @@ namespace Program
             pInv = new PlayerInventory(5);
             posX = 5;
             posY = 8;
+            CurrentRoom = Map.getRoomFromArr(posX, posY);
             ActionMenuFunctions.Add(new ActionMenuAction(MoveMenu, "Move Menu"));
             ActionMenuFunctions.Add(new ActionMenuAction(pInv.fShowInventory, "Show Inventory"));
-
+            ActionMenuFunctions.Add(new ActionMenuAction(ShowRoomDescription, "Show Room Description"));
+            ActionMenuFunctions.Add(new ActionMenuAction(ScoutForItems, "Scout Around For Items"));
         }
 
+        private void ScoutForItems()
+        {
+            if (CurrentRoom.FloorItems.Count == 0)
+                Console.WriteLine("Theres nothing around here...");
+            else
+            {
+                for (int i = 0; i < CurrentRoom.FloorItems.Count; i++)
+                {
+                    Console.WriteLine("[" + (i + 1) + "] " + CurrentRoom.FloorItems[i].sName);
+                }
+            }
+            Console.WriteLine("Type the number of the item you would like to inspect / pick up.\nIf you dont want to pick any up, press 0");
+            int MChoice = GameInputs.V(CurrentRoom.FloorItems.Count, 0);
+            if (MChoice == 0)
+            {
+                return;
+            }
+            Console.WriteLine(CurrentRoom.FloorItems[MChoice - 1].sName + ": " + CurrentRoom.FloorItems[MChoice - 1].sDescription + "\n[1] Pickup\n[2] Leave");
+            if (GameInputs.V(2) == 1)
+            {
+                pInv.fPickUpItem(CurrentRoom.FloorItems[MChoice - 1]);
+                CurrentRoom.FloorItems.RemoveAt((MChoice - 1));
+            } else
+            {
+                Console.WriteLine("You Return");
+            }
+        }
+
+        private void ShowRoomDescription()
+        {
+            Console.WriteLine(CurrentRoom.GetDescription() + "\nPress Enter To Continue");
+            Console.ReadLine();
+        }
        
         private void MoveMenu()
         {
@@ -72,13 +107,17 @@ namespace Program
             {
                 // Update the map and player position
                 Map.UpdateMap(posX, posY, newX, newY);
-                posX = newX; // Update player's X position
-                posY = newY; // Update player's Y position
+                posX = newX; 
+                posY = newY; 
+
+                CurrentRoom = Map.getRoomFromArr(posX, posY); // Updates current room
 
                 // Clear the screen and show the updated map
                 Console.Clear();
                 Map.Show();
             }
+
+
         }
 
 
@@ -90,12 +129,8 @@ namespace Program
             {
                 Console.WriteLine("[" + (i+1) + "] " + ActionMenuFunctions[i].N);
             }
-            ActionMenuFunctions[(GameInputs.V(ActionMenuFunctions.Count()) - 1)].A();
-
-            
-            
+            ActionMenuFunctions[(GameInputs.V(ActionMenuFunctions.Count()) - 1)].A();        
         }
-
     }
 
 
@@ -129,7 +164,8 @@ namespace Program
         {
             if (Inventory.Count == 0)
             {
-                Console.WriteLine("Inventory Empty!!");
+                Console.WriteLine("Inventory Empty!! Press Enter To Return");
+                Console.ReadLine();
                 return;
             }
             for (int i = 0; i < Inventory.Count; i++)
@@ -185,7 +221,7 @@ namespace Program
         }
         public InventoryItem(string name, int maxNoOfItem, int noOfItem)
         {
-            sDescription = "A lethal Weapon given to you by the hand of god - Be careful man! I dont Know!";
+            sDescription = "A common food item in hyrule. eating will restore health!";
             this.sName = name;
             this.maxNoOfItem = maxNoOfItem;
             this.noOfItem = noOfItem;

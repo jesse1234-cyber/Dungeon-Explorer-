@@ -1,7 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Linq;
-using System;
-using System.Security.Cryptography;
+﻿using System;
 
 namespace Program
 {
@@ -11,9 +8,12 @@ namespace Program
         static Player P1;
         public static void Main(string[] Args)
         {
+            int x, y;
+            x = 5; y = 8;
+            Map.Init(x, y);
             P1 = new Player();
-            Map.Init(P1.getPosX(), P1.getPosY());
             Map.UpdateMap(P1.getPosX(), P1.getPosY(), P1.getPosX(), P1.getPosY());
+
             titleScreen();
         }
 
