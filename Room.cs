@@ -1,50 +1,60 @@
+using System;
+using System.Collections.Generic;
+
 namespace DungeonExplorer
 {
     public class Room
     {
         private string description;
-        private string item;  // Item the room contains (can be picked up by the player)
+        private List<string> items;  // Multiple items in the room
         public string Name { get; private set; }  // Name of the room for easy identification
 
-        // Constructor that takes a name, description, and optional item
-        public Room(string name, string description, string item = null)
+        /// <summary>
+        /// Constructor that takes a name, description, and a list of items.
+        /// </summary>
+        public Room(string name, string description, List<string> items = null)
         {
             Name = name;
             this.description = description;
-            this.item = item;
+            this.items = items ?? new List<string>();
         }
 
-        // Get the room's description
+        /// <summary>
+        /// Gets the description of the room.
+        /// </summary>
         public string GetDescription()
         {
             return $"{Name}: {description}";
         }
 
-        // Get the item in the room
-        public string GetItem()
+        /// <summary>
+        /// Gets the list of items in the room.
+        /// </summary>
+        public List<string> GetItems()
         {
-            return item ?? "No items in this room.";
+            return items;
         }
 
-        // Allow player to pick up the item (if there's an item in the room)
-        public string PickUpItem()
+        /// <summary>
+        /// Checks if the room has any items.
+        /// </summary>
+        public bool HasItems()
         {
-            if (item != null)
-            {
-                string pickedItem = item;
-                item = null;  // Once picked up, the item is removed from the room
-                return $"{pickedItem} picked up!";
-            }
-            else
-            {
-                return "There is nothing to pick up here.";
-            }
+            return items.Count > 0;
         }
 
-        // Check if the room contains an item
-        public bool HasItem()
+        /// <summary>
+        /// Allows the player to pick up an item.
+        /// </summary>
+        public bool PickUpItem(string item, Player player)
         {
-            return item != null;
+            if (items.Contains(item))
+            {
+                player.PickUpItem(item);
+                items.Remove(item);  // Remove the item from the room after it's picked up
+                return true;
+            }
+            return false;  // Item not found
         }
     }
 }
