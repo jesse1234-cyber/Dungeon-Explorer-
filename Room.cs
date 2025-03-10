@@ -1,75 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq.Expressions;
-using System.Threading;
+﻿using System.Collections.Generic;
 
-namespace DungeonExplorer
-{
-    public class Room
-    {
-        private string Description;
-        private bool ItemInside;
-        private List<string> ItemsInRoom;
-        private string RoomName;
+namespace DungeonExplorer {
+    public class Room {
+        private string description;
+        private List<string> items;
+        private string roomName;
 
-        public Room(string roomName, bool itemInside)
-        {
-            this.ItemInside = itemInside;
-            this.RoomName = roomName;
-            ItemsInRoom = new List<string>();
+        public Room(string roomName, string description, List<string> items) {
+            this.roomName = roomName;
+            this.SetDescription(roomName);
+            this.items = new List<string>();
+        }
+        public string GetRoomName() {
+            return this.roomName;
         }
 
-        private void SetDescription(string roomName)
-        {
-            if (RoomName == "Library")
-            {
-                this.Description = "A dusty library full of sorcery tomes and alchemy books. The air feels tense and you feel strange. \n" +
-                    "You see something glistening at the top of a shelf... and is that a door at the back of the room?\n";
-            }
-            // else if (roomName = 'Cellar')
+        public string GetDescription() {
+            return this.description;
         }
-
-        private void SetItems(string RoomName)
-        {
-            if (RoomName == "Library")
-            {
-                this.ItemsInRoom.Add("Spell Book");
-                this.ItemsInRoom.Add("Mysterious Potion");
-                this.ItemsInRoom.Add("Bone Key");
+        private void SetDescription(string description) {
+            if (description != null) {
+                this.description = description;
             }
         }
 
-        private void UpdateItems(string item)
-        {
-            this.ItemsInRoom.Remove(item);
+        private void AddItems(string roomName) {
+            if (roomName == "Library") {
+                this.items.Add("Spell Book");
+                this.items.Add("Mysterious Potion");
+                this.items.Add("Bone Key");
+            }
         }
 
-        public string GetDescription()
-        {
-            this.Description = "A dusty library full of sorcery tomes and alchemy books. The air feels tense and you feel strange." +
-                    "You see something glistening at the top of a shelf... and is that a door at the back of the room?";
-            return Description;
+        private void RemoveItems(string item) {
+            this.items.Remove(item);
         }
-
-        public bool RoomContentCheck()
-        {
-            return ItemInside;
-        }
-
-        /* public int GetRoomContents(List<string> itemsInRoom)
-        {
-            int numberOfItems = itemsInRoom.Count;
-            return numberOfItems;
-        }
-        */
-
-        public string GetRoomName()
-        {
-            return RoomName;
-        }
-
     }
-    
 }
