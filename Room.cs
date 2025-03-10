@@ -60,6 +60,10 @@
         {
             Potion = null;
         }
+        public void RemoveMonster()
+        {
+            Monster = null;
+        }
         public bool IsEmpty()
         {
             return Monster == null && Potion == null && Weapon == null;

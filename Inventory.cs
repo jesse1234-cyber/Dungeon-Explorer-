@@ -47,7 +47,7 @@ namespace DungeonExplorer
             string contents = "";
             if (WeaponCount() > 0)
             {
-                contents += "\nWeapons: ";
+                contents += "\nWeapons:\n";
                 for (int i = 0; i < Weapon.Count; i++)
                 {
                     contents += $"{i + 1}) {Weapon[i].Name} \n";
@@ -55,15 +55,15 @@ namespace DungeonExplorer
             }
             if (PotionCount() > 0)
             {
-                contents += "\nPotions: ";
+                contents += "\nPotions:\n";
                 for (int i = 0; i < Potion.Count; i++)
                 {
                     contents += $"{i + 1}) {Potion[i].Name} \n";
                 }
             }
-            if contents == ""
+            if (contents == "")
             {
-                contents = "Your inventory is empty.";
+                contents = "\nYour inventory is empty.\n";
             }
             return contents;
         }

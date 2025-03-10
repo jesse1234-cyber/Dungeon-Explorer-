@@ -39,7 +39,7 @@ namespace DungeonExplorer
         {
             Random dice = new Random();
             int damage = (Attack * dice.Next(1,21)) / 20;
-            Console.WriteLine($"It deals {damage} damage.");
+            Console.WriteLine($"The attack deals {damage} damage.");
             if (target.CurrentHealth - damage > 0)
             {
                 target.CurrentHealth -= damage;
@@ -80,9 +80,12 @@ namespace DungeonExplorer
         {
             while (true)
             {
-                Console.WriteLine("\nInventory:");
+                Console.WriteLine("\nStats:");
+                Console.WriteLine($"Health: {CurrentHealth}");
+                Console.WriteLine($"Attack: {Attack}");
+                Console.Write("\nInventory:");
                 Console.WriteLine(PlayerInventory.Contents());
-                string actions = "\nActions:";
+                string actions = "Actions:";
                 if (PlayerInventory.WeaponCount() > 0)
                 {
                     actions += "\nW) Equip Weapon";
@@ -116,6 +119,10 @@ namespace DungeonExplorer
                                 int weaponChoice = Convert.ToInt32(userChoice) - 1;
                                 if (0 <= weaponChoice && weaponChoice <= PlayerInventory.WeaponCount())
                                 {
+                                    if (EquippedWeapon != null)
+                                    {
+                                        PlayerInventory.AddWeapon(EquippedWeapon);
+                                    }
                                     EquipWeapon(PlayerInventory.GetWeapon(weaponChoice));
                                     break;
                                 }
