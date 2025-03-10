@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
@@ -16,24 +17,24 @@ namespace DungeonExplorer
         }
 
         // Method to pick up an item and add it to the inventory
-        public void PickUpItem(string item)
+        public string PickUpItem(string item)
         {
             inventory.Add(item);  // Adds the item to the player's inventory
-            Console.WriteLine($"{item} added to inventory.");
+            return $"{item} added to inventory."; // Return message instead of printing directly
         }
 
-        // Method to display inventory contents
+        // Method to get inventory contents
         public string InventoryContents()
         {
             return inventory.Count == 0 ? "No items in inventory." : string.Join(", ", inventory);
         }
 
-        // Method to change the player's health (for example, when they take damage or heal)
-        public void ChangeHealth(int amount)
+        // Method to change the player's health
+        public string ChangeHealth(int amount)
         {
             Health += amount;
             if (Health < 0) Health = 0;  // Ensure health doesn't drop below 0
-            Console.WriteLine($"Health changed by {amount}. Current health: {Health}");
+            return $"Health changed by {amount}. Current health: {Health}";
         }
     }
 }
