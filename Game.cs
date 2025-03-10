@@ -119,6 +119,7 @@ namespace DungeonExplorer
                 
 
                 Console.WriteLine($"a {enemy.Name} is approaching...");
+                Console.WriteLine($"To attack the {enemy.Name} you must enter 'F'");
                 bool battle = true;
 
                 while (battle)
@@ -128,8 +129,13 @@ namespace DungeonExplorer
                     int enemyDamage = enemyRandomAttack.Next(10, 30);
                     Console.WriteLine("The goblin has attacked");
                     player.Health -= enemyDamage;
-                    Console.WriteLine($"{player.Name} current health is {player.Health}");
-                    if (player.Health <= 0)
+
+                    if (player.Health > 0)
+                    {
+                        Console.WriteLine($"{player.Name} current health is {player.Health}");
+                    }
+
+                    else if (player.Health <= 0)
                     {
                         Console.WriteLine("You died, Game Over");
                         Console.WriteLine("Press any key to exit");
@@ -138,28 +144,46 @@ namespace DungeonExplorer
                         break;
                     }
 
-                    Random playerRandomAttack = new Random();
-                    int playerDamage = playerRandomAttack.Next(5, 20);
 
-                    string playerAttackInput = Console.ReadLine();
-
-                    if (playerAttackInput == "F")
+                    try
                     {
-                        enemy.Health -= playerDamage;
-                        Console.WriteLine($"{enemy.Name} current health is {enemy.Health}");
-                        if (enemy.Health <= 0)
+                        Random playerRandomAttack = new Random();
+                        int playerDamage = playerRandomAttack.Next(5, 20);
+
+                        string playerAttackInput = Console.ReadLine();
+
+                        if (playerAttackInput == "F")
                         {
-                            Console.WriteLine($"{enemy.Name} has died, you win");
-                            playing = false;
-                            break;
+                            enemy.Health -= playerDamage;
+
+                            if (enemy.Health > 0)
+                            {
+                                Console.WriteLine($"{enemy.Name} current health is {enemy.Health}");
+                            }
+
+                            
+                            else if (enemy.Health <= 0)
+                            {
+                                Console.WriteLine($"{enemy.Name} has died, you win");
+                                playing = false;
+                                break;
+                            }
+
                         }
 
+                        else
+                        {
+                            throw new NullReferenceException("You did not attack");
+                        }
                     }
 
-                    else
+                    catch (NullReferenceException ex)
                     {
-                        Console.WriteLine($"You did not attack");
+                        Console.WriteLine(ex.Message);
                     }
+
+
+                    
 
 
 
