@@ -4,22 +4,46 @@ namespace DungeonExplorer
 {
     public class Player
     {
-        public string Name { get; private set; }
-        public int Health { get; private set; }
-        private List<string> inventory = new List<string>();
+        private string n; // 'n' for name
+        private int h; // 'h' for health
+        private string stuff; // inventory
 
-        public Player(string name, int health) 
+        public Player(string name, int health)
         {
-            Name = name;
-            Health = health;
+            n = name;
+            h = health;
+            stuff = null;
         }
-        public void PickUpItem(string item)
-        {
 
-        }
-        public string InventoryContents()
+        public void pickup(string t)
         {
-            return string.Join(", ", inventory);
+            if (GetStuff() == null)
+            {
+                SetStuff(t);
+                System.Console.WriteLine(GetN() + " got " + t);
+            }
+            else
+            {
+                System.Console.WriteLine(GetN() +  " can't pickup");
+            }
         }
+        public string inv()
+        {
+            if (GetStuff() != null) { //If not empty
+                return GetStuff();
+            } else {
+                return "empty";
+            }
+        }
+
+        // Getters
+        public string GetN() { return n; }
+        public int GetH() { return h; }
+        public string GetStuff() { return stuff; }
+
+        // Setters
+        public void SetN(string newName) { n = newName; }
+        public void SetH(int newHealth) { h = newHealth; }
+        public void SetStuff(string newStuff) { stuff = newStuff; }
     }
 }
