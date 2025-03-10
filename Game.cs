@@ -77,7 +77,7 @@ namespace DungeonExplorer
         }
         /* Creating a Display intro method that will utilize methods such as PrintLetterByLetter, we are also using thread.sleep for short delay's to allow
          * the user adequate time to read along with the story, and we will also be using _clear.Terminal For a higher quality reading experiance,*/
-        public void Displayintro()
+        public String DisplayintroGetUsername()
         {
             PrintLetterByLetter("Hello.", 100);
             Thread.Sleep(1000);
@@ -89,8 +89,20 @@ namespace DungeonExplorer
             Thread.Sleep(1000);
 
             _Game_commands.ClearTerminal();
+            PrintLetterByLetter("Where am i, what is my name? *you ask yourself*", 50);
+            Thread.Sleep(1000);
+
+            _Game_commands.ClearTerminal();
+            PrintLetterByLetter("It.. Its.. Its... : ", 200);
+            string username = Console.ReadLine();
+
+            _Game_commands.ClearTerminal();
+            PrintLetterByLetter($"Ah yes.. thats right, {username}", 50);
+            Thread.Sleep(1000);
+
+            _Game_commands.ClearTerminal();
             Thread.Sleep(2000);
-            PrintLetterByLetter("*You seem to have woken up in damp decrepit dungeon, a solitary touch struggles to drown out the overwhelming darkness of the room.", 50);
+            PrintLetterByLetter("You seem to have woken up in damp decrepit dungeon, a solitary touch struggles to drown out the overwhelming darkness of the room.", 50);
             Thread.Sleep(2000);
 
             _Game_commands.ClearTerminal();
@@ -105,6 +117,7 @@ namespace DungeonExplorer
             PrintLetterByLetter("You have a choice to make:\n\n", 50);
             PrintLetterByLetter("(1) Explore the Dungeon...\n", 50);
             PrintLetterByLetter("(2) Exit through the wooden door\n\n", 50);
+            return username;
         }
 
         // Game choice utilizing Choice method
@@ -172,9 +185,9 @@ namespace DungeonExplorer
 
         public void StudyRoom()
         {
+            Console.Clear();
             intro.PrintLetterByLetter($"{currentRoom.GetDescription()}", 50);
             Thread.Sleep(2000);
-            Console.Clear();
         }
 
         public bool SearchRoom()
@@ -192,8 +205,8 @@ namespace DungeonExplorer
             while (playing)
             {
                 Console.Clear();
-                //intro.Displayintro(); // Void function only shows text for intro
-                //playing = intro.HandleYouHaveAChoice(); // possible end to the game, see intro.HandleYouHaveAChoice();
+                intro.DisplayintroGetUsername(); // Void function only shows text for intro
+                playing = intro.HandleYouHaveAChoice(); // possible end to the game, see intro.HandleYouHaveAChoice();
                 while (RoomLoop)
                 {
                     currentRoom = new Room();
