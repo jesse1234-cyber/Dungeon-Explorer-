@@ -83,6 +83,15 @@ namespace DungeonExplorer
                 Console.WriteLine("\nStats:");
                 Console.WriteLine($"Health: {CurrentHealth}");
                 Console.WriteLine($"Attack: {Attack}");
+                Console.WriteLine($"Level: {Level}");
+                if (EquippedWeapon == null)
+                {
+                    Console.WriteLine("Equipped Weapon: None");
+                }
+                else
+                {
+                    Console.WriteLine($"Equipped Weapon: {EquippedWeapon.Name}");
+                }
                 Console.Write("\nInventory:");
                 Console.WriteLine(PlayerInventory.Contents());
                 string actions = "Actions:";
@@ -119,10 +128,6 @@ namespace DungeonExplorer
                                 int weaponChoice = Convert.ToInt32(userChoice) - 1;
                                 if (0 <= weaponChoice && weaponChoice <= PlayerInventory.WeaponCount())
                                 {
-                                    if (EquippedWeapon != null)
-                                    {
-                                        PlayerInventory.AddWeapon(EquippedWeapon);
-                                    }
                                     EquipWeapon(PlayerInventory.GetWeapon(weaponChoice));
                                     break;
                                 }
@@ -198,6 +203,7 @@ namespace DungeonExplorer
                 SetAttack(Attack - EquippedWeapon.Damage);
                 EquippedWeapon = weapon;
                 SetAttack(Attack + weapon.Damage);
+                PlayerInventory.RemoveWeapon(weapon);
             }
         }
         public void UnequipWeapon()
