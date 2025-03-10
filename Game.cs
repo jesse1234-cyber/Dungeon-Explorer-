@@ -2,23 +2,25 @@
 
 namespace Program
 {
-    // Main game class, main code in here and entry point.
+    // Main game class, main game loop present in here and entry point.
     public class Game
     {
+        // Player instance
         static Player P1;
+
+        // Entry point, sets encoding to support unicode and initializes the player and the map, then starts the titlescreen.
         public static void Main(string[] Args)
         {
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
             int x, y;
             x = 5; y = 8;
             Map.Init(x, y);
             P1 = new Player();
             Map.UpdateMap(P1.getPosX(), P1.getPosY(), P1.getPosX(), P1.getPosY());
-
             titleScreen();
         }
 
-
-
+        // Simple game title screen. will have saving at some point
         public static void titleScreen()
         {
             Console.WriteLine("The Legend Of Zelda: Adventure In Text");
@@ -30,12 +32,11 @@ namespace Program
                     Console.WriteLine("Starting Game");
                     gameLoop();
                     break;  
-                case 2:
-                    Console.WriteLine("Sausage roll");
+                case 2: // Will eventually Implement saving, not done yet.
+                    Console.WriteLine("Not Implemented");
                     break;
             }
-
-            Console.ReadLine();
+           Console.ReadLine();
         }
         
 
@@ -43,11 +44,10 @@ namespace Program
         {
             do
             {
-                Console.Clear();
-                Map.Show();
-                P1.ActionMenu();
-
-
+                Console.Clear(); // Clears console at start of new turn
+                Map.Show(); // Shows Map
+                P1.ShowHealth(); // Shows players health
+                P1.ActionMenu(); // Runs the action menu of the player
             } while (true);
         }
     }
