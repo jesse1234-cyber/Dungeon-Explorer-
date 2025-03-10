@@ -25,6 +25,8 @@ namespace DungeonExplorer
             { "The path of insanity..", "A path that seems to be made of a wickedly hot substance similar to that of burning coals, would it be wise to continue?"},
         };
 
+        private static List<KeyValuePair<string, string>> AvailableRooms = RoomDescriptions.ToList();
+
         public static readonly List<string> CurrentRoomIntro = new List<string>
         {
             "You stumble along and reach a new area within the dungeon...",
@@ -36,11 +38,27 @@ namespace DungeonExplorer
 
         public Room()
         {
-            int index = random.Next(RoomDescriptions.Count);
-            var randomRoom = RoomDescriptions.ElementAt(index);
+            if (AvailableRooms.Count > 0)
+            {
+                int index = random.Next(AvailableRooms.Count);
+                var SelectedRoom = AvailableRooms[index];
 
-            name = randomRoom.Key;
-            description = randomRoom.Value;
+                if (SelectedRoom.Key != null && SelectedRoom.Value != null)
+                {
+                    name = SelectedRoom.Key;
+                    description = SelectedRoom.Value;
+                    AvailableRooms.RemoveAt(index); // Remove the room from available rooms
+                }
+            }
+            else
+            {
+                name = "null";
+                description = "null";
+            }
+        }
+        public bool AreRoomsCleared()
+        {
+            return AvailableRooms.Count == 0;
         }
         
         public string GetTitle()

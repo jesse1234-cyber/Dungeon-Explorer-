@@ -148,7 +148,7 @@ namespace DungeonExplorer
             currentRoom = new Room();
         }
 
-        public void RoomIntro()
+        public void NewAreaIntro()
         {
             intro.PrintLetterByLetter(currentRoom.GetRoomIntro(), 50);
             Thread.Sleep(2000);
@@ -162,11 +162,33 @@ namespace DungeonExplorer
             Thread.Sleep(2000);
             Console.Clear();
         }
+        
+        public bool Explore()
+        {
+            intro.PrintLetterByLetter("(1). Study this room\n", 50);
+            intro.PrintLetterByLetter("(2). Search this room for items\n\n", 50);
+            return _game_Commands.Choice("Make your choice: ", "1", "2");
+        }
+
+        public void StudyRoom()
+        {
+            intro.PrintLetterByLetter($"{currentRoom.GetDescription()}", 50);
+            Thread.Sleep(2000);
+            Console.Clear();
+        }
+
+        public bool SearchRoom()
+        {
+            return false;
+        }
 
         public void Start()
         {
             bool RoomLoop = true;
             bool playing = true;
+            bool RoomStudied = false;
+            bool RoomSearched = false;
+
             while (playing)
             {
                 Console.Clear();
@@ -175,10 +197,30 @@ namespace DungeonExplorer
                 while (RoomLoop)
                 {
                     currentRoom = new Room();
-                    RoomIntro();
+                    NewAreaIntro();
                     IntroduceNewRoom();
+                    while (!RoomStudied || !RoomSearched)
+                    {
+                        bool action = Explore();
+                        
+                        if (action && !RoomStudied)
+                        {
+                            StudyRoom();
+                            RoomStudied = true;
+
+                        }
+                        else if (!action && !RoomSearched)
+                        {
+                            SearchRoom();
+                            RoomSearched = true;
+                        }
+                    }
                 }
             }
         }
     }
 }
+
+/* note for reviewers, This code is currently incomplete and still has a few more methods to implement that can be seen in room.cs such as
+ a mostly functioning rng generator for items and the type of item! repeat rooms and items will be removed in the final product so if
+you have any suggestions on how to impliment this efficiently that would be greatly appriciated */
