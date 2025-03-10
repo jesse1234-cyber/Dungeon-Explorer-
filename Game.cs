@@ -19,7 +19,7 @@ namespace DungeonExplorer
             this.currentRoom = new Room($"{usersName} you have woken up in a dark and damp room only lit up by lanterns hanging from the ceiling. " +
                 $"\nVines and branches cover the walls of this unfamiliar location, and the sound of water drops echo." +
                 $"\nPiles of bones and pools of bloods filled the room with the smell of death and countless amounts of " +
-                $"\ndestroyed and shattered weapons filled the room with only a rusty dagger in intact.");
+                $"\ndestroyed and shattered weapons filled the room with only a rusty dagger in intact.There is also what looks like a key next to it ");
 
         }
         public void Start()
@@ -28,6 +28,8 @@ namespace DungeonExplorer
             //creates item dagger
             bool playing = true;
             Item dagger = new Item("Dagger", "a rusty old weapon");
+            Item gold_key = new Item("Gold Key", "a two prong key");
+
             while (playing)
             {
                 
@@ -55,11 +57,12 @@ namespace DungeonExplorer
                     {
                         while (true)
                         {
-                            Console.WriteLine("There is a dagger type 'yes' to pick it up");
+                            Console.WriteLine("There is a dagger and a key type 'yes' to pick it up");
                             string itemsAction = Console.ReadLine().ToLower();
                             if (itemsAction == "yes")
                             {
                                 player.PickUpItem(dagger);
+                                player.PickUpItem(gold_key);
                                 Console.WriteLine("This item has been added to your inventory");
                                 Start();
                             }
