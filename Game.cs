@@ -1,77 +1,83 @@
-public class Game
+using System;
+
+namespace DungeonExplorer
 {
-    private Player player;
-    private List<Room> rooms;   // Store multiple rooms
-    private Room currentRoom;
-
-    public Game()
+    internal class Game
     {
-        player = new Player("Player1", 100);
-        
-        // Initialize rooms
-        rooms = new List<Room>
+        private Player player;
+        private Room currentRoom;
+
+        public Game()
         {
-            new Room("The First Room", "A dark, quiet room."),
-            new Room("The Second Room", "A brightly lit room with a painting on the wall."),
-            new Room("The Treasure Room", "A room filled with treasure.")
-        };
+            // Initialize the game with one room and one player
+            player = new Player("Player1", 100);  // Create a player with name and health
+            currentRoom = new Room("First Room", "A dark room with a flickering torch.", "Sword");  // Create a room with a description and an item
+        }
 
-        // Set the initial room
-        currentRoom = rooms[0];  // Start in the first room
-    }
-
-    public void Start()
-    {
-        bool playing = true;
-        while (playing)
+        public void Start()
         {
-            Console.Clear();
-            Console.WriteLine(currentRoom.GetDescription());
-            DisplayPlayerStatus();
+            bool playing = true;  // Set to "true" to start game
 
-            Console.WriteLine("\nWhat would you like to do?");
-            Console.WriteLine("1. View Status");
-            Console.WriteLine("2. Explore Next Room");
-            Console.WriteLine("3. Exit Game");
-
-            string input = Console.ReadLine();
-            switch (input)
+            while (playing)
             {
-                case "1":
-                    DisplayPlayerStatus();
-                    break;
-                case "2":
-                    ExploreNextRoom();
-                    break;
-                case "3":
-                    Console.WriteLine("Exiting game...");
-                    playing = false;
-                    break;
-                default:
-                    Console.WriteLine("Invalid option. Please try again.");
-                    break;
+                // Show room description and player status
+                Console.Clear();  // Clears the console for better readability
+                Console.WriteLine(currentRoom.GetDescription());  // Display the current room's description
+                DisplayPlayerStatus();  // Display player status (health, inventory)
+
+                // Ask the player what they want to do
+                Console.WriteLine("\nWhat would you like to do?");
+                Console.WriteLine("1. View Status");
+                Console.WriteLine("2. Pick up an item (if available)");
+                Console.WriteLine("3. Exit Game");
+                string input = Console.ReadLine();
+
+                // Handle user input with error handling
+                switch (input)
+                {
+                    case "1":
+                        // View player status
+                        DisplayPlayerStatus();
+                        break;
+
+                    case "2":
+                        // If room has an item, let the player pick it up
+                        if (currentRoom.HasItem())
+                        {
+                            string item = currentRoom.PickUpItem();  // Pick up item from the room
+                            player.PickUpItem(item);  // Add item to the player's inventory
+                            Console.WriteLine($"You picked up a {item}.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("No items available in this room.");
+                        }
+                        break;
+
+                    case "3":
+                        // Exit the game
+                        Console.WriteLine("Exiting game...");
+                        playing = false;
+                        break;
+
+                    default:
+                        // Handle invalid commands gracefully
+                        Console.WriteLine("Invalid option. Please try again.");
+                        break;
+                }
+
+                // Wait for user to press a key before continuing to the next step
+                Console.WriteLine("\nPress any key to continue...");
+                Console.ReadKey();
             }
         }
-    }
 
-    private void ExploreNextRoom()
-    {
-        // Move to the next room (if available)
-        int currentIndex = rooms.IndexOf(currentRoom);
-        if (currentIndex < rooms.Count - 1)
+        public void DisplayPlayerStatus()
         {
-            currentRoom = rooms[currentIndex + 1];  // Move to the next room
+            // Show the player's current status: name, health, and inventory
+            Console.WriteLine($"Player: {player.Name}");
+            Console.WriteLine($"Health: {player.Health}");
+            Console.WriteLine($"Inventory: {player.InventoryContents()}");
         }
-        else
-        {
-            Console.WriteLine("You have reached the last room.");
-        }
-    }
-
-    private void DisplayPlayerStatus()
-    {
-        Console.WriteLine($"Player: {player.Name}");
-        Console.WriteLine($"Health: {player.Health}");
-        Console.WriteLine($"Inventory: {player.InventoryContents()}");
     }
 }
