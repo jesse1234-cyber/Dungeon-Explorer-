@@ -90,7 +90,7 @@ namespace DungeonExplorer
                 Console.WriteLine("Enter the name of the item you want to" +
                     " use, or enter 'C' if you wish to move on without" +
                     " using an item: ");
-                string itemUsed = Console.ReadLine().ToLower();
+                string itemUsed = Console.ReadLine().ToLower(); 
 
                 if (inventory.Contains(itemUsed)) //Checking if selected item
                                                   //is in player's inventory
