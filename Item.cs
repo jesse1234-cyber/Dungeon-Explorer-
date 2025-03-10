@@ -44,10 +44,10 @@ namespace DungeonExplorer
                 
                 case ItemType.IgnoranceSpell:
                     Console.WriteLine($"You used {Name}. You skipped all the enemies by becoming invisible.");
-                    break;
+                    return;
                 case ItemType.EliminationSpell:
                     Console.WriteLine($"You used {Name}. You eliminated all enemies.");
-                    break;
+                    return;
                 case ItemType.Weapon:
                     Console.WriteLine($"You used {Name}. It will be helpful in fights.");
                     break;

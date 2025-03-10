@@ -8,7 +8,7 @@ namespace DungeonExplorer
     public class Enemy
     {
         public string Name { get; }
-        public static int Health { get; private set; }
+        public int Health { get; private set; }
         public int Damage { get; }
         
         private static Random rndm = new Random();
@@ -46,7 +46,7 @@ namespace DungeonExplorer
             
         }
 
-        public static bool Alive()
+        public bool Alive()
         {
             return Health > 0;
         }

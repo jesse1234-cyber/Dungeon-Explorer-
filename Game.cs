@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Media;
 using System.Net.Mime;
 
@@ -32,20 +33,97 @@ namespace DungeonExplorer
             {
                 Console.WriteLine($"{x.Name} -- {x.Health} HP -- {x.Damage} DMG");
             }
+
+            while (player.GetHealth() > 0 && enemies.Any(e => e.Alive()))
+            {
+                Console.WriteLine("\nAttack: a" +
+                                  "\nHide: h");
+                string input = Console.ReadLine();
+                if (input == "h")
+                {
+                    Console.WriteLine("You tried to hide, but you couldn't. You lost 15HP");
+                    player.SetHealth(player.GetHealth() - 15);
+                    return;
+                }
+                else if (input == "a")
+                {
+                    PlayerAttacks(enemies);
+
+                    if (enemies.Any(e => e.Alive()))
+                    {
+                        EnemyAttacks(enemies);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Try again.");
+                }
+            }
+            if (player.GetHealth() > 0 && !enemies.Any(e => e.Alive()))
+            {
+                Console.WriteLine("\nYou have defeated all enemies. :)");
+            }
+            else
+            {
+                Console.WriteLine("\nYou have been defeated by enemies :(");
+                Console.WriteLine("\nUnfortunately you lost the game!");
+                return;
+            }
         }
 
         private void EnemyAttacks(List<Enemy> enemies)
         {
             foreach (var x in enemies)
             {
-                if (Enemy.Alive())
+                if (x.Alive())
                 {
-                    // Finish off the function
+                    player.SetHealth((player.GetHealth() - x.Damage));
+                    Console.WriteLine($"{x.Name} attacks you with {x.Damage}\n" +
+                                      $"You have {player.GetHealth()} HP left.");
                 }
             }
         }
+
+        private void PlayerAttacks(List<Enemy> enemies)
+        {
+            Random rndm = new Random();
+            int defaultDamage = 10;
+            int finalDamage = defaultDamage;
+            
+            // 37 % chance for critical hit
+            if (rndm.Next(100) < 37)
+            {
+                finalDamage = 25;
+                Console.WriteLine($"\nCritical hit! {finalDamage} damage");
+            }
+
+            if (player.inventoryItem != null && player.inventoryItem.Type == ItemType.Weapon)
+            {
+                switch (player.inventoryItem.Rarity)
+                {
+                    case Rarity.Common:
+                        finalDamage += 5;
+                        break;
+                    case Rarity.Rare:
+                        finalDamage += 10;
+                        break;
+                    case Rarity.Legendary:
+                        finalDamage += 30;
+                        break;
+                }
+                Console.WriteLine($"Your weapon increased your damage to {finalDamage}.");
+
+            }
+
+            foreach (var enemy in enemies.Where(e => e.Alive()))
+            {
+                enemy.TakeDamage(finalDamage);
+                Console.WriteLine($"You hit {enemy.Name} with {finalDamage} damage.\n" +
+                                  $"{enemy.Name} has {enemy.Health} HP left.");
+            }
+                
+        }
         
-        // ADD FUNCTION FOR PLAYER ATTACKS AND BATTLE COMBATS
         
         public Game()
         {
@@ -125,8 +203,15 @@ namespace DungeonExplorer
                         Console.WriteLine($"Inventory: {player.InventoryContents()}");
                         break;
                     case "c":
-                        Item newItem = GetRandomItem();
-                        player.PickUpItem(newItem);
+                        if (!player.FirstRoom)
+                        {
+                            Item newItem = GetRandomItem();
+                            player.PickUpItem(newItem);
+                        }
+                        else
+                        {
+                            Console.WriteLine("You must defeat enemies to pick up an item.");
+                        }
                         break;
                     case "d":
                         player.UseItem();
@@ -136,6 +221,9 @@ namespace DungeonExplorer
                         currentRoom = Room.GetNewRoom(currentRoom);
                         Console.WriteLine("\nYou went to the next room...");
                         Console.WriteLine("Room Description: " + currentRoom.GetDescription());
+
+                        GenerateEnemies(); // New battle in a new room 
+                        Enemies();
                         break;
                     case "f":
                         Environment.Exit(0);
