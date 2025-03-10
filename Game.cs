@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Eventing.Reader;
 using System.Media;
 using Microsoft.Win32;
@@ -20,9 +22,10 @@ namespace DungeonExplorer
             // Change the playing logic into true and populate the while loop
             bool playing = true;
             Console.WriteLine("Q - Show Stats.  F - Show Inventory.  E - Show Room Description. G - Pick up Item. R - Quit Game.");
+            string item = "Knife";
             while (playing)
             {
-                var input = Console.ReadKey().Key;
+                var input = Console.ReadKey(true).Key;
                 if (input == ConsoleKey.Q)
                 {
                     Console.WriteLine(player.Name + " Statistics:" + "\n" + "Health: " + player.Health);
@@ -38,8 +41,16 @@ namespace DungeonExplorer
                 }
                 else if (input == ConsoleKey.G)
                 {
-                    Console.WriteLine("Picked up Knife");
-                    player.PickUpItem("Knife");
+                    if (item != "")
+                    {
+                        Console.WriteLine("Picked up " + item);
+                        player.PickUpItem(item);
+                        item = "";
+                    }
+                    else
+                    {
+                        Console.WriteLine("There is no item to pick up.");
+                    }
                 }
                 else if (input == ConsoleKey.R)
                 {
