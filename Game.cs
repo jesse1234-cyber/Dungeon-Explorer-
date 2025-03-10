@@ -26,7 +26,7 @@ namespace DungeonExplorer
             }
             if (!Playing)
             {
-                Console.WriteLine("Game Over");
+                Console.WriteLine("Game Over!");
             }
         }
         // Method that enables the user to interract with the game environment.
