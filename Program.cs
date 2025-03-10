@@ -10,6 +10,7 @@ namespace DungeonExplorer
     {
         static void Main(string[] args)
         {
+            // OLK - good use of try catch block to prevent errors from crashing program
             try
             {
                 Game game = new Game(); // Create a game object

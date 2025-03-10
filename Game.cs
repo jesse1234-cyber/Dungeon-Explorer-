@@ -16,7 +16,7 @@ namespace DungeonExplorer
             string playerName = Console.ReadLine(); // Create a variable for their name
 
             player = new Player(playerName,100);    // Create the player
-            currentRoom = new Room("Damp, wet room");   // Create a room
+            currentRoom = new Room("Damp, wet room");   // Create a room // OLK - good use of instansiation.
         }
         // Main game loop method
         public void Start()
@@ -36,6 +36,8 @@ namespace DungeonExplorer
                         "\nType 'description' in order to view room description" +
                         "\nType 'status' in order to view player status");
                 }
+
+                // OLK - Consider using a switch statement here.
 
                 else if(userInput == "next room")   // If the player enters 'next room' the room and related items are generated
                 {

@@ -5,8 +5,11 @@ namespace DungeonExplorer
 {
     public class Player
     {
+        // OLK - Well coded class, functions small and easy to understand.
+
+
         // Private fields for the players name, health, inventory and an item
-        public string Name { get; private set; }
+        public string Name { get; private set; } // OLK - Good use of encapsulation
         public int Health { get; private set; }
         private List<string> inventory = new List<string>();
 
@@ -32,7 +35,7 @@ namespace DungeonExplorer
                 "Healing potion"
             };
 
-            int index = random.Next(randomItems.Length);
+            int index = random.Next(randomItems.Length); // OLK - Nice use of random for room items.
             item = randomItems[index];
             itemExists = true;  // Boolean for declaring existance of the created, randomised item
             return item;

@@ -8,7 +8,7 @@ namespace DungeonExplorer
         // Room description as private field
         private string description;
   
-        private static Random random = new Random();
+        private static Random random = new Random(); // OLK - Good use of static to make random functions avaliable within class
 
         //  Method for randomising room descriptions
         public string RandomRoom()
@@ -34,7 +34,7 @@ namespace DungeonExplorer
         // Method returning the description of the room
         public string GetDescription()
         {
-            return description;
+            return description; // OLK - Good use of encapsulation.
         }
     }
 }
