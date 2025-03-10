@@ -11,25 +11,25 @@ namespace DungeonExplorer
     {
         static void Main(string[] args)
         {
-            Room roomLeft = new Room("Spider");
-            Room roomRight = new Room("Snake");
+            Room roomLeft = new Room("You have just entered the Spider Dungeon and a boulder has blocked the exit!");
+            Room roomRight = new Room("You have just entered the Snake Dungeon and the exit has been blocked by a large boulder!");
 
             Player Player1 = new Player(100);
             Game.GameStart();
-            Player1.ShowHealth();     
+            Player1.ShowHealth();
             Game.StoryOpening();
             switch (Game.RoomChoice1())
             {
                 case "left":
                     Player1.CurrentRoom = roomLeft;
                     break;
-                   
-                case "Right":
+
+                case "right":
                     Player1.CurrentRoom = roomRight;
-                    break; 
+                    break;
             }
+             
             Console.WriteLine(Player1.CurrentRoom.GetDescription());
-            
-        }
+        }   
     }
 }

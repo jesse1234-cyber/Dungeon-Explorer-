@@ -38,7 +38,6 @@ namespace DungeonExplorer
                     Console.WriteLine("Invalid Input: Please enter left or right...");                  // Exception handling prompt user to type correct input
 
             } while (true);
-            ///
         }
 
         public void Start()
