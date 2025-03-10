@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
@@ -9,22 +10,30 @@ namespace DungeonExplorer
         public string Name { get; private set; }
         public int Health { get; private set; }
         private List<string> inventory = new List<string>();
+        public Room CurrentRoom;
 
-        public Player(string name, int health)
+        public Player(int health)
         {
-            Name = name;
             Health = health;
-            health = 100;
+            Console.WriteLine("What would you like your username to be?");
+            String Name = Console.ReadLine();
+            Console.WriteLine("Your username is: " + Name);
+                      
         }
 
-        static void Damage(int damage, int health)
+
+
+        public void Damage(int damage)
         {
-            health = health - damage;
-            damage = 20;
+            Health = Health - damage;
+            
 
         }
 
-        static void ShowHealth(int health);
+        public void ShowHealth() 
+        {
+            Console.WriteLine("Health is currently:" + Health);
+        }
         
 
 
