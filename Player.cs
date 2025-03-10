@@ -1,25 +1,18 @@
-﻿using System.Collections.Generic;
+﻿class Player:
+    def __init__(self, name):
+        self.name = name
+        self.__inventory = []  # Private attribute
+        self.health = 100  # Example health attribute
 
-namespace DungeonExplorer
-{
-    public class Player
-    {
-        public string Name { get; private set; }
-        public int Health { get; private set; }
-        private List<string> inventory = new List<string>();
+    def pick_up_item(self, item):
+        """Adds an item to the player's inventory."""
+        self.__inventory.append(item)
+        print(f"{self.name} picked up {item}!")
 
-        public Player(string name, int health) 
-        {
-            Name = name;
-            Health = health;
-        }
-        public void PickUpItem(string item)
-        {
-
-        }
-        public string InventoryContents()
-        {
-            return string.Join(", ", inventory);
-        }
-    }
-}
+    def show_inventory(self):
+        """Displays the player's inventory and health."""
+        if self.__inventory:
+            print(f"{self.name}'s Inventory: {', '.join(self.__inventory)}")
+        else:
+            print(f"{self.name} has an empty inventory.")
+        print(f"Health: {self.health}")  # Display health
