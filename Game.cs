@@ -16,8 +16,40 @@ namespace DungeonExplorer
         {
             // Initialize the game with one room and one player
 
-            Console.WriteLine("Please enter a username: ");
-            player = new Player(Console.ReadLine(), 100);
+            bool inOptions = true;
+
+            while (inOptions = true)
+            {
+                try
+                {
+
+
+                    Console.WriteLine("Please enter a username: ");
+                    string playerUsername = Console.ReadLine();
+                    player = new Player(playerUsername, 100);
+
+                    if (playerUsername.Length == 0)
+                    {
+                        throw new NullReferenceException("Username cannot be empty");
+                    }
+
+                    else
+                    {
+                        break;
+                    }
+
+                }
+
+
+
+                catch (NullReferenceException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+            
+            
             Console.WriteLine($"Welcome {player.Name}");
             currentRoom = new Room("A cold and dark room of goblins");
             enemy = new Player("goblin", 50); 
@@ -38,40 +70,52 @@ namespace DungeonExplorer
                 bool lootingRoom = true;
                 while (lootingRoom)
                 {
-                    Console.WriteLine("Press A to move right, D to move left or W to move forward");
-                    string userMoveInput = Console.ReadLine();
-                    if (userMoveInput == "A")
+
+                    try
                     {
-                        Console.WriteLine("Moving to the right");
-                        Console.WriteLine("You have found a golden sword");
-                        player.PickUpItem("A golden sword");
-                        Console.WriteLine($"The contents of your inventory are: {player.InventoryContents()}");
-                        break;
+                        Console.WriteLine("Press A to move right, D to move left or W to move forward");
+                        string userMoveInput = Console.ReadLine();
+                        if (userMoveInput == "A")
+                        {
+                            Console.WriteLine("Moving to the right");
+                            Console.WriteLine("You have found a golden sword");
+                            player.PickUpItem("A golden sword");
+                            Console.WriteLine($"The contents of your inventory are: {player.InventoryContents()}");
+                            break;
+                        }
+
+                        else if (userMoveInput == "D")
+                        {
+                            Console.WriteLine("Moving to the left");
+                            Console.WriteLine("You have found a bow and arrow");
+                            player.PickUpItem("A bow and arrow");
+                            Console.WriteLine($"The contents of your inventory are: {player.InventoryContents()}");
+                            break;
+                        }
+
+                        else if (userMoveInput == "W")
+                        {
+                            Console.WriteLine("Moving forwards");
+                            Console.WriteLine("You have found an axe");
+                            player.PickUpItem("Axe");
+                            Console.WriteLine($"The contents of your inventory are: {player.InventoryContents()}");
+                            break;
+                        }
+
+                        else
+                        {
+                            throw new ArgumentOutOfRangeException("Please enter A, D or W");
+
+                        }
                     }
 
-                    else if (userMoveInput == "D")
+                    catch (ArgumentOutOfRangeException ex)
                     {
-                        Console.WriteLine("Moving to the left");
-                        Console.WriteLine("You have found a bow and arrow");
-                        player.PickUpItem("A bow and arrow");
-                        Console.WriteLine($"The contents of your inventory are: {player.InventoryContents()}");
-                        break ;
-                    }
-
-                    else if (userMoveInput == "W")
-                    {
-                        Console.WriteLine("Moving forwards");
-                        Console.WriteLine("You have found an axe");
-                        player.PickUpItem("Axe");
-                        Console.WriteLine($"The contents of your inventory are: {player.InventoryContents()}");
-                        break ;
-                    }
-
-                    else
-                    {
-                        Console.WriteLine("You must enter an appropriate input (A, D or W)");
+                        Console.WriteLine(ex.Message);
                     }
                 }
+
+                    
                 
 
                 Console.WriteLine($"a {enemy.Name} is approaching...");
@@ -79,6 +123,7 @@ namespace DungeonExplorer
 
                 while (battle)
                 {
+
                     Random enemyRandomAttack = new Random();
                     int enemyDamage = enemyRandomAttack.Next(10, 30);
                     Console.WriteLine("The goblin has attacked");
@@ -89,6 +134,7 @@ namespace DungeonExplorer
                         Console.WriteLine("You died, Game Over");
                         Console.WriteLine("Press any key to exit");
                         Console.ReadKey();
+                        playing = false;
                     }
 
                     Random playerRandomAttack = new Random();
