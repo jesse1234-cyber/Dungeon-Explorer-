@@ -5,8 +5,7 @@
         public Monster Monster { get; private set; }
         public Potion Potion { get; private set; }
         public Weapon Weapon { get; private set; }
-        private string Description;
-
+        private string Description; // Accessed through methods detailed below.
         public Room(Monster monster, Potion potion, Weapon weapon)
         {
             Monster = monster;
@@ -14,7 +13,7 @@
             Weapon = weapon;
             Description = "";
         }
-
+        // Generates a description of the room.
         public void CreateDescription()
         {
             string description = "Room Contents:";
@@ -47,11 +46,13 @@
             }
             Description = description;
         }
+        // Returns the description of the room after making sure that it is up to date with the current contents.
         public string GetDescription()
         {
             CreateDescription();
             return Description;
         }
+        // Methods to remove items/monsters from the room.
         public void RemoveWeapon()
         {
             Weapon = null;

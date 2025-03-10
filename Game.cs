@@ -19,7 +19,7 @@ namespace DungeonExplorer
         }
         public void Start()
         {
-            // Change the playing logic into true and populate the while loop
+            // Basic game loop.
             while (Playing)
             {
                 TakeAction();
@@ -29,9 +29,12 @@ namespace DungeonExplorer
                 Console.WriteLine("Game Over");
             }
         }
+        // Method that enables the user to interract with the game environment.
         private void TakeAction()
         {
+            // Displays the room description.
             Console.WriteLine($"\n{CurrentRoom.GetDescription()}");
+            // Calculates and displays the player's available actions.
             string actions = "\nActions: \nM) Menu";
             if (CurrentRoom.Monster == null)
             {
@@ -50,6 +53,7 @@ namespace DungeonExplorer
                 actions += $"\nA) Attack {CurrentRoom.Monster.Name}";
             }
             Console.WriteLine(actions);
+            // Asks for and validates user input. While true loop until a valid input is given.
             while (true)
             {
                 Console.Write(">");
@@ -91,6 +95,7 @@ namespace DungeonExplorer
             Console.Write("Press Enter to continue.");
             Console.ReadLine();
         }
+        // Method to generate a new room. Randomly generates a monster, weapon, and potion, with the possibility of null values.
         private Room NewRoom()
         {
             Random random = new Random();
@@ -112,6 +117,7 @@ namespace DungeonExplorer
             Monster monster = monsters[random.Next(0, monsters.Length)];
             Weapon weapon = weapons[random.Next(0, weapons.Length)];
             Potion potion = null;
+            // Generates potion stats and name. Stats may be 0.
             string potionName = "";
             int potionHealthRestore = 0;
             int potionHealthBonus = 0;
@@ -139,6 +145,7 @@ namespace DungeonExplorer
                 }
                 potionName += $"Strength({potionDamageBonus})";
             }
+            // If all stats are 0, the potion remains null.
             if (!(potionHealthRestore == 0 && potionHealthBonus == 0 && potionDamageBonus == 0))
             {
                 potionName += " Potion";
@@ -146,10 +153,12 @@ namespace DungeonExplorer
             }
             return new Room(monster, potion, weapon);
         }
+        // Method to make player and monster fight.
         private void FightMonster(Monster monster)
         {
             while (Player.IsAlive)
             {
+                // If no weapon is equipped, the players's weapon is named bare hands.
                 string weapon = "your ";
                 if (Player.EquippedWeapon == null)
                 {
@@ -161,7 +170,7 @@ namespace DungeonExplorer
                 }
                 Console.WriteLine($"\nYou attack the {monster.Name} with {weapon}!");
                 Player.AttackTarget(CurrentRoom.Monster);
-                Console.ReadKey();
+                Console.ReadKey(); //ReadKey used to segment fight sequence.
                 if (CurrentRoom.Monster.IsAlive)
                 {
                     Console.WriteLine($"\nThe {monster.Name} attacks you!");
@@ -178,7 +187,7 @@ namespace DungeonExplorer
             if (!Player.IsAlive)
             {
                 Console.WriteLine("\nYou have died.");
-                Playing = false;
+                Playing = false; // Main game loop ends if player dies.
             }
             else
             {

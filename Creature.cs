@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
+    // This class forms the base of the Player and Monster classes.
     public abstract class Creature
     {
         public string Name { get; private set; }
@@ -11,7 +12,7 @@ namespace DungeonExplorer
         public int Attack { get; private set; }
         public int Level { get; private set; }
         public bool IsAlive { get; private set; }
-
+        // Constructor for the Creature class.
         public Creature(string name, int health, int attack, int level) 
         {
             Name = name;
@@ -35,10 +36,11 @@ namespace DungeonExplorer
         {
             CurrentHealth = health;
         }
+        // AttackTarget method uses a d20 roll to determine damage dealt.
         public virtual void AttackTarget(Creature target)
         {
             Random dice = new Random();
-            int damage = (Attack * dice.Next(1,21)) / 20;
+            int damage = (Attack * dice.Next(1,21)) / 20; //Attack value acts as a 'modifier' for the d20 roll.
             Console.WriteLine($"The attack deals {damage} damage.");
             if (target.CurrentHealth - damage > 0)
             {
@@ -51,13 +53,15 @@ namespace DungeonExplorer
             }
 
         }
+        // Abstract method for potion use, as monsters do not have an inventory.
         public abstract void UsePotion(Potion potion);
     }
-
+    // Player class
     public class Player : Creature
     {
         public Weapon EquippedWeapon { get; private set; }
         public Inventory PlayerInventory = new Inventory();
+        // Constructor for the Player class.
         public Player(string name, int health, int attack, int level) : base(name, health, attack, level)
         {
             EquippedWeapon = null;
@@ -76,10 +80,12 @@ namespace DungeonExplorer
             }
             SetAttack(Attack + potion.HealthBonus);
         }
+        // Menu method allows the player to check stats and use inventory.
         public void Menu()
         {
             while (true)
             {
+                // Displays stats.
                 Console.WriteLine("\nStats:");
                 Console.WriteLine($"Health: {CurrentHealth}");
                 Console.WriteLine($"Attack: {Attack}");
@@ -92,8 +98,10 @@ namespace DungeonExplorer
                 {
                     Console.WriteLine($"Equipped Weapon: {EquippedWeapon.Name}");
                 }
+                // Displays inventory with PlayerInventory.Contents().
                 Console.Write("\nInventory:");
                 Console.WriteLine(PlayerInventory.Contents());
+                // Displays and determines what actions the user can take.
                 string actions = "Actions:";
                 if (PlayerInventory.WeaponCount() > 0)
                 {
@@ -110,9 +118,11 @@ namespace DungeonExplorer
                 actions += "\nQ) Quit Menu";
                 Console.WriteLine(actions);
                 Console.Write(">");
+                // Takes and validates user input, breaks from while true loop when a valid input is given.
                 string userChoice = Console.ReadLine().ToUpper();
                 if (userChoice == "W" && PlayerInventory.WeaponCount() > 0)
                 {
+                    // While loop until user enters a valid input.
                     while (true)
                     { 
                         Console.Write("Select the weapon you want to equip, or enter Q to exit: ");
@@ -123,6 +133,7 @@ namespace DungeonExplorer
                         }
                         else
                         {
+                            // Try catch to handle invalid inputs.
                             try
                             {
                                 int weaponChoice = Convert.ToInt32(userChoice) - 1;
@@ -191,6 +202,7 @@ namespace DungeonExplorer
         }
         public void EquipWeapon(Weapon weapon)
         {
+            // If the player has a weapon equipped, this code makes sure that it is not overriden when a new weapon is equipped.
             if (EquippedWeapon == null)
             {
                 EquippedWeapon = weapon;
@@ -216,6 +228,7 @@ namespace DungeonExplorer
             }
         }
     }
+    // Monster subclass
     public class Monster : Creature
     {
         public Monster(string name, int health, int attack, int level) : base(name, health, attack, level)

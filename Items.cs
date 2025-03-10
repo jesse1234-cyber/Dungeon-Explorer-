@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
+    // This class forms the base of the Potion and Weapon classes.
     public abstract class Item
     {
         public string Name { get; private set; }
@@ -17,6 +18,7 @@ namespace DungeonExplorer
             Damage = damage;
             Description = CreateDescription();
         }
+        // Abstract method, as item values are unique to each subclass.
         public abstract string CreateDescription();
         public string GetDescription()
         {
@@ -32,9 +34,11 @@ namespace DungeonExplorer
             HealthRestore = healthRestore;
             HealthBonus = healthBonus;
         }
+        // Potion specific override of CreateDescription.
         public override string CreateDescription()
         {
             string description = $"Name: {Name}";
+            // Only adds attributes if their value > 0.
             if (HealthRestore > 0)
             {
                 description += $"\nHealth Restore: {HealthRestore}";
@@ -55,6 +59,7 @@ namespace DungeonExplorer
         public Weapon(string name, int damage) : base(name, damage)
         {
         }
+        // Weapon specific override of CreateDescription.
         public override string CreateDescription()
         {
             return $"Name: {Name}\nDamage: {Damage}";

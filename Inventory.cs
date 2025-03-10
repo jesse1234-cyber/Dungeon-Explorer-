@@ -10,6 +10,7 @@ namespace DungeonExplorer
     {
         private List<Weapon> Weapon = new List<Weapon>();
         private List<Potion> Potion = new List<Potion>();
+        // Methods for accessing information about inventory contents.
         public int WeaponCount()
         {
             return Weapon.Count;
@@ -42,6 +43,7 @@ namespace DungeonExplorer
         {
             Potion.Remove(potion);
         }
+        // Method returns the contents of the inventory.
         public string Contents()
         {
             string contents = "";
