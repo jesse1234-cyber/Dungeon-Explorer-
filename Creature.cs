@@ -78,7 +78,7 @@ namespace DungeonExplorer
             {
                 SetCurrentHealth(CurrentHealth + potion.HealthRestore);
             }
-            SetAttack(Attack + potion.HealthBonus);
+            SetAttack(Attack + potion.Damage);
         }
         // Menu method allows the player to check stats and use inventory.
         public void Menu()
