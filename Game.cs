@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Media;
+using System.Runtime.InteropServices.ComTypes;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 
 namespace DungeonExplorer
@@ -8,37 +11,126 @@ namespace DungeonExplorer
     {
         private Player player;
         private Room currentRoom;
+        //private List<string> dialogue = new List<string>();
 
         public Game()
         {
-            player = Player();
-            currentRoom = Room();
-            
-
+            Player player1 = new Player("user", 5, false);
+            Room Library = new Room("Library", true);
+            this.currentRoom = Library;
+            this.player = player1;
             // Initialize the game with one room and one player
-
+            
         }
+
         public void Start()
         {
-            // Change the playing logic into true and populate the while loop
-            
-            bool playing = false;
-            Console.WriteLine("Welcome to the Dungeon Explorer!");
-            name = Player.GetName();
-            Console.WriteLine("Hello " + name + ", beginning your adventure...");
+            Console.WriteLine("Welcome to the Dungeon Explorer!\n");
+            string username = player.GetName();
+            Console.WriteLine($"Hello {username}!\nBeginning your adventure...\n");
             Thread.Sleep(1000);
-            Console.WriteLine("...");
             bool playing = true;
+            Console.WriteLine("You finally wake up. Your head is pounding, and the suffocating air, thick with dust, " +
+                "clings to your lungs. Where are you? How did you get here? \n" +
+                "(When prompted for a choice, you may type S, I or R into the console to see info about your Status, Inventory, or the Room you are in! Or exit... :()");
+
             while (playing)
             {
-                Console.WriteLine("You awaken. Your head is pounding, and the suffocating air, thick with dust, clings to your lungs. Where are you? How did you get here?");
-                currentRoom.GetDescription();
-                Console.WriteLine("You look around the cold library, squinting while your eyes adjust. Something glistens in the corner of the room, and you hear groans from the other side." +
-                    "What do you do?" +
-                    "A: Investigate the peculiar glistening\nB: Investigate the creepy groaning\nC: Rummage through the piles of books and skim through the bookshelves");
-                playerChoice = Console.ReadLine();
-                
+                Thread.Sleep(3000);
+                Console.WriteLine("\nYou look around.\n");
+                Thread.Sleep(3000);
+                string desc = currentRoom.GetDescription();
+                string roomName = currentRoom.GetRoomName();
+                int dialogue_count = 0;
+                if (roomName == "Library" && dialogue_count < 1)
+                {
+                    Console.WriteLine($"Around you is... {desc}\n\nWhat do you do?\n" +
+                    "A: Investigate the peculiar glistening\nB: Try to open the door\n" +
+                    "C: Explore the rest of the library\n" +
+                    "S, I, R, exit for other options!\n");
+                    dialogue_count += 1;
+                }
+                // else if (currentRoom = etc)
+
+                bool invalidChoice = true;
+                while (invalidChoice)
+                {
+                    string userChoice = Console.ReadLine();
+
+                    if (userChoice == "A")
+                    {
+                        invalidChoice = false;
+                        player.PickUpItem("Mysterious Potion");
+                        string inv = player.GetInventoryContents();
+                        if (inv != "")
+                        {
+                            Console.WriteLine($"Your backpack contents are now {inv}!");
+                        }
+                        
+                    }
+
+                    else if (userChoice == "B")
+                    {
+                        invalidChoice = false;
+                        if (player.TryOpenDoor()) {
+                            return;
+                        }
+                    }
+
+                    else if (userChoice == "C")
+                    {
+                        invalidChoice = false;
+                        player.PickUpItem("Bone Key");
+
+                    }
+
+                    else if (userChoice == "I")
+                    {
+                        invalidChoice = false;
+                        Console.WriteLine("You open your backpack...");
+                        string inv = player.GetInventoryContents();
+                        if (inv.Length == 0)
+                        {
+                            Console.WriteLine("Your inventory contains... cobwebs. It's empty.\n");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Your inventory contains: " + inv);
+                        }
+
+                    }
+
+                    else if (userChoice == "R")
+                    {
+                        invalidChoice = false;
+                        Console.WriteLine(desc);
+                        //int noItemsLeft = currentRoom.GetRoomContents();
+                        //Console.WriteLine("There are " + noItemsLeft + " items left in the room!");
+
+                    }
+
+                    else if (userChoice == "S")
+                    {
+                        invalidChoice = false;
+                        int hp = player.GetHealth();
+                        Console.WriteLine($"You currently have {hp} health and you are in the {roomName}!");
+                    }
+
+                    else if (userChoice == "exit")
+                    {
+                        playing = false;
+                        return;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Please enter a valid option!");
+                    }
+                }
             }
         }
     }
 }
+
+
+
