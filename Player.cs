@@ -1,25 +1,37 @@
-﻿using System.Collections.Generic;
+public class Player {
+    // Private fields with encapsulation
+    private string _name;
+    private int _health;
+    private string _inventory;
 
-namespace DungeonExplorer
-{
-    public class Player
-    {
-        public string Name { get; private set; }
-        public int Health { get; private set; }
-        private List<string> inventory = new List<string>();
+    public Player(string name) {
+        _name = name;
+        _health = 100; // Default health
+        _inventory = ""; // Single item
+    }
 
-        public Player(string name, int health) 
-        {
-            Name = name;
-            Health = health;
+    // Getters and setters
+    public string Name { get => _name; }
+    public int Health { 
+        get => _health; 
+        set {
+            if (value < 0) _health = 0;
+            else _health = value;
         }
-        public void PickUpItem(string item)
-        {
+    }
+    public string Inventory { get => _inventory; }
 
+    // Method to pick up an item
+    public void PickUpItem(string item) {
+        if (string.IsNullOrEmpty(_inventory)) {
+            _inventory = item;
+        } else {
+            throw new InvalidOperationException("Inventory is full!");
         }
-        public string InventoryContents()
-        {
-            return string.Join(", ", inventory);
-        }
+    }
+
+    // Display player status
+    public string GetStatus() {
+        return $"Name: {_name}\nHealth: {_health}\nInventory: {_inventory}";
     }
 }
