@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 
 
 namespace DungeonExplorer
@@ -17,7 +18,7 @@ namespace DungeonExplorer
             get { return name; }
             set
             {
-                while (string.IsNullOrEmpty(value)) // Checks to see if the name is empty, if so the user is aasaked to enter the name again.
+                while (string.IsNullOrEmpty(value)) // Checks to see if the name is empty, if so the user is asked to enter the name again.
                 {
                     Console.WriteLine("Player name can't be empty.");
                     Console.Write("Enter the player name: ");
@@ -77,22 +78,27 @@ namespace DungeonExplorer
         }
 
 
-        // Method which returns the contents of the player's inventory.
-
-            if (inventory.Contains(item))
+        // Method used to remove items.
+        public void RemoveItem(string item)
+        {
+            foreach (var i in inventory)
             {
-                Console.WriteLine(item + " already in inventory!");
+                if (item == i && inventory.Count > 0)
+                {
+                    inventory.Remove(i);
+                }
+                else if (inventory.Count == 0)
+                {
+                    Console.WriteLine("No items in inventory.");
+                }
+                else
+                {
+                    Console.WriteLine("You do not have that item.");
+                }
             }
-            else
-            {
-                Console.WriteLine("Picked up: " + item);
-                inventory.Add(item);
-            }
-
-
         }
 
-
+        // Method which returns the contents of the player's inventory.
         public string InventoryContents()
         {
             if (inventory.Count == 0)
@@ -106,4 +112,3 @@ namespace DungeonExplorer
         }
     }
 }
-
