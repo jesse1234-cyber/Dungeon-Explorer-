@@ -20,22 +20,15 @@ namespace DungeonExplorer.Tests
         }
 
         [Test]
-        public void TestInitializePrototypes()
+        public void TestGameInitialization()
         {
-            // Arrange
             var game = new Game(_player);
-
-            // Act
-            game.InitializeRooms();
-
-            // Assert
             Assert.That(game, Is.Not.Null);
         }
 
         [Test]
         public void TestInitializeRooms()
         {
-            // Assert
             Assert.That(_game._rooms, Has.Count.EqualTo(4));
         }
 
@@ -54,9 +47,7 @@ namespace DungeonExplorer.Tests
         {
             var input = new StringReader("quit");
             Console.SetIn(input);
-
             _game.Start();
-
             Assert.That(_game.Playing, Is.False);
         }
 
@@ -77,15 +68,10 @@ namespace DungeonExplorer.Tests
         [Test]
         public void PlayerWinsGame()
         {
-            _game.BattleCreatures();
-            _game.MoveToNextRoom();
-            _game.BattleCreatures();
-            _game.MoveToNextRoom();
-            _game.BattleCreatures();
-            _game.MoveToNextRoom();
-            _game.BattleCreatures();
-
-            Assert.That(_game.Start(), Is.EqualTo(true));
+            var input = new StringReader("next\nbattle\nnext\nbattle\nnext\nbattle\nnext\nbattle\nnext");
+            Console.SetIn(input);
+            _game.Start();
+            Assert.That(_game.HasWon, Is.EqualTo(true));
         }
         
 
@@ -102,9 +88,12 @@ namespace DungeonExplorer.Tests
         {
             int initialHealth = _player.Health;
             _player.TakeDamage(20);
+            Assert.That(_player.Health, Is.EqualTo(initialHealth - 20));
             _player.PickUpItem(new Item("Healing Potion", healing: 20));
-            _player.Heal();
+            var input = new StringReader("heal\nquit");
+            Console.SetIn(input);
 
+            _game.Start();
             Assert.That(_player.Health, Is.GreaterThan(initialHealth - 20));
         }
     }

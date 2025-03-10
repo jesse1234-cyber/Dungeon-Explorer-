@@ -15,6 +15,7 @@ namespace DungeonExplorer
         private readonly Random _random;
         private Dictionary<string, Creature> _creaturePrototypes;
         private Dictionary<string, Item> _itemPrototypes;
+        public bool HasWon = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Game"/> class.
@@ -143,6 +144,7 @@ namespace DungeonExplorer
                     case "next":
                         if (_rooms[CurrentRoomIndex].HasTreasure())
                         {
+                            HasWon = true;
                             Playing = false;
                             return true;
                         }
