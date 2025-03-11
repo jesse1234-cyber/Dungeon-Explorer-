@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 
 
 namespace DungeonExplorer
 {
+    
     public enum ItemType { HealSpell, IgnoranceSpell, EliminationSpell, Weapon}
     public enum Rarity { Common, Rare, Legendary }
     
@@ -12,6 +14,7 @@ namespace DungeonExplorer
         public string Name { get; }
         public ItemType Type { get; }
         public Rarity Rarity { get; }
+        public static bool skipBattle { get; set; }
 
         public Item(string name, ItemType type, Rarity rarity)
         {
@@ -44,9 +47,11 @@ namespace DungeonExplorer
                 
                 case ItemType.IgnoranceSpell:
                     Console.WriteLine($"You used {Name}. You skipped all the enemies by becoming invisible.");
+                    skipBattle = true;
                     return;
                 case ItemType.EliminationSpell:
                     Console.WriteLine($"You used {Name}. You eliminated all enemies.");
+                    skipBattle = true;
                     return;
                 case ItemType.Weapon:
                     Console.WriteLine($"You used {Name}. It will be helpful in fights.");

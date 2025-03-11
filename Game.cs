@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Media;
-using System.Net.Mime;
+using System.Diagnostics;
+
 
 namespace DungeonExplorer
 {
@@ -31,7 +31,7 @@ namespace DungeonExplorer
                 Environment.Exit(0);
             }
         }
-        private List<Enemy> GenerateEnemies()
+        public List<Enemy> GenerateEnemies()
         {
             Random rndm = new Random();
             List<Enemy> enemies = new List<Enemy>();
@@ -41,10 +41,18 @@ namespace DungeonExplorer
                 enemies.Add(new Enemy((EnemyClass)rndm.Next(0, 3)));
                 // Add random enemies to the list
             }
+            
+            Debug.Assert(enemies.Count == 3, "Expected 3 enemies, count is incorrect.");
             return enemies;
         }
         public void Enemies()
         {
+            if (Item.skipBattle)
+            {
+                Console.WriteLine("\nYou used the Invisibility Cloak and skipped the enemies!");
+                Item.skipBattle = false;
+                return; 
+            }
             List<Enemy> enemies = GenerateEnemies();
             Console.WriteLine("\nOh no! You stumbled upon 3 enemies!");
 
@@ -52,6 +60,9 @@ namespace DungeonExplorer
             {
                 Console.WriteLine($"{x.Name} -- {x.Health} HP -- {x.Damage} DMG");
             }
+            
+            Debug.Assert(enemies.Count > 0, "Enemy list is empty, shouldn't happen.");
+
 
             if (player.inventoryItem != null)
             {
@@ -76,6 +87,8 @@ namespace DungeonExplorer
                 {
                     Console.WriteLine("You tried to hide, but you couldn't. You lost 15HP");
                     player.SetHealth(player.GetHealth() - 15);
+                    
+                    Debug.Assert(player.GetHealth() >= 0, "Player health is negative!");
 
                     if (player.GetHealth() <= 0)
                     {
@@ -121,6 +134,9 @@ namespace DungeonExplorer
                     player.SetHealth((player.GetHealth() - x.Damage));
                     Console.WriteLine($"{x.Name} attacks you with {x.Damage}\n" +
                                       $"You have {player.GetHealth()} HP left.");
+                    
+                    Debug.Assert(player.GetHealth() >= 0, "Player health is negative after enemy attack!");
+
                 }
             }
         }
@@ -172,6 +188,11 @@ namespace DungeonExplorer
             player = new Player("Anonymous", 100);
             currentRoom = new Room("You're in a dark room with some dim light coming from torch.");
             createItems();
+            
+            Debug.Assert(player.GetHealth() == 100, "Player health is not 100!");
+            Debug.Assert(currentRoom != null, "Room was not created!");
+
+
         }
 
         private void createItems()
@@ -184,6 +205,9 @@ namespace DungeonExplorer
                 new Item("Knife", ItemType.Weapon, Rarity.Rare),
                 new Item("Metal Axe", ItemType.Weapon, Rarity.Legendary)
             };
+            
+            Debug.Assert(possibleItems.Count > 0, "List items is empty!");
+
         }
 
         private Item GetRandomItem()
@@ -193,25 +217,28 @@ namespace DungeonExplorer
 
             List<Item> filteredItems;
             
-            if (chance <= 0) // 74 % chance for common
+            if (chance <= 57) // 57 % chance for common
             {
                 filteredItems = possibleItems.FindAll(x => x.Rarity == Rarity.Common);
             }
-            else if (chance <= 99) // 25 % chance for rare
+            else if (chance <= 89) // 32 % chance for rare
             {
                 filteredItems = possibleItems.FindAll(x => x.Rarity == Rarity.Rare);
             }
-            else // 1 % chance for legendary
+            else // 11 % chance for legendary
             {
                 filteredItems = possibleItems.FindAll(x => x.Rarity == Rarity.Legendary);
             }
+            
+            Debug.Assert(filteredItems.Count > 0, "No valid items with rarity.!");
+
 
             return filteredItems[rndm.Next(filteredItems.Count)];
         }
         
         public void Start()
         {
-            // Change the playing logic into true and populate the while loop
+            Test.RunTests();
             
             // Display the starting information to the player
             Console.WriteLine($"\nWelcome to the beginning of your adventure, {player.Name}!\n\n" +
@@ -227,6 +254,9 @@ namespace DungeonExplorer
                     Console.WriteLine("Unfortunately you died. The game is over.");
                     RestartGame();
                 }
+                
+                Debug.Assert(player.GetHealth() >= 0, "Player has no health when making a choice!");
+
                 // Display available options.
                 Console.WriteLine("\nWhat would you like to do?");
                 Console.WriteLine("View room description: a");
