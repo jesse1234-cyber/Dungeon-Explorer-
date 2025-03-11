@@ -16,7 +16,7 @@ namespace DungeonExplorer
         private int max_heal;
 
 
-
+        // Getters and setters for different parameters.
         public string Name { get; set; }
 
         public int Health { get; set; }
@@ -44,6 +44,9 @@ namespace DungeonExplorer
             get { return min_damage; }
             set { min_damage = value; }
         }
+
+
+        // Attacked method used to deal damage to the player.
         public int Attack()
         {
             Random r = new Random();
@@ -52,13 +55,7 @@ namespace DungeonExplorer
             return damage;
         }
 
-
-        public void TakeDamage(int damage)
-        {
-            Console.WriteLine($"The {Name} has lost {damage} health!");
-        }
-
-
+        // Method used for healing.
         public int Heal()
         {
             Random r = new Random();

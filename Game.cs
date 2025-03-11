@@ -82,8 +82,8 @@ namespace DungeonExplorer
                     Console.WriteLine("Commands:");
                     Console.WriteLine("Status - displays the players' name, health and inventory.");
                     Console.WriteLine("Description - displays the description of the room.");
-                    Console.WriteLine("Pick up [item name] - picks up an item from the room.");
-                    Console.WriteLine("Go to [room name] - goes to specified room.");
+                    Console.WriteLine("Pick up [item name] - picks up an item from the room. (Can only be used after viewing description)");
+                    Console.WriteLine("Go to [room name] - goes to specified room. (Can only be used after viewing description)");
                     Console.WriteLine("Use [item name] - uses the item if it can be used.");
                     Console.WriteLine("Quit - exits the game.");
                     Console.WriteLine("======================================================================");
@@ -108,7 +108,8 @@ namespace DungeonExplorer
                     {
                         player.PickUpItem(pick, currentRoom); // Calls the method to pick up the item.
                         Console.WriteLine("=====================================================");
-                        if (currentRoom == room2 && pick == "sword")
+                        if (currentRoom == room2 && pick == "sword") // If the player is in the second room and they pick up the sword they are attacked by a spider and have to fight it off.
+                            
                         {
                             Console.WriteLine("You are attacked by a Spider!");
                             while (spider.Health > 0)
@@ -125,12 +126,16 @@ namespace DungeonExplorer
                                     string enemy_to_attack = choice.Substring(6).Trim();
                                     if (!string.IsNullOrEmpty(enemy_to_attack))
                                     {
-                                        Enemy target = currentRoom.GetEnemies().FirstOrDefault(e => e.Name.Equals("Spider", StringComparison.OrdinalIgnoreCase));
-                                        if (target.Health > 0)
+                                        Enemy target = currentRoom.GetEnemies().FirstOrDefault(e => e.Name.Equals(enemy_to_attack, StringComparison.OrdinalIgnoreCase)); // Checks if the desired enemy is in the room.
+                                        if (target == null) // Checks if the target is valid.
                                         {
-                                            Console.Write($"What do you want to attack the {target.Name} with?: ");
+                                            Console.WriteLine("No such target in the room.");
+                                        }
+                                        else if (target.Health > 0) // Check if the target is alive and if it's in the room.
+                                        {
+                                            Console.Write($"What do you want to attack the {target.Name} with?: "); // Prompts the user to select a weapon/item.
                                             string choice2 = Console.ReadLine().ToLower();
-                                            if (player.InventoryContents().ToLower().Contains(choice2))
+                                            if (player.InventoryContents().ToLower().Contains(choice2)) // Calls method to check if the player has the weapon or item.
                                             {
                                                 player.Attack(target, choice2);
                                                 if (target.Health > 0)
@@ -147,18 +152,15 @@ namespace DungeonExplorer
                                                 Console.WriteLine("==============================");
                                             }
                                         }
-                                        else
-                                        {
-                                            break;
-                                        }
                                     }
                                 }
+                                // Handles the healing of the player.
                                 else if (choice.StartsWith("heal"))
                                 {
                                     string health_item = choice.Substring(4).Trim();
                                     if (!string.IsNullOrEmpty(health_item))
                                     {
-                                        player.UseItem(health_item);
+                                        player.UseItem(health_item); // Makes use of the UseItem function.
                                     }
                                     else
                                     {
@@ -179,11 +181,11 @@ namespace DungeonExplorer
                         Console.WriteLine("No item provided. Please specify which item you want to pick up.");
                         Console.WriteLine("===================================================================");
                     }
-                }
-                else if (user_input.StartsWith("go to") && description_checked == true)
+                }// Logic for allowing the player to move to different rooms.
+                else if (user_input.StartsWith("go to") && description_checked == true) //You can only go to a different room if you've checked the description.
                 {
                     string go = user_input.Substring(6).Trim();
-                    if (go.Equals("Room2", StringComparison.OrdinalIgnoreCase))
+                    if (go.Equals("Room2", StringComparison.OrdinalIgnoreCase)) //Player is only allowed to go to the second room if they have the key.
                     {
                         if (!player.InventoryContents().Contains("Key"))
                         {
@@ -201,7 +203,7 @@ namespace DungeonExplorer
                             description_checked = false;
                         }
                     }
-                    else if (targetRoom == null)
+                    else if (targetRoom == null) // Error handling.
                     {
                         Console.WriteLine("This room doesn't exist");
                     }
@@ -209,7 +211,7 @@ namespace DungeonExplorer
                     {
                         Console.WriteLine("No direct path leading to that room");
                     }
-                }
+                }// ALlow the player to use items.
                 else if (user_input.StartsWith("use"))
                 {
                     string item_to_use = user_input.Substring(3).Trim();

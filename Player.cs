@@ -144,7 +144,6 @@ namespace DungeonExplorer
             }
         }
 
-
         // Method used to remove items.
         public void RemoveItem(string item)
         {
@@ -179,4 +178,3 @@ namespace DungeonExplorer
         }
     }
 }
-
