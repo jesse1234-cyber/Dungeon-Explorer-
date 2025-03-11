@@ -530,7 +530,7 @@ namespace DungeonCrawler
                             tlist[1] = true;
                             return tlist;
                         }
-                        else { System.Environment.Exit(0); }
+                        else { Console.ReadKey(true); System.Environment.Exit(0); }
                     }
                     else if (item2.Name == "note" && item1.Name == "magnifying glass")
                     {
