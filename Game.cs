@@ -570,7 +570,8 @@ namespace DungeonCrawler
             // I instantiate a room with a list of items and features inside it and a description and room name
             List<Feature> cellfeatures = new List<Feature> { rosewoodDoor, rosewoodChest, bookCase, skeleton, leftbrazier, rightbrazier };
             Room room = new Room("dank cell", "The foreboding cell is bathed in the earthy glow of lit braziers, barely lighting cold stony walls, a heavy rosewood door studded with iron hinges, and only the sparsest of furnishings.\nThe door is set within the north wall, two flickering braziers casting orbs of low light either side of it so as to look like great fiery eyes watching you from the murk.\t\nTo the west wall there is a large chest, mingled with a cascade of rusted and disused iron shackles.\t\nTo the south wall is a small bookcase and some garments haphazardly strewn about you.\t\nTo the east wall is the last occupant; a skeleton with a permanent grin, bound fast to the wall by many interlocking heavy chains. It almost seems to watch you from dark wells where once there were its eyes. It holds something in its bony fist and something else glimmers from a place out of reach behind it.\t\t", cellInventory, cellfeatures);
-
+            Test test1 = new Test(room);
+            test1.RunForRoom();
             ///
             /// This is where the game begins for now, until i make a game class.
             /// It begins with a prologue the player can choose to skip.
@@ -585,6 +586,8 @@ namespace DungeonCrawler
 
 
             Player player1 = CharacterCreation();
+            Test test2 = new Test(player1, room);
+            test2.RunForPlayer();
 
 
 
@@ -662,7 +665,7 @@ namespace DungeonCrawler
             Combat trialBattle = new Combat(goblin, player1);
             Combat toughestBattle = new Combat(minotaur, player1);
             Combat tougherBattle = new Combat(gnoll, player1);
-
+            Test test3 = new Test(player1, room, trialBattle);
             // Dictionaries for items used on other effects (items or features)
             List<Dice> rustyDamage = new List<Dice> { D6 };
             Weapon yourRustyChains = new Weapon("rusty chain-flail", "Compared to the rest of the chains littered throughout the room these are relatively sturdy. A lone manacle at the end serves as an almost-effective morning-star.", rustyDamage, defaultCritHits, defaultGoodHits);
@@ -740,6 +743,8 @@ namespace DungeonCrawler
                         if (player1.Traits.ContainsKey("thespian"))
                         {
                             Console.WriteLine("~~ Insert dialogue choices here that may lead to freedom or a fight ~~");
+                            
+                            test3.RunForCombat();
                             if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling))
                             {
                                 trialBattle.WonFight();
@@ -828,6 +833,7 @@ namespace DungeonCrawler
                     {
                         e++;
                         List<bool> success = new List<bool>();
+                        test3.RunForCombat();
                         success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, trialBattle);
                         if (!success[0] && success[1])
                         {
@@ -869,6 +875,7 @@ namespace DungeonCrawler
                             }
                             else if (r3ply == "yes" || r3ply == "y")
                             {
+                                test3.RunForCombat();
                                 Console.WriteLine("You prise open the music box. Immediately its brass cogs begin to whir as a jaunty melody fills the room. You find the tune to be lively and cheery, but it's not long before a furious, rage-filled roar erupts from beyond the door. In a flurry of instants, boots have pounded closer, someone fumbles at the lock of your door, and finally a frenzied goblin bursts inside, scimitar drawn. For a moment you think he'll smash the music box, but instead he lunges towards you...");
                                 if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling))
                                 {
