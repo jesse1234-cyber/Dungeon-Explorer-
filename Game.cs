@@ -6,12 +6,16 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace DungeonExplorer
 {
     internal class Game
     {
         private Player player = new Player(); // Creates a new player entity.
+        private Enemy spider = new Enemy();
+        private Enemy target = new Enemy();
         private Room room1 = new Room(); // Creates a new room entity.
         private Room room2 = new Room();
         private Room room3 = new Room();
@@ -29,6 +33,10 @@ namespace DungeonExplorer
             Console.WriteLine("=============================================================================================================");
             player.Name = new_name; // Set player name.
             player.Health = 100; // Set player health.
+            spider.Name = "Spider";
+            spider.Health = 30;
+            spider.MaxDamage = 10;
+            spider.MinDamage = 5;
             // Set room names
             room1.Name = "Room1";
             room2.Name = "Room2";
@@ -37,7 +45,7 @@ namespace DungeonExplorer
             room1.Description = File.ReadAllText(@"Descriptions/room1.txt");
             room2.Description = File.ReadAllText(@"Descriptions/room2.txt");
             room3.Description = File.ReadAllText(@"Descriptions/room3.txt");
-            // Adding items and paths to the rooms.
+            // Adding items, enemies and paths to the rooms.
             room1.AddItem("Key");
             room1.AddPath("Room2");
             room1.AddPath("Room1");
@@ -45,6 +53,7 @@ namespace DungeonExplorer
             room2.AddPath("Room1");
             room2.AddPath("Room2");
             room2.AddPath("Room3");
+            room2.AddEnemy(spider);
             room3.AddItem("Healing Potion");
             room3.AddPath("Room2");
             room3.AddPath("Room3");
@@ -53,6 +62,7 @@ namespace DungeonExplorer
             rooms.Add(room1);
             rooms.Add(room2);
             rooms.Add(room3);
+            room2.AddEnemy(spider);
         }
 
         // Method to start the game and handle user commands.
@@ -74,17 +84,21 @@ namespace DungeonExplorer
                     Console.WriteLine("Description - displays the description of the room.");
                     Console.WriteLine("Pick up [item name] - picks up an item from the room.");
                     Console.WriteLine("Go to [room name] - goes to specified room.");
+                    Console.WriteLine("Use [item name] - uses the item if it can be used.");
                     Console.WriteLine("Quit - exits the game.");
+                    Console.WriteLine("======================================================================");
                 }
                 else if (user_input == "status") // Display player status.
                 {
                     Console.WriteLine("Name: " + player.Name);
                     Console.WriteLine("Health: " + player.Health);
                     Console.WriteLine("Inventory: " + player.InventoryContents());
+                    Console.WriteLine("================================================");
                 }
                 else if (user_input == "description") // Display room description.
                 {
                     currentRoom.GetDescription(currentRoom);
+                    Console.WriteLine("====================================================");
                     description_checked = true;
                 }
                 else if (user_input.StartsWith("pick up") && description_checked == true) // Pick up items.
@@ -93,10 +107,77 @@ namespace DungeonExplorer
                     if (!string.IsNullOrEmpty(pick))
                     {
                         player.PickUpItem(pick, currentRoom); // Calls the method to pick up the item.
+                        Console.WriteLine("=====================================================");
+                        if (currentRoom == room2 && pick == "sword")
+                        {
+                            Console.WriteLine("You are attacked by a Spider!");
+                            while (spider.Health > 0)
+                            {
+                                Console.WriteLine("What do you want to do?");
+                                Console.WriteLine("Heal [item name] - heal using an item");
+                                Console.WriteLine("Attack [target name] - attacks the given target.");
+                                Console.WriteLine("Your current items: " + player.InventoryContents());
+                                Console.WriteLine("========================================================");
+                                Console.Write("Make your choice: ");
+                                string choice = Console.ReadLine().ToLower();
+                                if (choice.StartsWith("attack"))
+                                {
+                                    string enemy_to_attack = choice.Substring(6).Trim();
+                                    if (!string.IsNullOrEmpty(enemy_to_attack))
+                                    {
+                                        Enemy target = currentRoom.GetEnemies().FirstOrDefault(e => e.Name.Equals("Spider", StringComparison.OrdinalIgnoreCase));
+                                        if (target.Health > 0)
+                                        {
+                                            Console.Write($"What do you want to attack the {target.Name} with?: ");
+                                            string choice2 = Console.ReadLine().ToLower();
+                                            if (player.InventoryContents().ToLower().Contains(choice2))
+                                            {
+                                                player.Attack(target, choice2);
+                                                if (target.Health > 0)
+                                                {
+                                                    int targetDamage = target.Attack();
+                                                    player.Health -= targetDamage;
+                                                    Console.WriteLine("Player's Health: " + player.Health);
+                                                    Console.WriteLine("===================================================");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("You don't have that item!");
+                                                Console.WriteLine("==============================");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                                else if (choice.StartsWith("heal"))
+                                {
+                                    string health_item = choice.Substring(4).Trim();
+                                    if (!string.IsNullOrEmpty(health_item))
+                                    {
+                                        player.UseItem(health_item);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Invalid input!");
+                                        Console.WriteLine("========================");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid input");
+                                    Console.WriteLine("===========================================");
+                                }
+                            }
+                        }
                     }
                     else
                     {
                         Console.WriteLine("No item provided. Please specify which item you want to pick up.");
+                        Console.WriteLine("===================================================================");
                     }
                 }
                 else if (user_input.StartsWith("go to") && description_checked == true)
@@ -128,6 +209,12 @@ namespace DungeonExplorer
                     {
                         Console.WriteLine("No direct path leading to that room");
                     }
+                }
+                else if (user_input.StartsWith("use"))
+                {
+                    string item_to_use = user_input.Substring(3).Trim();
+                    player.UseItem(item_to_use);
+                    Console.WriteLine("==========================================");
                 }
                 else if (user_input == "quit") // Quits the game.
                 {
