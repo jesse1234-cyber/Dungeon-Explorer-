@@ -12,12 +12,14 @@ namespace DungeonExplorer
     {
         public Player player { get; set; }
         public Room currentRoom { get; set; }
+        public Testing test { get; set; }
 
         public Game(string userName)
         {
             //Instantiates the Player and currentRoom objects using the classes in Room.cs and Player.cs
             player = new Player(userName, 15);
             currentRoom = new Room("A kitchen. There is a knife resting on the counter.");
+            test = new Testing();
         }
         public void Start()
         {
@@ -56,6 +58,8 @@ namespace DungeonExplorer
                             //Prints Picked Up and the item name, as well as adding the item to the inventory. 
                             Console.WriteLine("Picked Up " + item);
                             player.PickUpItem(item);
+                            string Inventory = player.InventoryContents();
+                            test.InventoryCheck(Inventory, item);
                             //Sets Item Variable to be blank
                             item = "";
                         }
