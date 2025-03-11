@@ -28,7 +28,7 @@ namespace DungeonExplorer
             bool validInput = false;
             while (!validInput)
             {
-                string input = Console.ReadLine();
+                string input = Console.ReadLine(); // Input to decide players weapon
                 if (input == "cutlass")
                 {
                     player.PickUpItem(new Item("cutlass", "A pirates right hand man"));
@@ -90,7 +90,7 @@ namespace DungeonExplorer
                 Console.Clear();
                 Console.WriteLine("What would you like to do next...?:");
 
-                Console.WriteLine("1. Continue with the story...");
+                Console.WriteLine("1. Continue with the story...");                             // Main game loop user input
                 Console.WriteLine("2. View Current Health");
                 Console.WriteLine("3. View Inventory");
                 Console.WriteLine("4. View description of room");
@@ -99,7 +99,7 @@ namespace DungeonExplorer
 
                 string userInput = Console.ReadLine();
 
-                if (userInput == "1")
+                if (userInput == "1")                                                                           // If loop to validate user input
                 {
                     Console.WriteLine("You chose to continue with the story enjoy!");
                     if (player.LevelNumber == 1)
@@ -129,13 +129,13 @@ namespace DungeonExplorer
                 }
                 else if (userInput == "5")
                 {
-                    Console.WriteLine("You chose to Exit the game");
+                    Console.WriteLine("You chose to Exit the game");                                 // Option to exit the game and terminate the console
                     Environment.Exit(0);
                 }
                 else
                 {
                     Console.WriteLine("Invalid Choice, choose a number between 1 and 5");
-                    Console.ReadLine();
+                    Console.ReadLine();                                                            // Exception handling to ensure user input is correct
                 }
 
             } while (isPlaying);
