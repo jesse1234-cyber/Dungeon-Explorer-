@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DungeonExplorer
 {
@@ -7,38 +8,105 @@ namespace DungeonExplorer
     {
         public string Name { get; private set; }
         public int Health { get; private set; }
-        private List<string> inventory = new List<string>();
+        
+        // Player inventory
+        private readonly List<Item> inventory;
+        
+        // Limit inventory size to prevent hoarding
+        private const int MAX_INVENTORY = 10;
 
         public Player(string name, int health)
         {
+            // Validate inputs
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Player needs a name!", nameof(name));
+            
+            if (health < 1)
+                throw new ArgumentException("Health must be positive", nameof(health));
+            
             Name = name;
             Health = health;
+            inventory = new List<Item>();
         }
 
-        /// <summary>
-        /// Adds an item to the player's inventory.
-        /// </summary>
-        public void PickUpItem(string item)
+        public bool PickUpItem(Item item)
         {
+            // Safety check
+            if (item == null)
+                throw new ArgumentNullException(nameof(item), "Can't pick up nothing!");
+            
+            // Check inventory space
+            if (inventory.Count >= MAX_INVENTORY)
+                return false;
+            
+            // Add to inventory
             inventory.Add(item);
+            return true;
         }
-
-        /// <summary>
-        /// Displays the player's inventory.
-        /// </summary>
-        public string InventoryContents()
+        
+        public Item RemoveItem(string itemName)
         {
-            return inventory.Count == 0 ? "No items in inventory." : string.Join(", ", inventory);
+            // Validate name
+            if (string.IsNullOrWhiteSpace(itemName))
+                throw new ArgumentException("Need an item name", nameof(itemName));
+            
+            // Find and remove item
+            var item = GetItem(itemName);
+            if (item != null)
+            {
+                inventory.Remove(item);
+                return item;
+            }
+            
+            return null;
         }
-
-        /// <summary>
-        /// Changes the player's health.
-        /// </summary>
+        
+        public Item GetItem(string itemName)
+        {
+            // Empty name check
+            if (string.IsNullOrWhiteSpace(itemName))
+                return null;
+            
+            // Case-insensitive search
+            return inventory.FirstOrDefault(i => 
+                i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+        }
+        
+        public bool HasItem(string itemName)
+        {
+            return GetItem(itemName) != null;
+        }
+        
+        public bool HasItems()
+        {
+            return inventory.Count > 0;
+        }
+        
+        public IReadOnlyList<Item> GetInventory()
+        {
+            return inventory.AsReadOnly();
+        }
+        
+        // Apply damage or healing
         public void ChangeHealth(int amount)
         {
-            Health += amount;
-            if (Health < 0) Health = 0;  // Ensure health doesn't drop below 0
-            Console.WriteLine($"Health changed by {amount}. Current health: {Health}");
+            Health = Math.Max(0, Health + amount);
+        }
+        
+        public bool IsAlive()
+        {
+            return Health > 0;
+        }
+        
+        // Calculate inventory weight (for future use)
+        public int GetInventoryCount()
+        {
+            return inventory.Count;
+        }
+        
+        public int GetRemainingCapacity()
+        {
+            return MAX_INVENTORY - inventory.Count;
         }
     }
 }
