@@ -1,68 +1,120 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using DungeonExplorer.Item.Items;
+using Microsoft.Win32;
 
-namespace DungeonExplorer.Player {
-    public class Player {
+namespace DungeonExplorer.Managers.Game {
+    internal class Game {
+        private Player.Player Player { get; set; }
+        private Room.Room CurrentRoom { get; set; }
 
-        public const int MAX_HEALTH = 100;
-        public string Name { get; set; }
-        public int Health { get; set; }
-        private List<Item.Item> inventory = new List<Item.Item>();
-
-        public Player(string name, int health)
+        public Game()
         {
-            Name = name;
-            Health = health;
+            // Initialize the game with one room and one player
+            Player = new Player.Player("Player", 100);
+            Player.PickUpItem(new HealthPotion());
+
+            CurrentRoom = new Room.Room($"Starting Room", Room.RoomType.Normal);
         }
 
-        public void PickUpItem(Item.Item item)
+        public void Start()
         {
-            inventory.Add(item);
-        }
-
-        public void UseItem(Item.Item item)
-        {
-            // item usage logic here
-            if (InventoryContents().Contains(item))
+            // Change the playing logic into true and populate the while loop
+            bool playing = true;
+            while (playing)
             {
-                Console.WriteLine($"{Name} uses {item.Name}");
-                // Apply item effects
-                item.Use(this);
+                DisplayGameStatus();
+                RoomManager.DisplayMap();
+                string action = GetPlayerAction();
+                playing = HandlePlayerAction(action);
+                Console.WriteLine("\n\n");
+            }
+        }
+
+        private void DisplayGameStatus()
+        {
+            // Method to display the player's health and inventory
+            Console.WriteLine("===== GAME STATUS =====");
+            Console.WriteLine($"Player Health: {Player.Health}/{Player.getMaxHealth()}");
+            Console.WriteLine();
+            Console.WriteLine("Player Inventory:");
+            foreach (var item in Player.InventoryContents())
+            {
+                Console.WriteLine($"- {item.Name} (ID: {item.Id})");
+            }
+            Console.WriteLine();
+            Console.WriteLine($"Current Room: {CurrentRoom.GetDescription()}");
+            Console.WriteLine("=======================");
+            Console.WriteLine();
+        }
+
+        private string GetPlayerAction()
+        {
+            // Method to display the available actions and get the player's choice
+            Console.WriteLine("What would you like to do?");
+            DisplayPlayerActions();
+            Console.Write("> ");
+            return Console.ReadLine();
+        }
+
+        private void DisplayPlayerActions()
+        {
+            // Method to display all the actions the player has
+            Console.WriteLine("Available Actions:");
+            foreach (var item in Player.InventoryContents())
+            {
+                if (item.Useable)
+                {
+                    Console.WriteLine($"- Use {item.Name} (ID: {item.Id})");
+                }
+            }
+            Console.WriteLine("- Move Up");
+            Console.WriteLine("- Move Down");
+            Console.WriteLine("- Move Left");
+            Console.WriteLine("- Move Right");
+            Console.WriteLine("- Exit");
+            Console.WriteLine();
+        }
+
+        private bool HandlePlayerAction(string action)
+        {
+            // Method to handle player actions
+            if (int.TryParse(action, out int itemId))
+            {
+                var item = Player.InventoryContents().FirstOrDefault(i => i.Id == itemId);
+                if (item != null && item.Useable)
+                {
+                    Player.UseItem(item);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid action. Please try again.");
+                }
+            }
+            else if (action.Equals("move up", StringComparison.OrdinalIgnoreCase) ||
+                     action.Equals("move down", StringComparison.OrdinalIgnoreCase) ||
+                     action.Equals("move left", StringComparison.OrdinalIgnoreCase) ||
+                     action.Equals("move right", StringComparison.OrdinalIgnoreCase))
+            {
+                string direction = action.Split(' ')[1];
+                if (!RoomManager.MovePlayer(direction, Player))
+                {
+                    Console.WriteLine("You can't move in that direction.");
+                }
+            }
+            else if (action.Equals("exit", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
             }
             else
             {
-                Console.WriteLine($"{Name} does not have {item.Name}");
+                Console.WriteLine("Invalid action. Please try again.");
             }
+            return true;
         }
-
-        public void TakeDamage(int damage)
-        {
-            Health -= damage;
-        }
-
-        public void AddHealth(int health)
-        {
-            Health += health;
-        }
-
-        public List<Item.Item> InventoryContents()
-        {
-            return inventory;
-        }
-
-        public void RemoveItem(Item.Item item)
-        {
-            inventory.Remove(item);
-            Console.WriteLine($"{item.Name} removed from inventory.");
-        }
-
-        public int getMaxHealth()
-        {
-            return MAX_HEALTH;
-        }
-
     }
 }
