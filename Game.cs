@@ -21,7 +21,9 @@ namespace DungeonExplorer
 
         public Game()
         {
-            player = new Player("Jake", 100);      // Logs player name and the health value
+            Console.WriteLine("Please enter player name: ");
+            string name = Console.ReadLine();
+            player = new Player(name, 100);      // Logs player name and the health value
             random = new Random();
             items = new List<string> { "Sword", "Compass", "Helmet", "Key", "Map", "Shield" };
             rooms = new List<Room>();
@@ -171,12 +173,12 @@ namespace DungeonExplorer
 
                     //Using catch and ApplicationException to catch any exceptions that may occur during the game
 
-                    throw new ApplicationException();
+                    
                 }
                 catch 
                 {
                     
-                    Console.WriteLine("Invalid input. Please try again.");
+                    Console.WriteLine("Error");
 
                 }
         }
