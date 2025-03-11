@@ -1,60 +1,162 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DungeonExplorer
 {
     public class Room
     {
-        private string description;
-        private List<string> items;  // Multiple items in the room
-        public string Name { get; private set; }  // Name of the room for easy identification
+        // Public name for display
+        public string Name { get; private set; }
+        
+        // Room details
+        private readonly string description;
+        private readonly List<Item> items;
+        private readonly List<Monster> monsters;
+        
+        // Exits mapped by direction
+        private readonly Dictionary<string, string> exits;
 
-        /// <summary>
-        /// Constructor that takes a name, description, and a list of items.
-        /// </summary>
-        public Room(string name, string description, List<string> items = null)
+        public Room(string name, string description)
         {
+            // Input validation
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Room needs a name!", nameof(name));
+            
+            if (string.IsNullOrWhiteSpace(description))
+                throw new ArgumentException("Room needs a description!", nameof(description));
+            
+            // Initialize room
             Name = name;
             this.description = description;
-            this.items = items ?? new List<string>();
+            items = new List<Item>();
+            monsters = new List<Monster>();
+            exits = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
 
-        /// <summary>
-        /// Gets the description of the room.
-        /// </summary>
         public string GetDescription()
         {
-            return $"{Name}: {description}";
+            return $"{Name}\n{description}";
         }
-
-        /// <summary>
-        /// Gets the list of items in the room.
-        /// </summary>
-        public List<string> GetItems()
+        
+        #region Item Management
+        
+        public void AddItem(Item item)
         {
-            return items;
+            if (item == null)
+                throw new ArgumentNullException(nameof(item), "Can't add null item!");
+            
+            items.Add(item);
         }
-
-        /// <summary>
-        /// Checks if the room has any items.
-        /// </summary>
+        
+        public bool RemoveItem(Item item)
+        {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item), "Can't remove null item!");
+            
+            return items.Remove(item);
+        }
+        
+        public Item GetItem(string itemName)
+        {
+            if (string.IsNullOrWhiteSpace(itemName))
+                return null;
+            
+            // Find item by name (case-insensitive)
+            return items.FirstOrDefault(i => 
+                i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+        }
+        
+        public IReadOnlyList<Item> GetItems()
+        {
+            return items.AsReadOnly();
+        }
+        
         public bool HasItems()
         {
             return items.Count > 0;
         }
-
-        /// <summary>
-        /// Allows the player to pick up an item.
-        /// </summary>
-        public bool PickUpItem(string item, Player player)
+        
+        #endregion
+        
+        #region Monster Management
+        
+        public void AddMonster(Monster monster)
         {
-            if (items.Contains(item))
-            {
-                player.PickUpItem(item);
-                items.Remove(item);  // Remove the item from the room after it's picked up
-                return true;
-            }
-            return false;  // Item not found
+            if (monster == null)
+                throw new ArgumentNullException(nameof(monster), "Can't add null monster!");
+            
+            monsters.Add(monster);
         }
+        
+        public bool RemoveMonster(Monster monster)
+        {
+            if (monster == null)
+                throw new ArgumentNullException(nameof(monster), "Can't remove null monster!");
+            
+            return monsters.Remove(monster);
+        }
+        
+        public Monster GetMonster(string monsterName)
+        {
+            if (string.IsNullOrWhiteSpace(monsterName))
+                return null;
+            
+            // Find monster by name (case-insensitive)
+            return monsters.FirstOrDefault(m => 
+                m.Name.Equals(monsterName, StringComparison.OrdinalIgnoreCase));
+        }
+        
+        public IReadOnlyList<Monster> GetMonsters()
+        {
+            return monsters.AsReadOnly();
+        }
+        
+        public bool HasMonsters()
+        {
+            return monsters.Count > 0;
+        }
+        
+        #endregion
+        
+        #region Exit Management
+        
+        public void AddExit(string direction, string destinationRoom)
+        {
+            // Validate parameters
+            if (string.IsNullOrWhiteSpace(direction))
+                throw new ArgumentException("Direction can't be empty", nameof(direction));
+            
+            if (string.IsNullOrWhiteSpace(destinationRoom))
+                throw new ArgumentException("Destination room can't be empty", nameof(destinationRoom));
+            
+            // Add exit (overwrites if already exists)
+            exits[direction.ToLower()] = destinationRoom;
+        }
+        
+        public string GetExitRoom(string direction)
+        {
+            if (string.IsNullOrWhiteSpace(direction))
+                return null;
+            
+            // Dictionary already uses OrdinalIgnoreCase comparer
+            return exits.TryGetValue(direction, out string destination) ? destination : null;
+        }
+        
+        public IReadOnlyDictionary<string, string> GetExits()
+        {
+            return exits;
+        }
+        
+        #endregion
+        
+        // Utility methods for later expansion
+        
+        public bool HasExit(string direction)
+        {
+            return !string.IsNullOrWhiteSpace(direction) && exits.ContainsKey(direction);
+        }
+        
+        public int ExitCount => exits.Count;
     }
 }
