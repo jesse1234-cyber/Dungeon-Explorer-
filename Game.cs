@@ -83,7 +83,7 @@ namespace DungeonExplorer
             rooms = new Dictionary<string, Room>();
             
             // Create basic dungeon layout with generic descriptions
-            var entrance = new Room("Entrance Hall", "An entrance hall to the dungeon. It's dimly lit with basic stone walls.");
+            var entrance = new Room("Entrance Hall", "An entrance hall to the dungeon. It's dimly lit with stone walls.");
             var corridor = new Room("Corridor", "A dungeon corridor that connects different rooms. It's dark and quiet.");
             var treasureRoom = new Room("Treasure Room", "A chamber that appears to hold various valuables.");
             
