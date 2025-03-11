@@ -22,7 +22,8 @@ namespace DungeonExplorer
         }
         public static void BasicEncounter()
         {
-            //to be added here: randomly genterated monsters
+            Console.WriteLine("You have been spotted and have no choice but to fight!");
+            Combat(true, "", "", 0);
         }
 
 
@@ -38,7 +39,11 @@ namespace DungeonExplorer
             //Define the name, health, and weapon of a random monster
             if (random)
             {
-                //to be added here: randomly genterated monsters
+                {
+                    n = GetName();
+                    h = rand.Next(1, 8);
+                    w = GetWeapon();
+                }
             }
             //Define the name, health, and weapon of a pre determined monster
             else
@@ -136,7 +141,7 @@ namespace DungeonExplorer
                             potionValue = potionValue - (potionValue + Program.currentPlayer.health - 10);
 
                         Program.currentPlayer.health += potionValue; //changing the users health
-                        Program.currentPlayer.potions -= 1; // changing the nu,mber of potions in the users inventory
+                        Program.currentPlayer.potions -= 1; // changing the number of potions in the users inventory
                         Console.WriteLine("You gain " + potionValue + " health."); //message to the user telling them how much health they gain
 
 
@@ -163,7 +168,43 @@ namespace DungeonExplorer
                 Console.ReadKey();
             }
         }
+        public static string GetName()
+        {
+            //Randomly generated switch case to deside what monster
+            switch (rand.Next(0, 4))
+            {
+                case 0:
+                    return "Vampire";
+                case 1:
+                    return "Troll";
+                case 2:
+                    return "Witch";
+                case 3:
+                    return "Cyclopes";
+                default:
+                    return "Human Rouge";
+
+            }
+        }
+
+        public static string GetWeapon()
+        {
+            //Randomly generated switch case to deside what weapon
+            switch (rand.Next(0, 4))
+            {
+                case 0:
+                    return "Sword";
+                case 1:
+                    return "Dagger";
+                case 2:
+                    return "Hammer";
+                case 3:
+                    return "Rapier";
+                default:
+                    return "Spear";
+
+            }
+        }
 
     }
 }
-

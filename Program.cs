@@ -19,6 +19,25 @@ namespace DungeonExplorer
                 Game.Start(); // game intro
                 Encounters.FirstEncounter(); //first fight
                 Game.Story(); //story filler after first fight
+                while (currentPlayer.roomCount <= 5 && currentPlayer.health > 0) //wile loop for wile the player has not compled each room and the player is alive
+                {
+                    Rooms.roomActions(); //generate a new room
+                    currentPlayer.roomCount += 1; //add a room to the room count
+                }
+                if (currentPlayer.roomCount == 6 && currentPlayer.health > 0) //is statment to say the player has won if they are alive and have cmpleted all rooms
+                    victory = true;
+            }
+
+            //TEMPORARY
+            if (victory == true)
+            {
+                Console.WriteLine("You win"); //win message
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.WriteLine("You died"); //lose meaage
+                Console.ReadKey();
             }
         }
     }
