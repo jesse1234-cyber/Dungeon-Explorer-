@@ -19,6 +19,10 @@ namespace Dungeon_Explorer
                     Console.WriteLine("The player's name is: " + player.Player_Name);
                     // The code below is to create a room.
                     Room room = new Room();
+                    // The code below this has been commented out because it gave the user
+                    // the same description as the first room.
+                    // The code below is to add an additional room.
+                    // Room room_2 = new Room();
                 }
             }
         }
@@ -33,6 +37,9 @@ namespace Dungeon_Explorer
                 Console.WriteLine("Please enter your name: ");
                 Player_Name = Console.ReadLine();
                 Console.WriteLine("Hello, " + Player_Name);
+                int Player_Health;
+                Player_Health = 50;
+                Console.WriteLine("Your Health is: " + Player_Health);
             }
 
             public class Inventory<T>
@@ -55,7 +62,7 @@ namespace Dungeon_Explorer
 
         public class Room
         {
-            public string Room_Description = "This is some test text.";
+            public string Room_Description = "You have entered a bleak, dark looking room.";
             public string Item { get; set; } = "Apple.";
 
             public Room()
@@ -63,11 +70,16 @@ namespace Dungeon_Explorer
                 Console.WriteLine("Room description: " + Room_Description);
                 Console.WriteLine("You have picked up an item: Apple.");
             }
+        }
 
-            // public static void Main(string[] args)
-            // {
-            // Room room = new Room();
-            // }
+        public class Monster
+        {
+            public string Monster_Description = "You have encountered an oversized frog.";
+
+            public Monster()
+            {
+                Console.WriteLine("Monster_Description: " + Monster_Description);
+            }
         }
     }
 }
