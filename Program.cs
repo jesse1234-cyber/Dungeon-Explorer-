@@ -22,11 +22,12 @@ namespace DungeonExplorer
 
             Game game = new Game();
             game.Start();
-            Console.WriteLine("welcome to the dragon dungeon ");
-            Console.WriteLine("state your name hero...");
+            //Console.WriteLine("welcome to the dragon dungeon ");
+            //Console.WriteLine("state your name hero...");
             Player P1 = new Player(Console.ReadLine(), 100);
-            Console.WriteLine("good name you will be remembered  " + P1.Name);
-            Console.WriteLine("your current health is" +     P1.Health);
+
+            //Console.WriteLine("good name you will be remembered  " + P1.Name);
+            //Console.WriteLine("your current health is" +     P1.Health);
             
             Console.WriteLine("you make your way towards the gates of a dragon dungeon...");
             Console.WriteLine("the gates rip open and you venture on in side");
@@ -50,6 +51,7 @@ namespace DungeonExplorer
 
             // Room room1 = new Room();
             //room1.GetDescription();
+
 
 
 
