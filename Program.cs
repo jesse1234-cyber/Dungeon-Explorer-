@@ -17,7 +17,6 @@ namespace DungeonExplorer
             while (currentPlayer.health > 0 && victory == false) //while the player is alive and they have no won, loop the game
             {
                 Game.Start(); // game intro
-                Encounters.FirstEncounter(); //first fight
                 Game.Story(); //story filler after first fight
                 while (currentPlayer.roomCount <= 5 && currentPlayer.health > 0) //wile loop for wile the player has not compled each room and the player is alive
                 {
@@ -30,15 +29,10 @@ namespace DungeonExplorer
 
             //TEMPORARY
             if (victory == true)
-            {
-                Console.WriteLine("You win"); //win message
-                Console.ReadKey();
-            }
+               Game.Winner(); //win message
+
             else
-            {
-                Console.WriteLine("You died"); //lose meaage
-                Console.ReadKey();
-            }
+                Game.Death(); //lose meaage
         }
     }
 }

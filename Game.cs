@@ -24,6 +24,7 @@ namespace DungeonExplorer
             //Story elements ouputted
             Console.WriteLine("You feel around in the darkness and find a door. You quietly open it and go through.");
             Console.WriteLine("You see your captor in the next room, facing away from you.");
+            Encounters.FirstEncounter();
         }
 
         public static void Story()
@@ -36,6 +37,28 @@ namespace DungeonExplorer
             Console.WriteLine("You go through the next door.");
             Console.ReadKey();
             Console.Clear();
+        }
+
+        public static void Winner()
+        {
+            Console.Clear();
+            //Text telling the user they won
+            Console.WriteLine("Opening the last door you step out into the warm outside air.");
+            Console.WriteLine("You did it! You escaped the dungoen! Congratulations!");
+            Console.WriteLine("Thank you for playing Dungeon Explorer.");
+            Console.WriteLine("Click any key to close the window.");
+            Console.ReadKey();
+        }
+
+        public static void Death()
+        {
+            Console.Clear();
+            //Text telling the user they died
+            Console.WriteLine("You didn't make it out the dungeon, you died.");
+            Console.WriteLine("commiserations.");
+            Console.WriteLine("Thank you for playing Dungeon Explorer.");
+            Console.WriteLine("Click any key to close the window.");
+            Console.ReadKey();
         }
     }
 }
