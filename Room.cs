@@ -1,4 +1,7 @@
-﻿namespace DungeonExplorer
+﻿using System;
+using System.Diagnostics.Eventing.Reader;
+
+namespace DungeonExplorer
 {
     public class Room
     {
@@ -9,9 +12,7 @@
             this.description = description;
         }
 
-        public string GetDescription()
-        {
-            return description;
-        }
+        public string GetDescription() { return this.description;  }        // Encapsulate room description 
+            
     }
-}
+} 
