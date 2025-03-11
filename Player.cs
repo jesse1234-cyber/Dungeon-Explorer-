@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DungeonExplorer
 {
@@ -74,7 +75,8 @@ namespace DungeonExplorer
         //Function which displays contents of player's inventory
         public string InventoryContents()
         {
-            return string.Join(", ", inventory);
+            return string.Join(Environment.NewLine, inventory.Select((x, n)
+                => $"{n+1}. {x}"));
         }
     }
 }

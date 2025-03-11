@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Media;
 using System.Security.Cryptography.X509Certificates;
 using DungeonExplorer;
@@ -88,98 +89,129 @@ namespace DungeonExplorer
             bool potionChoice = false;
             while (potionChoice == false)
             {
-                Console.WriteLine("Enter the name of the item you want to" +
-                    " use, or enter 'C' if you wish to move on without" +
+                Console.WriteLine("Enter the number of the item you want to" +
+                    " use, or enter '0' if you wish to move on without" +
                     " using an item: ");
-                string itemUsed = Console.ReadLine().ToLower(); 
-
-                if (inventory.Contains(itemUsed)) //Checking if selected item
-                                                  //is in player's inventory
+                string strItemUsed = Console.ReadLine();
+                //Try-catch block to handle exceptions which may arise from
+                //the user's input here
+                try
                 {
-                    if (itemUsed == "small health potion")
+                    int itemUsed = Convert.ToInt32(strItemUsed) - 1;
+                    if (itemUsed == -1)
                     {
-                        if (player1.Health <= 95)//Checks that player's health
-                                                 //is low enough to be
-                                                 //replenished
-                        {
-                            player1.Health += 5;
-                            player1.Inventory.Remove(itemUsed);//removes item
-                                                               //from the
-                                                               //player's
-                                                               //inventory once
-                                                               //used
-
-                            Console.WriteLine($"{player1.Name}'s health has "+
-                                $"been increased by 5hp \n{player1.Name}'s "+
-                                $"current health: {player1.Health}\n");
-                            potionChoice = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine($"{player1.Name}'s health is " +
-                                $"too high to use this potion\n");
-                        }
-
+                        Console.WriteLine("You decide to continue without" +
+                            " using an item");
+                        potionChoice = true;
+                        break;
                     }
-                    else if (itemUsed == "regular health potion")
+                    else if (inventory.Contains(inventory[itemUsed]))//Checks
+                                                                   //if
+                                                                   //selected
+                                                                   //item is
+                                                                   //in
+                                                                   //player's
+                                                                   //inventory
                     {
-                        if (player1.Health <= 90)
+                        if (inventory[itemUsed] == "small health potion")
                         {
-                            player1.Health += 10;
-                            player1.Inventory.Remove(itemUsed);
-                            Console.WriteLine($"{player1.Name}'s health has "+
-                                $"been increased by 10hp \n{player1.Name}'s "+
-                                $"current health: {player1.Health}\n");
-                            potionChoice = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine($"{player1.Name}'s health is" +
-                                $" too high to use this potion\n");
-                        }
+                            if (player1.Health <= 95)//Checks that player's
+                                                     //health is low enough
+                                                     //to be replenished
+                            {
+                                player1.Health += 5;
+                                //removes item from the player's inventory
+                                //once used
+                                player1.Inventory.Remove(inventory[itemUsed]);
 
+                                Console.WriteLine($"{player1.Name}'s health" +
+                                    $" has been increased by 5hp" +
+                                    $" \n{player1.Name}'s " +
+                                    $"current health: {player1.Health}\n");
+                                potionChoice = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine($"{player1.Name}'s health" +
+                                    $" is too high to use this potion\n");
+                            }
+
+                        }
+                        else if (inventory[itemUsed] == "regular health" +
+                            " potion")
+                        {
+                            if (player1.Health <= 90)
+                            {
+                                player1.Health += 10;
+                                player1.Inventory.Remove(inventory[itemUsed]);
+                                Console.WriteLine($"{player1.Name}'s health" +
+                                    $" has been increased by 10hp " +
+                                    $"\n{player1.Name}'s " +
+                                    $"current health: {player1.Health}\n");
+                                potionChoice = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine($"{player1.Name}'s health "+
+                                    $"is too high to use this potion\n");
+                            }
+
+                        }
+                        else if (inventory[itemUsed] == "large health potion")
+                        {
+                            if (player1.Health <= 80)
+                            {
+                                player1.Health += 20;
+                                player1.Inventory.Remove(inventory[itemUsed]);
+                                Console.WriteLine($"{player1.Name}'s health " +
+                                    $"has been increased by 20hp " +
+                                    $"\n{player1.Name}'s " +
+                                    $"current health: {player1.Health} \n");
+                                potionChoice = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine($"{player1.Name}'s health" +
+                                    $" is too high to use this potion \n");
+                            }
+                        }
                     }
-                    else if (itemUsed == "large health potion")
+                    else if ((inventory[itemUsed] == "small health potion"
+                        || inventory[itemUsed] == "medium health potion"
+                        || inventory[itemUsed] == "large health potion")
+                        && inventory.Contains(inventory[itemUsed]) == false)
                     {
-                        if (player1.Health <= 80)
-                        {
-                            player1.Health += 20;
-                            player1.Inventory.Remove(itemUsed);
-                            Console.WriteLine($"{player1.Name}'s health has "+
-                                $"been increased by 20hp \n{player1.Name}'s "+
-                                $"current health: {player1.Health} \n");
-                            potionChoice = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine($"{player1.Name}'s health is" +
-                                $" too high to use this potion \n");
-                        }
+                        Console.WriteLine($"You do not have this item in" +
+                            $" your inventory, please try again");
                     }
+
+                    else
+                    {
+                        Console.WriteLine("Invalid input");
+                    }
+                    potionChoice = false;
                 }
-
-                else if (itemUsed == "c")
+                //Handles exception if user enters a value that can't be
+                //converted to an integer
+                catch (FormatException)
                 {
-                    Console.WriteLine("You decide to continue without using" +
-                        " an item");
+                    Console.WriteLine("A valid number was not inputted, " +
+                        "please input the number that corresponds to the " +
+                        "item in your inventory that you wish to use");
                     potionChoice = true;
                 }
-
-                else if ((itemUsed == "small health potion" 
-                    || itemUsed == "medium health potion" 
-                    || itemUsed == "large health potion") 
-                    && inventory.Contains(itemUsed) == false)
+                //Handles exception if user enters value that is not a
+                //number corresponding to an item in their inventory
+                catch (ArgumentOutOfRangeException)
                 {
-                    Console.WriteLine($"There are no {itemUsed}'s in your" +
-                        $" inventory, please try again");
+                    Console.WriteLine("You do not have that many items " +
+                        "in your inventory, please input the number which" +
+                        "corresponds to the item in your inventory that you" +
+                        "wish to use");
+                    potionChoice = true;
                 }
-
-                else
-                {
-                    Console.WriteLine("Invalid input");
-                }
+                potionChoice = false;
             }
-            potionChoice = false;
         }
 
         public string DisplayInventory()
@@ -190,7 +222,8 @@ namespace DungeonExplorer
             }
             else
             {
-                return ($"{player1.Name}'s inventory consists of {player1.InventoryContents()}");
+                return ($"{player1.Name}'s inventory consists of: \n" +
+                    $"{player1.InventoryContents()}");
             }
         }
         //Start of game
