@@ -103,7 +103,7 @@ namespace DungeonCrawler
             
             // I instantiate a room with a list of items and features inside it and a description and room name
             List<Feature> cellfeatures = new List<Feature> {rosewoodDoor, rosewoodChest, bookCase, skeleton, leftbrazier, rightbrazier };
-            Room room = new Room("dank cell", "The foreboding cell is bathed in the earthy glow of lit braziers, barely lighting cold stony walls, a heavy rosewood door studded with iron hinges, and only the sparsest of furnishings.\nThe door is set within the north wall, two flickering braziers casting orbs of low light either side of it so as to look like great fiery eyes watching you from the murk.\t\nTo the west wall there is a large chest, mingled with a cascade of rusted and disused iron shackles.\t\nTo the south wall is a small bookcase and some garments haphazardly strewn about you.\t\nTo the east wall is the last occupant; a skeleton with a permanent grin that  almost seems to watch you from dark wells where once there were its eyes. It holds something in its bony fist.\t\t", cellInventory, cellfeatures);
+            Room room = new Room("dank cell", "The foreboding cell is bathed in the earthy glow of lit braziers, barely lighting cold stony walls, a heavy rosewood door studded with iron hinges, and only the sparsest of furnishings.\nThe door is set within the north wall, two flickering braziers casting orbs of low light either side of it so as to look like great fiery eyes watching you from the murk.\t\nTo the west wall there is a large chest, mingled with a cascade of rusted and disused iron shackles.\t\nTo the south wall is a small bookcase and some garments haphazardly strewn about you.\t\nTo the east wall is the last occupant; a skeleton with a permanent grin, bound fast to the wall by many interlocking heavy chains. It almost seems to watch you from dark wells where once there were its eyes. It holds something in its bony fist and something else glimmers from a place out of reach behind it.\t\t", cellInventory, cellfeatures);
             
             ///
             /// This is where the game begins for now, until i make a game class.
@@ -596,7 +596,9 @@ namespace DungeonCrawler
             //
             //
 
-            
+            ///Fungshui is used for ensuring 'sticky' items [items that when you pick up aren't
+            ///removed from the room] only appear once in the room even when discarded from your
+            ///pack. items are usually sticky when there's more than one of them - they're a multitude.
             void FungShui(string itemName)
             {
                 int fungShui = 0;
@@ -661,7 +663,7 @@ namespace DungeonCrawler
             List<Dice> rustyDamage = new List<Dice> { D6 };
             Weapon yourRustyChains = new Weapon("rusty chain-flail", "Compared to the rest of the chains littered throughout the room these are relatively sturdy. A lone manacle at the end serves as an almost-effective morning-star.", rustyDamage, defaultCritHits, defaultGoodHits);
             var usesDictionaryItemItem = new Dictionary<Item, List<Item>> { [magnifyingGlass]= new List<Item> { note} };
-            var usesDictionaryItemFeature = new Dictionary<Item, List<Feature>> { [steelKey] = new List<Feature> { rosewoodChest }, [yourRustyChains] = new List<Feature> { skeleton, bookCase },[breadKnife] = new List<Feature> { skeleton, bookCase }, [scimitar] = new List<Feature> { skeleton, bookCase }, [dagger] = new List<Feature> { skeleton, bookCase }, [vanquisher] = new List<Feature> { skeleton, bookCase } };
+            var usesDictionaryItemFeature = new Dictionary<Item, List<Feature>> { [magnifyingGlass] = new List<Feature>(),[steelKey] = new List<Feature> { rosewoodChest }, [yourRustyChains] = new List<Feature> { skeleton, bookCase },[breadKnife] = new List<Feature> { skeleton, bookCase }, [scimitar] = new List<Feature> { skeleton, bookCase }, [dagger] = new List<Feature> { skeleton, bookCase }, [vanquisher] = new List<Feature> { skeleton, bookCase } };
 
             if (player1.Traits.ContainsKey("friends with fairies"))
             {
@@ -690,10 +692,10 @@ namespace DungeonCrawler
             Console.WriteLine("[1] Check what items are still on your person?");
             Console.WriteLine("[2] Investigate the room?");
             Console.WriteLine("[3] Try calling for help?");
-            int a = 0;
-            int b = 0;
-            int c = 0;
-            int e = 0;
+            int a = 0;//tracks how many times you search your pack
+            int b = 0;//tracks how many times you investigate the room
+            int c = 0;//tracks how many times you try to call the guard
+            int e = 0; //tracks how many items you've used. If you use too many your time runs out and you lose the game
             ///The previous choices are your base capabilities you'll keep returning to
             ///until more options open up. classes and their functions are repeatedly called 
             ///within each, making the game deeper than might first be expected.
@@ -712,7 +714,7 @@ namespace DungeonCrawler
                 {
                     
                     int reply1 = int.Parse(reply);
-                    if (((a<1 || b<1) && (reply1 < 1 || reply1 > 3))||(reply1>4)&&!player1.Inventory.Contains(musicBox) || reply1>5)
+                    if (((a<1 || b<1) && (reply1 < 1 || reply1 > 3))||(reply1>4)&&(!player1.Inventory.Contains(musicBox) || !note.Description.Contains("blighter"))|| reply1>5)
                     {
                         Console.WriteLine("Please enter a number corresponding to a choice of action.");
                         continue;
@@ -844,7 +846,7 @@ namespace DungeonCrawler
                     {
                         e++;
                         List<bool> success = new List<bool>();
-                        success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, trialBattle);
+                        success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, trialBattle);
 
                         if (room.FeatureList.Contains(holeInCeiling))
                         {
@@ -945,8 +947,24 @@ namespace DungeonCrawler
                             else { Console.WriteLine("Please enter either 'yes' or 'no'."); }
                         }
                     }
-                    if (e > 3) // if the player fails to find an escape within a certain number of moves, then it's game over.
+                    if (e == 4)
                     {
+                        e++;
+                        Console.ReadKey(true);
+                        Console.WriteLine("Suddenly, you hear heavy boots pound up close " +
+                            "to the door of your cell. With trepidation you back away from the " +
+                            "door, worrying what fate has in store for you should it open. You " +
+                            "brace yourself to fight..." +
+                            "\nHowever, the footsteps this time pass you by. They march into another room" +
+                            ", from which issues muffled voices. Then as you strain to hear what's " +
+                            " being said, a bloodcurdling scream shatters the near-silence." +
+                            " \nYou shudder. You don't have long left. Best make the most of what time you have and " +
+                            "escape. Fast!");
+                        Console.ReadKey(true);
+                    }
+                    if (e > 7) // if the player fails to find an escape within a certain number of moves, then it's game over.
+                    {
+                        Console.ReadKey(true);
                         Console.WriteLine("You've tried as hard as you " +
                         "might to find some way out of the dank cell, but your " +
                         "time has finally run out. Heavy boots clomp outside your " +
@@ -981,7 +999,7 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[4] Try using one of your items on something...");
                         }
-                        if (player1.Inventory.Contains(musicBox))
+                        if (player1.Inventory.Contains(musicBox) && note.Description.Contains("blighter"))
                         {
                             Console.WriteLine("[5] Open the music box?");
                         }
