@@ -4,11 +4,9 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography.X509Certificates;
 
-// Need to learn about get/set methods
-
 namespace DungeonExplorer
 {
-    public class Player // Need to know how to create an object/intertwine it with the other modules. Ask AI tomorrow if after tutorial you are stuck.
+    public class Player // Need to know how to create an object/intertwine it with the other modules.
     {
         public string Name { get; private set; } // Property
         public int Health { get; private set; } // Property
@@ -28,7 +26,14 @@ namespace DungeonExplorer
         }
         public string InventoryContents() // Allows player to see inventory
         {
-            return string.Join(", ", inventory);
+            if (inventory.Count == 0) // For if nothing is currently in the player's inventory
+            {
+                return "Your inventory is empty!";
+            }
+            else
+            {
+                return string.Join(", ", inventory);
+            }
         }
     }
 }

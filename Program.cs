@@ -6,23 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// MUST add "debug.assert" as part of the CRG
+// MUST add "debug.assert" as part of the CRG (to the other files?)
 // Need to include: explanation on encapuslation (within video; making things private to a specific class- get and set methods)
-// Item ideas in template.py (need to write out the rest here and delete the file)
+// Item ideas; torch, exit key, knife (max four items? key should always be availble in one room)
 
 namespace DungeonExplorer
 {
-    internal class Program
+    internal class Program // Calls all relevant 
     {
-        static void Main(string[] args) // Belongs to the class, and is not an object (method would start each time program is ran?)
+        static void Main(string[] args) // Belongs to the class, and is not an object (static)
         {
+            NewPlayer.InputName(); // Program starts with name input
             Game game = new Game(); // game is an object of the class Game
             game.Start();
-
-            // May remove these lines/modify to put in "Start()" for the Game.cs
-            Console.WriteLine("Waiting for your Implementation");
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
         }
     }
 }
