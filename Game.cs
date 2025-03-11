@@ -12,6 +12,25 @@ namespace DungeonExplorer
         private Room currentRoom;
         private List<Item> possibleItems;
 
+
+        private void RestartGame()
+        {
+            Console.WriteLine("\nDo you want to restart the game? y/n");
+            string choice  = Console.ReadLine();
+
+            if (choice.ToLower() == "y")
+            {
+                Console.WriteLine("\nRestarting the game...");
+                System.Threading.Thread.Sleep(1000); // delay ???
+                Game newGame = new Game();
+                newGame.Start();
+            }
+            else
+            {
+                Console.WriteLine("\nThanks for playing!");
+                Environment.Exit(0);
+            }
+        }
         private List<Enemy> GenerateEnemies()
         {
             Random rndm = new Random();
@@ -34,6 +53,20 @@ namespace DungeonExplorer
                 Console.WriteLine($"{x.Name} -- {x.Health} HP -- {x.Damage} DMG");
             }
 
+            if (player.inventoryItem != null)
+            {
+                if (player.inventoryItem.Name == "Elimination Spell")
+                {
+                    Console.WriteLine("\nAll enemies are eliminated! You used Elimination Spell!");
+                    return;
+                }
+                else if (player.inventoryItem.Name == "Invisibility Cloak")
+                {
+                    Console.WriteLine("You skipped all enemies without getting damage! You used Invisibility Cloak!");
+                    return;
+                }
+                
+            }
             while (player.GetHealth() > 0 && enemies.Any(e => e.Alive()))
             {
                 Console.WriteLine("\nAttack: a" +
@@ -43,6 +76,14 @@ namespace DungeonExplorer
                 {
                     Console.WriteLine("You tried to hide, but you couldn't. You lost 15HP");
                     player.SetHealth(player.GetHealth() - 15);
+
+                    if (player.GetHealth() <= 0)
+                    {
+                        Console.WriteLine("\nYou have been defeated by enemies :(");
+                        Console.WriteLine("\nUnfortunately you lost the game!");
+                        RestartGame();  // Exit 
+                        return;
+                    }
                     return;
                 }
                 else if (input == "a")
@@ -67,7 +108,7 @@ namespace DungeonExplorer
             {
                 Console.WriteLine("\nYou have been defeated by enemies :(");
                 Console.WriteLine("\nUnfortunately you lost the game!");
-                return;
+                RestartGame();
             }
         }
 
@@ -152,7 +193,7 @@ namespace DungeonExplorer
 
             List<Item> filteredItems;
             
-            if (chance <= 74) // 74 % chance for common
+            if (chance <= 0) // 74 % chance for common
             {
                 filteredItems = possibleItems.FindAll(x => x.Rarity == Rarity.Common);
             }
@@ -181,6 +222,11 @@ namespace DungeonExplorer
             bool playing = true;
             while (playing) 
             {
+                if (player.GetHealth() <= 0)
+                {
+                    Console.WriteLine("Unfortunately you died. The game is over.");
+                    RestartGame();
+                }
                 // Display available options.
                 Console.WriteLine("\nWhat would you like to do?");
                 Console.WriteLine("View room description: a");
@@ -203,10 +249,15 @@ namespace DungeonExplorer
                         Console.WriteLine($"Inventory: {player.InventoryContents()}");
                         break;
                     case "c":
-                        if (!player.FirstRoom)
+                        if (!player.FirstRoom && !player.PickedUpItem)
                         {
                             Item newItem = GetRandomItem();
                             player.PickUpItem(newItem);
+                            player.PickedUpItem = true;
+                        }
+                        else if (!player.PickedUpItem)
+                        {
+                            Console.WriteLine("You can only pick up one item in each room");
                         }
                         else
                         {
@@ -219,6 +270,7 @@ namespace DungeonExplorer
                     case "e":
                         player.NextRoom();
                         currentRoom = Room.GetNewRoom(currentRoom);
+                        player.PickedUpItem = false;
                         Console.WriteLine("\nYou went to the next room...");
                         Console.WriteLine("Room Description: " + currentRoom.GetDescription());
 

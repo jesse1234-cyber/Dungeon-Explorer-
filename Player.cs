@@ -9,6 +9,7 @@ namespace DungeonExplorer
         private int health;
         internal Item inventoryItem;
         public bool FirstRoom { get; private set; } = true;
+        public bool PickedUpItem { get; set; } = false;
 
         public Player(string name, int health) 
         {
