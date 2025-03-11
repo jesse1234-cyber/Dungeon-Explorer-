@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace DungeonExplorer
 {
-    public class Item
+    public class Item                              // Class constructor item, creating the item for the user to pick-up
     {
         public string name;
         public string desc;
@@ -15,7 +15,7 @@ namespace DungeonExplorer
             desc = _desc;
         }
     }
-    public class Player
+    public class Player                                     // Class constructor Player
     {
         public int LevelNumber = 1;
         public string Name { get; private set; }
@@ -23,7 +23,7 @@ namespace DungeonExplorer
         private List<Item> inventory = new List<Item>();
         public Room CurrentRoom;
 
-        public Player(int health)
+        public Player(int health)                                        // Create health system and gather input from the user for username
         {
             inventory = new List<Item>();
             Health = health;
@@ -40,14 +40,14 @@ namespace DungeonExplorer
         {
             Console.WriteLine("Health is currently:" + Health);
         } 
-        public void PickUpItem(Item item)
+        public void PickUpItem(Item item)                           // Pick-up item add to inventory
         {
             inventory.Add(item);
             InventoryContents();
         }
         public void InventoryContents()
         {
-            Console.Write("Your current inventory is: ");
+            Console.Write("Your current inventory is: ");                 // Display inventory to the user
 
             foreach (Item i in inventory)
             {
