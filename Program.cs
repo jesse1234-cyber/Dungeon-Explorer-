@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+// This runs the game play when the game is started. 
 namespace DungeonExplorer
 {
     internal class Program
