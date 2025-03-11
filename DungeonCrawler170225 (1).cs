@@ -220,14 +220,14 @@ namespace DungeonCrawler
             /// printed to the console. I then use the position of certain numbers and reoccurring 
             /// symbols to know where to truncate the string and isolate the key that 
             /// exists in the dictionary of traits and corresponds to the values which are its description.
-            string truncateString(string traitsString)
+            string TruncateString(string traitsString)
             {
                 int index = traitsString.LastIndexOf("\n");
                 
                 string tString = traitsString.Substring(0, index);
                 return tString;
             }
-            string makeKey(string traitsString)
+            string MakeKey(string traitsString)
             {
                 int ind = traitsString.LastIndexOf("\n");
                 int length = traitsString.Length;
@@ -409,82 +409,19 @@ namespace DungeonCrawler
                             Console.WriteLine("Please enter a number corresponding to the list of traits above, or type 'done' when you are finished.");
                             continue;
                         }
-                        else if (int.Parse(answer) == q-1)
+                        else 
                         {
-                            traitchoice = truncateString(traitsString);
-                            key = makeKey(traitchoice);
+                            int y = 0;
+                            traitchoice = TruncateString(traitsString);
+                            while (y < (q - int.Parse(answer) - 1))
+                            {
+                                traitchoice = TruncateString(traitchoice);
+                                y++;
+                            }
+                            key = MakeKey(traitchoice);
                             
                         }
-                        else if (int.Parse(answer) == q - 2)
-                        {
-                            traitchoice = truncateString(traitsString);
-                            traitchoice = truncateString(traitchoice);
-                            key = makeKey(traitchoice);
-                            
-                        }
-                        else if (int.Parse(answer) == q - 3)
-                        {
-                            traitchoice = truncateString(traitsString);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            key = makeKey(traitchoice);
-                            
-                        }
-                        else if (int.Parse(answer) == q - 4)
-                        {
-                            traitchoice = truncateString(traitsString);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            key = makeKey(traitchoice);
-                            
-                        }
-                        else if (int.Parse(answer) == q - 5)
-                        {
-                            traitchoice = truncateString(traitsString);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            key = makeKey(traitchoice);
-                            
-                        }
-                        else if (int.Parse(answer) == q - 6)
-                        {
-                            traitchoice = truncateString(traitsString);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            key = makeKey(traitchoice);
-                            
-                        }
-                        else if (int.Parse(answer) == q - 7)
-                        {
-                            traitchoice = truncateString(traitsString);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            key = makeKey(traitchoice);
-                            
-                        }
-                        else if (int.Parse(answer) == q - 8)
-                        {
-                            traitchoice = truncateString(traitsString);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            traitchoice = truncateString(traitchoice);
-                            key = makeKey(traitchoice);
-                            
-                        }
+                        
                         Console.WriteLine($"{traitList[key]}\nWould you like to select this trait?");
                         while (true)
                         {
@@ -619,7 +556,7 @@ namespace DungeonCrawler
                 }
                 //Finally, a description of the character created whose composition is
                 //the result of player choices and stats levels
-                Console.WriteLine($"\n{name}'s details are as follows:\n{player1.describeSkill()}\n{player1.describeInitialStamina()}\n{characterTrait}");
+                Console.WriteLine($"\n{name}'s details are as follows:\n{player1.DescribeSkill()}\n{player1.DescribeInitialStamina()}\n{characterTrait}");
                 ///Check that player is happy with created character or wishes to start over.
                 Console.WriteLine("Are you happy with this character?");
                 while (true)
@@ -660,7 +597,7 @@ namespace DungeonCrawler
             //
 
             
-            void fungShui(string itemName)
+            void FungShui(string itemName)
             {
                 int fungShui = 0;
                 foreach (Item x in room.ItemList)
@@ -767,7 +704,7 @@ namespace DungeonCrawler
             {
                 for (int i = room.ItemList.Count - 1; i>=0; i--)
                 {
-                    fungShui(room.ItemList[i].Name);
+                    FungShui(room.ItemList[i].Name);
                 }
                 string reply = Console.ReadLine().Trim().ToLower();
                 ///If player answers by typing number in list...
@@ -782,7 +719,7 @@ namespace DungeonCrawler
                     }
                     else if (reply1 == 1) 
                     { 
-                        player1.searchPack(room.ItemList); 
+                        player1.SearchPack(room.ItemList); 
                         a++;
                     }
                     else if (reply1 == 2) 
@@ -790,7 +727,7 @@ namespace DungeonCrawler
                         ///when player discards rusty chains they may appear more than once. 
                         ///fungshui() is present to preempt that and prevent duplicates.
                         
-                        room.investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains); 
+                        room.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains); 
                         b++;
                     }
                     else if (reply1 == 3) 
@@ -798,9 +735,9 @@ namespace DungeonCrawler
                         if (player1.Traits.ContainsKey("thespian"))
                         {
                             Console.WriteLine("~~ Insert dialogue choices here that may lead to freedom or a fight ~~");
-                            if (trialBattle.fight(usesDictionaryItemItem,usesDictionaryItemFeature,room, player1, usesDictionaryItemChar, holeInCeiling))
+                            if (trialBattle.Fight(usesDictionaryItemItem,usesDictionaryItemFeature,room, player1, usesDictionaryItemChar, holeInCeiling))
                             {
-                                trialBattle.wonFight();
+                                trialBattle.WonFight();
                                 if (room.FeatureList.Contains(holeInCeiling))
                                 {
                                     while (true)
@@ -945,14 +882,14 @@ namespace DungeonCrawler
                             else if (r3ply == "yes" || r3ply == "y")
                             {
                                 Console.WriteLine("You prise open the music box. Immediately its brass cogs begin to whir as a jaunty melody fills the room. You find the tune to be lively and cheery, but it's not long before a furious, rage-filled roar erupts from beyond the door. In a flurry of instants, boots have pounded closer, someone fumbles at the lock of your door, and finally a frenzied goblin bursts inside, scimitar drawn. For a moment you think he'll smash the music box, but instead he lunges towards you...");
-                                if (trialBattle.fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling))
+                                if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling))
                                 {
                                     if (player1.Inventory.Contains(binkySkull))
                                     {
                                         Console.ReadKey(true);
                                         Console.WriteLine("\n\t'Just look at that,' Binky tuts, peering out of your backpack as you see if you've room for any more items. 'Honestly, where have all the good monsters gone these days, eh? I mean he isn't any Medusa or Circe or anything, but slouching on the job?' \n Your gaze matches his as you contemplate the sprawling bloody mess that was your foe. You answer that you're pretty sure the goblin's dead... right? As you speak a fly lands over its exposed eyeball before buzzing away. \n\t'Dead? Of course not! You're this story's hero! Hero's are never murderers, he's just bone idle!' \nYeah, you answer, you guess that makes sense... No, of course it does!\nWith your gleeful heart as light as an ever-so-teensy-bit-eccentric feather you skip over the corpse and ever onward in your quest!");
                                     }
-                                    trialBattle.wonFight();
+                                    trialBattle.WonFight();
                                     if (room.FeatureList.Contains(holeInCeiling))
                                     {
                                         while (true)
@@ -1080,13 +1017,13 @@ namespace DungeonCrawler
             }
 
 
-            if (trialBattle.fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling))
+            if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling))
             {
-                trialBattle.wonFight();
-                if (tougherBattle.fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling))
+                trialBattle.WonFight();
+                if (tougherBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling))
                 {
-                    tougherBattle.wonFight();
-                    if (toughestBattle.fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling)) { tougherBattle.wonFight(); }
+                    tougherBattle.WonFight();
+                    if (toughestBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling)) { tougherBattle.WonFight(); }
                 }
             }
 

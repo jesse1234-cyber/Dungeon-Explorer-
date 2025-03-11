@@ -35,7 +35,7 @@ namespace DungeonCrawler
         {
             weaponInventory.Add(weapon);
         }
-        public string studyItem(Item item)
+        public string StudyItem(Item item)
         {
             return item.Description;
         }
@@ -59,7 +59,7 @@ namespace DungeonCrawler
         /// <param name="weapon"></param>
         /// <param name="featureItems"></param>
         /// <param name="roomItems"></param>
-        public void pickUpItem(List<Item> inventory, List<Weapon> weaponInventory,  int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null, Weapon yourRustyChains = null)
+        public void PickUpItem(List<Item> inventory, List<Weapon> weaponInventory,  int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null, Weapon yourRustyChains = null)
         {
             //the following are customised messages for when an item is picked up. 
             List<string> messages = new List<string> { $"The {Name} now rests in your hands.", $"You reach over and pick up the {Name}.", $"You grasp the {Name} in your hands.", $"The {Name} is now clasped firmly in your hands.", $"With some trepidation, your clammy hand grips the {Name}.", $"You prise the {Name} from it's resting place", $"You slide the {Name} into your hands.", $"The {Name} is now nestled in your hands." };
@@ -115,7 +115,7 @@ namespace DungeonCrawler
                     {
                         if (weapon == null)//if item is not a weapon
                         {
-                            Console.WriteLine(studyItem(item));
+                            Console.WriteLine(StudyItem(item));
                             if (range == 3 || range == 4 || range == 6)
                             {
                                 Console.WriteLine($"\nWould you now like to:\n [1]study the {Name} again \n[2]stash it upon your person \n[3]place it back where you found it?");
@@ -128,7 +128,7 @@ namespace DungeonCrawler
                         }
                         else//if item is a weapon
                         {
-                            Console.WriteLine(studyItem(weapon));
+                            Console.WriteLine(StudyItem(weapon));
                             if (range == 3 || range == 4 || range == 6)
                             {
                                 Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it upon your person \n[3]place it back where you found it?");
@@ -288,7 +288,7 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="binkySkull"></param>
         /// <returns></returns>
-        public bool useItem1(Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Item binkySkull = null)
+        public bool UseItem1(Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Item binkySkull = null)
         {
             if (usesDictionary[item].Contains(feature))
             {
@@ -310,7 +310,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.search(inventory, weaponInventory);
+                                feature.Search(inventory, weaponInventory);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -388,7 +388,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.search(inventory, weaponInventory);
+                                feature.Search(inventory, weaponInventory);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -407,7 +407,7 @@ namespace DungeonCrawler
             }
             else { return false; }
         }
-        public List<bool> useItem(Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null)
+        public List<bool> UseItem(Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null)
         {
             List<bool> tlist = new List<bool> { false, false };
             if (usesDictionary[item1].Contains(item2))
@@ -428,7 +428,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         player.Inventory.Remove(item2);
                         bool fire = true;
-                        if (trialBattle.fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, fire))
+                        if (trialBattle.Fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, fire))
                         {
                             tlist[0] = true;
                             tlist[1] = true;
@@ -456,7 +456,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         player.Inventory.Remove(item2);
                         bool fire = true;
-                        if (trialBattle.fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, fire))
+                        if (trialBattle.Fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, fire))
                         {
                             tlist[0] = true;
                             tlist[1] = true;
@@ -496,7 +496,7 @@ namespace DungeonCrawler
             else { return tlist; }
 
         }
-        public bool useItem3(Item item1, Player player, Dictionary<Item, List<Player>> usesDictionary)
+        public bool UseItem3(Item item1, Player player, Dictionary<Item, List<Player>> usesDictionary)
         {
             try {
                 if (usesDictionary[item1].Contains(player))
@@ -599,7 +599,7 @@ namespace DungeonCrawler
                         else
                         {
                             player.Skill += boost;
-                            Console.WriteLine(player.describeSkill() + "Your skill has increased!");
+                            Console.WriteLine(player.DescribeSkill() + "Your skill has increased!");
                         }
                         player.Inventory.Remove(item1);
                         return true;

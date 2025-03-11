@@ -29,7 +29,7 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="b"></param>
         /// <param name="player"></param>
-        public void investigate(List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains)
+        public void Investigate(List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains)
         {
             Dice D20 = new Dice(20);
             Dice D6 = new Dice(6);
@@ -241,7 +241,7 @@ namespace DungeonCrawler
                             }
                             Console.ReadKey(true);
                             FeatureList[answer1].investigateFeature();
-                            FeatureList[answer1].search(inventory, weaponInventory);
+                            FeatureList[answer1].Search(inventory, weaponInventory);
                             Console.ReadKey(true);
                             Console.WriteLine(options);
                             continue;
@@ -273,7 +273,7 @@ namespace DungeonCrawler
                                 if (freshLoop) { continue; }
                                 List<Item> weaponSplice = new List<Item> { itemList[answer1 - FeatureList.Count] };
                                 List<Weapon> weapon1 = weaponSplice.Cast<Weapon>().ToList();
-                                weapon1[0].pickUpItem(inventory, weaponInventory, 4, 0, null, weapon1[0], null, ItemList, yourRustyChains);
+                                weapon1[0].PickUpItem(inventory, weaponInventory, 4, 0, null, weapon1[0], null, ItemList, yourRustyChains);
                             }
                             catch // if not a weapon that is to be picked up...
                             {
@@ -298,7 +298,7 @@ namespace DungeonCrawler
                                     }
                                 }
                                 if (freshLoop) { continue; }
-                                itemList[answer1 - FeatureList.Count].pickUpItem(inventory, weaponInventory, 4, 0, itemList[answer1 - FeatureList.Count], null, null, ItemList); 
+                                itemList[answer1 - FeatureList.Count].PickUpItem(inventory, weaponInventory, 4, 0, itemList[answer1 - FeatureList.Count], null, null, ItemList); 
                                     
                                 
                             }
