@@ -8,7 +8,7 @@ public class Player
     public Room CurrentRoom { get; set; }
     public List<string> Inventory { get; set; } = new List<string>();
 
-    // Constructor to initialize player with name, health, and starting room
+    //Initialise the player attributes
     public Player(string name, int health, Room currentRoom)
     {
         Name = name;
@@ -16,22 +16,11 @@ public class Player
         CurrentRoom = currentRoom;
     }
 
-    // Method to pick up an item from the current room
-    public void PickUpItem()
+    public void PickUpItem(string item)
     {
-        if (CurrentRoom.HasItem())
-        {
-            string item = CurrentRoom.Item;
-            Console.WriteLine($"You picked up the {item}!");
-            Inventory.Add(item);
-            CurrentRoom.RemoveItem(); // Remove the item from the room
-        }
-        else
-        {
-            Console.WriteLine("There is no item to collect here.");
-        }
+        Console.WriteLine($"You picked up the {item}!");
+        Inventory.Add(item);
     }
 
-    // Property to show the contents of the inventory
     public string InventoryContents => Inventory.Count > 0 ? string.Join(", ", Inventory) : "Your inventory is empty.";
 }
