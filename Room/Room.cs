@@ -10,25 +10,25 @@ namespace DungeonExplorer.Room
     public class Room
     {
         private string description;
-        private RoomType roomType;
+        private RoomT roomT;
 
-        public Room(string description, RoomType roomType) {
+        public Room(string description, RoomT roomT) {
             // Implement additional text formatting for the type of room
-            switch (roomType)
+            switch (roomT)
         {
 
-                case RoomType.Safe:
-                    description += " | SAFE ZONE |";
+                case RoomT.passive:
+                    description += " | PASSIVE ZONE |";
                     break;
-                case RoomType.Normal:
+                case RoomType.normal:
                     description += " | NORMAL ROOM |";
                     break;
-                case RoomType.Boss:
-                    description += " | BOSS ROOM |";
+                case RoomType.encounter:
+                    description += " | ENCOUNTER ROOM |";
                     break;
 
-                case RoomType.Shop:
-                    description += " | SHOP ROOM |";
+                case RoomType.Store:
+                    description += " | STORE ROOM |";
                     break;
 
                 case RoomType.Event:
@@ -41,7 +41,7 @@ namespace DungeonExplorer.Room
 
             this.description = description;
 
-            this.roomType = roomType;
+            this.roomT = roomT;
         }
 
 
@@ -50,23 +50,23 @@ namespace DungeonExplorer.Room
             return description;
         }
 
-        public RoomType getRoomType() {
+        public RoomT getRoomT() {
             return roomType;
         }
 
         public void EnterRoom(Player.Player player)
         {
-            switch (roomType)
+            switch (roomT)
             {
-                case RoomType.Event:
+                case RoomT.Event:
                     player.PickUpItem(new HealthPotion());
                     Console.WriteLine("You found a treasure room! You receive a health potion.");
                     break;
-                case RoomType.None:
+                case RoomT.None:
                     Console.WriteLine("You hit a wall.");
                     break;
                 default:
-                    Console.WriteLine("You entered a " + roomType.ToString().ToLower() + " room.");
+                    Console.WriteLine("You entered a " + roomT.ToString().ToLower() + " room.");
                     break;
             }
         }
