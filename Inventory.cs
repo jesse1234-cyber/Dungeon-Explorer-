@@ -8,40 +8,40 @@ namespace DungeonExplorer
 {
     public class Inventory
     {
-        private List<Weapon> Weapon = new List<Weapon>();
-        private List<Potion> Potion = new List<Potion>();
+        private List<Weapon> weapons = new List<Weapon>();
+        private List<Potion> potions = new List<Potion>();
         // Methods for accessing information about inventory contents.
         public int WeaponCount()
         {
-            return Weapon.Count;
+            return weapons.Count;
         }
         public int PotionCount()
         {
-            return Potion.Count;
+            return potions.Count;
         }
         public Weapon GetWeapon(int index)
         {
-            return Weapon[index];
+            return weapons[index];
         }
         public Potion GetPotion(int index)
         {
-            return Potion[index];
+            return potions[index];
         }
         public void AddWeapon(Weapon weapon)
         {
-            Weapon.Add(weapon);
+            weapons.Add(weapon);
         }
         public void AddPotion(Potion potion)
         {
-            Potion.Add(potion);
+            potions.Add(potion);
         }
         public void RemoveWeapon(Weapon weapon)
         {
-            Weapon.Remove(weapon);
+            weapons.Remove(weapon);
         }
         public void RemovePotion(Potion potion)
         {
-            Potion.Remove(potion);
+            potions.Remove(potion);
         }
         // Method returns the contents of the inventory.
         public string Contents()
@@ -50,17 +50,17 @@ namespace DungeonExplorer
             if (WeaponCount() > 0)
             {
                 contents += "\nWeapons:\n";
-                for (int i = 0; i < Weapon.Count; i++)
+                for (int i = 0; i < weapons.Count; i++)
                 {
-                    contents += $"{i + 1}) {Weapon[i].Name} \n";
+                    contents += $"{i + 1}) {weapons[i].Name} \n";
                 }
             }
             if (PotionCount() > 0)
             {
                 contents += "\nPotions:\n";
-                for (int i = 0; i < Potion.Count; i++)
+                for (int i = 0; i < potions.Count; i++)
                 {
-                    contents += $"{i + 1}) {Potion[i].Name} \n";
+                    contents += $"{i + 1}) {potions[i].Name} \n";
                 }
             }
             if (contents == "")

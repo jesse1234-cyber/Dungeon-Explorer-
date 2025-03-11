@@ -11,18 +11,19 @@ namespace DungeonExplorer
     {
         public string Name { get; private set; }
         public int Damage { get; private set; }
-        private string Description;
+        protected string description;
         public Item(string name, int damage)
         {
             Name = name;
             Damage = damage;
-            Description = CreateDescription();
+            description = "";
         }
         // Abstract method, as item values are unique to each subclass.
-        public abstract string CreateDescription();
+        public abstract void CreateDescription();
         public string GetDescription()
         {
-            return Description;
+            CreateDescription();
+            return description;
         }
     }
     public class Potion : Item
@@ -35,9 +36,10 @@ namespace DungeonExplorer
             HealthBonus = healthBonus;
         }
         // Potion specific override of CreateDescription.
-        public override string CreateDescription()
+        public override void CreateDescription()
         {
-            string description = $"Name: {Name}";
+            Console.WriteLine($"{HealthRestore}, {HealthBonus}, {Damage}");
+            description = $"Name: {Name}";
             // Only adds attributes if their value > 0.
             if (HealthRestore > 0)
             {
@@ -51,7 +53,6 @@ namespace DungeonExplorer
             {
                 description += $"\nAttack Bonus: {Damage}";
             }
-            return description;
         }
     }
     public class Weapon : Item
@@ -60,9 +61,9 @@ namespace DungeonExplorer
         {
         }
         // Weapon specific override of CreateDescription.
-        public override string CreateDescription()
+        public override void CreateDescription()
         {
-            return $"Name: {Name}\nDamage: {Damage}";
+            description = $"Name: {Name}\nDamage: {Damage}";
         }
     }
 }

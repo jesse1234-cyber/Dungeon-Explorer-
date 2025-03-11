@@ -18,6 +18,13 @@ namespace DungeonExplorer
             // Initializing and starting game
             Game game = new Game(player, startingRoom);
             Console.WriteLine("========Welcome to DUNGEON EXPLORER!========\n"); // Game title
+            /*
+            Test test = new Test();
+            test.TestHealth();
+            test.TestInventory();
+            test.TestRoom();
+            test.TestItems();
+            */
             game.Start();
             Console.ReadKey();
         }
