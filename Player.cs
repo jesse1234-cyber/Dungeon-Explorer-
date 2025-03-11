@@ -15,11 +15,16 @@ namespace DungeonExplorer
         }
         public void PickUpItem(string item)
         {
-
+            inventory.Add(item);
         }
         public string InventoryContents()
         {
             return string.Join(", ", inventory);
+        }
+
+        public int GetHealth()
+        {
+            return Health;
         }
     }
 }
