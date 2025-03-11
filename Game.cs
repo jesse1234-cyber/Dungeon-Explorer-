@@ -86,7 +86,8 @@ namespace DungeonExplorer
                         Console.WriteLine(itemRoll + "!");
                         if (itemRoll < 8)
                         {
-                            string item = this.player.PickUpItem("Bone Key");
+                            string item = "Bone Key";
+                            this.player.PickUpItem(item);
                             Thread.Sleep(1000);
                             Console.WriteLine($"You carefully put the {item} in your backpack.\n");
                         }
@@ -101,14 +102,13 @@ namespace DungeonExplorer
                     {
                         invalidChoice = false;
                         Console.WriteLine("You open your backpack...");
-                        string inv = this.player.GetInventoryContents();
-                        if (inv.Length == 0)
+                        if (this.player.IsInvEmpty())
                         {
                             Console.WriteLine("Your inventory contains... cobwebs. It's empty.\n");
                         }
                         else
                         {
-                            Console.WriteLine("Your inventory contains: " + inv);
+                            Console.WriteLine("Your inventory contains: " + this.player.GetInventoryContents());
                         }
                     }
 
