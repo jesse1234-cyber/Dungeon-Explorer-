@@ -10,7 +10,7 @@ namespace DungeonCrawler
     public class Combat
     {
         Item SpecialItem { get; set; }
-        Monster Monster { get; set; } // monster.Veapon
+        public Monster Monster { get; set; } // monster.Veapon
         Player Player { get; set; } // playerWeapon = null; foreach (weapon x in Player.inventory){if x.Equipped{ playerWeapon = x}} if playerWeapon = null{playerWeapon = Weapon(fists, etc.)}
         public Combat(Monster monster, Player player, Item specialItem = null)
         {

@@ -288,7 +288,7 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="binkySkull"></param>
         /// <returns></returns>
-        public bool UseItem1(Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Item binkySkull = null)
+        public bool UseItem1(Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Item binkySkull = null, Item musicBox = null, Item note = null)
         {
             if (usesDictionary[item].Contains(feature))
             {
@@ -325,28 +325,7 @@ namespace DungeonCrawler
                             }
                         }
                     }
-                    else if ((item.Name == "healing potion" || item.Name == "Elixir of Feline Guile" || item.Name == "Felix Felicis") && binkySkull != null)
-                    {
-                        Console.WriteLine($"The {item.Name} works its magic as you gloop the elixir over the skull. You blink and before you know it the skeleton let's loose a string of delightful curses worthy of the most mischievous of pixies.\n" +
-                            $"\t'I say, capital to meet you, good sir,' it remarks gaily, 'I would doff my hat, if I had one. Sadly all I've got on me is a SKULL CAP!'\n" +
-                            $"It wheezes a few raspy laughs. \nThe joke flies over your head like a squadron of fairies..." +
-                            $"\nYou ask if he by any chance knows a way out of this cell." +
-                            $"\n\t'Well, now. I reckon that broken bowl ought to do the trick.'" +
-                            $"\nYou interject, wondering how it can be useful when it's shattered in two halves..." +
-                            $"\n\t'Precisely,' is the skeleton's cryptic reply. 'Besides, if that fails to " +
-                            $"get the job done, then you could always play a tune. I think that's right...? My ribs make a good xylophone" +
-                            $"to get you started.'\nYou say you'd love to play a ditty some time but you've got an unknown evil adversary" +
-                            $" to smite and if you don't do it then who will?\n\t'Well,' the skeleton remarks drily, 'that there's no" +
-                            $"laughing matter. No. Not HUMERUS at all!" +
-                            $"\nAgain, this sails whooshing over your head." +
-                            $"\nPerhaps you can take me with you?' the skeleton says, 'I'm great at advice.'\n" +
-                            $"You thank him and ask his name. he responds, 'Binky.' you ask where he got such an unusual name. He replies that's the name the developer gave to all his trial characters. \n\t'Hmmm...' You respond.");
-                        Console.WriteLine("\nYou add Binky to your pack!");
-
-                        inventory.Add(binkySkull);
-                        return true;
-
-                    }
+                    
                     else if (item.Name == "rusty chain-flail" && feature.Name == "bookcase")
                     {
                         room.FeatureList.Remove(feature);
@@ -368,11 +347,11 @@ namespace DungeonCrawler
                 else
                 {
                     feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
-                    if (feature.Name == "skeleton")
+                    if (feature.Name == "skeleton" && item.Name =="rusty chain-flail")
                     {
                         feature.ItemList.Add(binkySkull);//binkySkull in this instance is steel key
                         feature.Description = "Its empty sockets fasten you with a stern gaze. It serves as a macabre reminder of what might yet befall you...";
-                        Console.WriteLine($"Using your weapon you smash the skeleton's bones from the constricting chains. You succeed, but in the process your {item.Name} shatters into pieces. Finally you can move the {feature.SpecificAttribute} skeleton, piece by piece, out of the way, revealing something glimmering underneath...");
+                        Console.WriteLine($"Using your weapon you smash the skeleton's bones from the constricting chains. You succeed, but in the process your {item.Name} shatters into pieces. Finally you can move the shattered skeleton, piece by piece, out of the way, revealing something glimmering underneath...");
                         List<Item> weaponList = new List<Item> { item };
                         List<Weapon> weaponSplice = weaponList.Cast<Weapon>().ToList();
 
@@ -403,9 +382,102 @@ namespace DungeonCrawler
                             }
                         }
                     }
+                    
                     return true; }
             }
-            else { return false; }
+            else 
+            { 
+                if (item.Name=="magnifying glass")
+                {
+                    if (feature.Name == "skeleton" && feature.SpecificAttribute == "unshattered")
+                    {
+                        Console.WriteLine("You peer through the magnifying glass. You discover that the shiny thing lodged behind the chained-fast skeleton is in fact a steel key! Now if only you could... What? \nMove the skeleton out of the way? \nBreak it apart? \nSomehow reach past the tight chains and bones and purloin the key? \nYou scratch your head in contemplation...");
+                    }
+                    else if (feature.Name == "rosewood chest" && feature.SpecificAttribute == "unlocked" && feature.ItemList.Count == 0 && !player.Inventory.Contains(musicBox) && !room.ItemList.Contains(musicBox))
+                    {
+                        Console.WriteLine("You study the inside of the rosewood chest through the magnifying glass. Curiosity creases your brow as you discover scratches at the seemingly empty bottom, as though made by scrabbling fingernails...");
+                        if (note.Description.Contains("blighter")) { }
+                        else
+                        {
+                            Console.WriteLine("Test your skill (Roll a D20 below your skill score): ");
+                            Dice D20 = new Dice(20);
+                            Console.ReadKey(true);
+                            int roll = D20.Roll(D20);
+                            Console.WriteLine($"You rolled {roll}");
+                            Console.ReadKey(true);
+                            if (roll <= player.Skill)
+                            {
+                                if (!player.Inventory.Contains(musicBox) && !room.ItemList.Contains(musicBox))
+                                {
+                                    feature.ItemList.Add(musicBox);
+                                }
+                                Console.WriteLine("You discover a hidden compartment concealed beneath a panel!\nWould you like to search the rosewood chest?");
+                                while (true)
+                                {
+                                    string answer = Console.ReadLine().Trim().ToLower();
+                                    if (string.IsNullOrWhiteSpace(answer))
+                                    {
+                                        Console.WriteLine("Would you like to search the rosewood chest?");
+                                        continue;
+                                    }
+                                    else if (answer == "yes" || answer == "y")
+                                    {
+                                        feature.Search(inventory, weaponInventory);
+                                        break;
+                                    }
+                                    else if (answer == "no" || answer == "n")
+                                    {
+                                        Console.WriteLine("You decide on some other course of action for now...");
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Please enter 'yes' or 'no'.");
+                                        continue;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("You ponder what those markings could mean, but no answers leap immediately to mind. You shrug before putting the magnifying glass away...");
+                            }
+                        }
+
+                    }
+                    else if (feature.Name.Contains("brazier"))
+                    {
+                        Console.WriteLine($"You peer through the magnifying glass at the {feature.Name}, only to blink and recoil as the magical flame's light focuses into an intense beam.\nExperimentally, you swivel your magnifying glass around," +
+                            $"your eyes following the tight circle of light as it flickers and dances across the opposite wall. Whatever the beam touches is left warm to the touch. \nAn idea begins to form...");
+                    }
+                    
+                    else { Console.WriteLine($"You inspect the {feature.Name} with your magnifying glass. Were you expecting to find something?"); }
+                }
+                else if ((item.Name == "healing potion" || item.Name == "Elixir of Feline Guile" || item.Name == "Felix Felicis") && binkySkull != null && feature.Name == "skeleton" && !room.ItemList.Contains(binkySkull) && !player.Inventory.Contains(binkySkull) && player.Traits.ContainsKey("friends with fairies"))
+                {
+                    Console.WriteLine($"The {item.Name} works its magic as you gloop the elixir over the skull. You blink and before you know it the skeleton let's loose a string of delightful curses worthy of the most mischievous of pixies.\n" +
+                        $"\t'I say, capital to meet you, good sir,' it remarks gaily, 'I would doff my hat, if I had one. Sadly all I've got on me is a SKULL CAP!'\n" +
+                        $"It wheezes a few raspy laughs. \nThe joke flies over your head like a squadron of fairies..." +
+                        $"\nYou ask if he by any chance knows a way out of this cell." +
+                        $"\n\t'Well, now. I reckon that broken bowl ought to do the trick.'" +
+                        $"\nYou interject, wondering how it can be useful when it's shattered in two halves..." +
+                        $"\n\t'Precisely,' is the skeleton's cryptic reply. 'Besides, if that fails to " +
+                        $"get the job done, then you could always play a tune. I think that's right...? My ribs make a good xylophone" +
+                        $"to get you started.'\nYou say you'd love to play a ditty some time but you've got an unknown evil adversary" +
+                        $" to smite and if you don't do it then who will?\n\t'Well,' the skeleton remarks drily, 'that there's no" +
+                        $"laughing matter. No. Not HUMERUS at all!" +
+                        $"\nAgain, this sails whooshing over your head." +
+                        $"\nPerhaps you can take me with you?' the skeleton says, 'I'm great at advice.'\n" +
+                        $"You thank him and ask his name. he responds, 'Binky.' you ask where he got such an unusual name. He replies that's the name the developer gave to all his trial characters. \n\t'Hmmm...' You respond.");
+                    Console.WriteLine("\nYou add Binky to your pack!");
+
+                    inventory.Add(binkySkull);
+
+
+                    return true;
+
+                }
+                return false; 
+            }
         }
         public List<bool> UseItem(Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null)
         {
@@ -437,7 +509,7 @@ namespace DungeonCrawler
                         }
 
                         
-                        else { System.Environment.Exit(0); }
+                        else { Console.ReadKey(true); tlist[1] = true; return tlist; }
                     }
                     else if(item1.Name == "magnifying glass" && item2.Name == "garment")
                     {
@@ -446,9 +518,9 @@ namespace DungeonCrawler
                         Console.WriteLine("It's not before too long that you've managed to get the garment to smoulder. Cupping it in your hands you gently breathe over it, teasing forth the flames.\nOnce its burning you tuck the blazing garment under the door, letting the smoke billow out into the corridor. Now, at last, you hammer upon the door, yelling that the room's ablaze...");
                         Console.ReadKey(true);
                         Console.WriteLine("You planned for it to burn slowly.");
-                        Thread.Sleep(3000);
+                        Console.ReadKey(true);
                         Console.WriteLine("You planned for the fire to be controlled.");
-                        Thread.Sleep(3000);
+                        Console.ReadKey(true);
                         Console.WriteLine("However, its not long before your feigned panic congeals into very real terror. Before your eyes, and in spite of your frantic attempts to stomp it out, the fire has spread to the other garments littered throughout the room.");
                         Console.WriteLine("You begin to scream out for help, when your yells are answered. Heavy boots stomp their way towards your door. Tumblers turn, then a powerful kick flings it wide.");
                         Console.ReadKey(true);
@@ -462,13 +534,13 @@ namespace DungeonCrawler
                             tlist[1] = true;
                             return tlist;
                         }
-                        else { System.Environment.Exit(0); }
+                        else { Console.ReadKey(true); tlist[1] = true; return tlist; }
                     }
                     else if (item2.Name == "note" && item1.Name == "magnifying glass")
                     {
                         Console.WriteLine("  You peer through the magnifying glass and suddenly the note's mysterious, tiny scrawl starts to make sense...");
                         item2.Description = "Someone has scrawled upon the note in hasty erratic cursive. It reads, 'I don't have long now. If you're reading this then you're likely another foolhardy adventurer like myself who got his'self kidnapped just as I woz. I don' have much space so mark my words. Whatever they tell you - its a lie. They're going to harm you. They're most likely going to kill you in one of their mad experiments. There's a music box. I kept it locked away and hidden from sight. It's in the chest. It may look empty but set in its bottom is a panel that can be removed. You'll find it there. If you play it the guard loses his marbles about it. Can't stand the tune, the little blighter! It's like nails on a chalkboard to 'em creatures. When it enters, subdue the loathsome thing. It's the only way out of 'ere. Hopefully, if I don't make it, at least someone else will...' The rest deteriorates into an illegible scribble at the bottom of the page.";
-                        if (feature.ItemList.Count==0) 
+                        if (feature.ItemList.Count==0 && !player.Inventory.Contains(plusItem) && !room.ItemList.Contains(plusItem)) 
                         { 
                             feature.ItemList.Add(plusItem); 
                         }
@@ -679,7 +751,7 @@ namespace DungeonCrawler
             Dice D18 = new Dice(18);
             Dice D3 = new Dice(3);
             Dice D4 = new Dice(4);
-            System.Diagnostics.Debug.Assert(room.ItemList.Count > 2, "Items in the room must number at least three if there is any chance of combat occuring else an ArgumentNullException will occur for the 6th element of jinxedMisses.");
+            
             List<string> jinxedMisses = new List<string>
             {
                 $"The {monsterName.Name} has you now! Finally, relishing it's soon-to-be freedom from your cursed, jinxy hide, it raises its {monsterName.Items[0].Name} to strike... and gets it stuck in the {room.FeatureList[D4.Roll(D4) - 1].Name}. You scurry away as the {monsterName.Name} curses, trying to free it. \nThe {monsterName.Name} loses 1 stamina.",
