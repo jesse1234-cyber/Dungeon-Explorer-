@@ -15,7 +15,7 @@ public class Game
             //Dungeon room which containd two items and a monster that can be defeated
             { "Dungeon Entrance", new Room(
                 "You stand at the entrance of an eerie dungeon. The wind howls behind you.",
-                new List<string> { "torch", "map" },
+                new List<string> { "Torch", "Map" },
                 new List<string> { "Goblin" }) },
             //Corridor room which contains two items and two monsters that can be defeated
             { "Dark Corridor", new Room(
