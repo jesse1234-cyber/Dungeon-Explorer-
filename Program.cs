@@ -4,7 +4,7 @@ namespace DungeonExplorer {
     internal class Program {
         static void Main(string[] args) {
             Game currentGame = new Game();
-            currentGame.Start();
+            currentGame.Start(            currentGame.GetPlayer());
             Console.WriteLine("\nStopped the game!");
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
