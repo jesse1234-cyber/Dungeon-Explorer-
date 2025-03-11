@@ -1,25 +1,72 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
     public class Player
     {
-        public string Name { get; private set; }
-        public int Health { get; private set; }
-        private List<string> inventory = new List<string>();
+        private string PlayerName = "player";
+        private int PlayerHealth;
+        private List<string> PlayerInventory = new List<string>();
 
-        public Player(string name, int health) 
+        public Player(string PlayerName, int PlayerHealth, List<string> PlayerInventory) 
         {
-            Name = name;
-            Health = health;
+            Name =  PlayerName;
+            Health = PlayerHealth;
+            Inventory = PlayerInventory;
         }
-        public void PickUpItem(string item)
+        public string Name
         {
+            get { return PlayerName; }
+            set { PlayerName = string.IsNullOrWhiteSpace(value) ? "player" : value; }
+        }
+        public int Health
+        {
+            get { return PlayerHealth; }
+            set { PlayerHealth = value; }
+        }
+        public List<string> Inventory
+        {
+            get { return PlayerInventory; }
+            set { PlayerInventory = value ?? new List<string>(); }
+        }
+        public void setPlayerName()
+        {
+            string playerNameInput;
+            do
+            {
+                Console.WriteLine("What name do you wish to play under: ");
+                playerNameInput = Console.ReadLine();
+            }
+            while (string.IsNullOrEmpty(playerNameInput));
 
+            Name = playerNameInput;
+            Console.WriteLine($"Hello, {Name}! You are starting with {Health} health points");
+        }
+        public void PickUpItem(string roomItem)
+        {
+            string pickUpItem;
+            do
+            {
+                Console.WriteLine($"There is {roomItem} in this room. Do you wish to pick it up? (Y/N): ");
+                pickUpItem = Console.ReadLine().ToUpper();
+            }
+            while (pickUpItem != "Y" && pickUpItem != "N");
+
+            if (pickUpItem == "Y")
+            {
+                PlayerInventory.Add(roomItem);
+                Console.WriteLine($"Item {roomItem} picked up!");
+                Console.WriteLine($"{Name}, your inventory contains: {InventoryContents()}, and your hp is {Health}");
+            }
+            else if (pickUpItem == "N")
+            {
+                Console.WriteLine($"{roomItem} not picked up");
+            }
         }
         public string InventoryContents()
         {
-            return string.Join(", ", inventory);
+            return string.Join(", ", Inventory);
         }
     }
 }
