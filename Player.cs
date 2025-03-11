@@ -13,7 +13,7 @@ namespace DungeonExplorer
         public string name;
         public int coins = 0;
         public int health = 10;
-        public int roomCount = 0;
+        public int roomCount = 1;
 
         //Player inventory
         public int armorValue = 0;

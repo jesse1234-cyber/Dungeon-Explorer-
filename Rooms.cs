@@ -110,16 +110,18 @@ namespace DungeonExplorer
                 Console.WriteLine("The shadow in the corner starts to move. You tense.");
                 Encounters.BasicEncounter();
             }
-            
+
             //once player has copleted the room actions:
-            if (Program.currentPlayer.roomCount <= 5) //if the player has NOT completed all the rooms, a message telling them they are about to enter the next room is displayed
+            if (Program.currentPlayer.roomCount == 5) //if the player has completed all the rooms, an escape message is provided
+            {
+                Console.WriteLine("Through the next door you can see sunlight!");
+            }
+            else //if the player has NOT completed all the rooms, a message telling them they are about to enter the next room is displayed
             {
                 Console.WriteLine("You have done everything you can in this room, you go through the next door.");
                 Console.ReadKey();
                 Console.Clear();
             }
-            else //if the player has completed all the rooms, an escape message is provided
-                Console.WriteLine("You open the next door in this room. Sunlight! You have escaped!.");
         }
     }
 }
