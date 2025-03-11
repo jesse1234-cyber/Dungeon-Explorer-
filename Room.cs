@@ -12,7 +12,7 @@ namespace DungeonExplorer
             this.description = description;
         }
 
-        public string GetDescription() { return this.description;  }
+        public string GetDescription() { return this.description;  }        // Encapsulate room description 
             
     }
 } 
