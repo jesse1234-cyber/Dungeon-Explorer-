@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class Game
 {
     private Player _newPlayer;
-    private Dictionary<string, Room> _rooms;
+    private Dictionary <string, Room> _rooms;
     private Room _currentRoom;
 
     public Game()
@@ -143,7 +143,7 @@ public class Game
         string monster = _currentRoom.Monsters[0];//Chooses rthe first monster in the room, if more than one present. 
         Console.WriteLine($"You fight the {monster}!");
 
-        //Simple fightinh mechanic which allows the user to always win (for now), removing 10HP each time.
+        //Simple fighting mechanic which allows the user to always win (for now), removing 10HP each time.
         _newPlayer.Health -= 10;
         _currentRoom.RemoveMonster(monster);
 
