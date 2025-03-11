@@ -28,9 +28,6 @@ namespace DungeonExplorer
             Console.WriteLine("You wake up after a long sleep, you can't remember anything except your name which is...");
             Console.Write("Enter your name: ");
             string new_name = Console.ReadLine(); // Get player name from input.
-            Console.WriteLine($"That's it! {new_name} was your name!");
-            Console.WriteLine("After getting your strength back, you stand up wondering where you are, not knowing what awaits you next.");
-            Console.WriteLine("=============================================================================================================");
             player.Name = new_name; // Set player name.
             player.Health = 100; // Set player health.
             spider.Name = "Spider";
