@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -269,6 +270,39 @@ namespace DungeonCrawler
 
             }
         }
+        /// <summary>
+        /// Essentially i first ask which item the player wishes to use from their pack.
+        /// I then ask what they wish to use it on.
+        /// The success of this action is determined by a dictionary 
+        /// (usesDictionaryItemItem or usesDictionaryItemFeature) where an item may
+        /// have a list of items corresponding to it. If it does, the item
+        /// can be used on the feature or effected item. otherwise the usesItem function
+        /// returns a false value and a stock response is given to let the user know, 
+        /// the item cannot be used that way.
+        /// 
+        /// the usesitem function comes from the
+        /// Item class and so weapons can also be used this way,
+        /// as weapons inherit from items, though I've yet to implement this by
+        /// upgrading the usesDictionaries accordingly.
+        /// 
+        /// There are 3 usesItem functions. one for effecting items,
+        /// another for effecting features and lastly for effecting 
+        /// the player themselves. Nestled try and catch statements are used 
+        /// to determine which of these functions must be used.
+        /// </summary>
+        /// <param name="room"></param>
+        /// <param name="musicBox"></param>
+        /// <param name="binkySkull"></param>
+        /// <param name="steelKey"></param>
+        /// <param name="note"></param>
+        /// <param name="rosewoodChest"></param>
+        /// <param name="holeInCeiling"></param>
+        /// <param name="usesDictionaryItemChar"></param>
+        /// <param name="usesDictionaryItemItem"></param>
+        /// <param name="usesDictionaryItemFeature"></param>
+        /// <param name="trialBattle"></param>
+        /// <returns></returns>
+
         public List<bool> UseItemOutsideCombat(Room room, Item musicBox, Item binkySkull, Item steelKey, Item note, Feature rosewoodChest, Feature holeInCeiling, Dictionary<Item, List<Player>> usesDictionaryItemChar, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Combat trialBattle = null)
         {
 
@@ -420,9 +454,13 @@ namespace DungeonCrawler
                                 {
                                     success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, steelKey);
                                 }
-                                else
+                                else if (chosenItem.Name == "healing potion"|| chosenItem.Name=="Felix Felicis"|| chosenItem.Name=="elixir of feline guile")
                                 {
                                     success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, binkySkull, musicBox, note);
+                                }
+                                else
+                                {
+                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, null, musicBox, note);
                                 }
                                 if (!success[0])
                                 {
@@ -460,6 +498,30 @@ namespace DungeonCrawler
                                     Console.WriteLine($"You rack your brains trying to come up with an escape from your prison. With a tincture of desperation you conclude the only way is to start a fire. Maybe, just maybe, you can ambush the guard when they try to put it out...\nIf they come to put it out.\nWith not a small number of misgivings winching around your tight chest, you feverishly begin trying to light the {chosenItem.Name} on fire with the brazier. However, the low flickering flame seems to burn with an unnatural frostiness. This is no ordinary flame but something magical, casting only chilly light into the room and sharing none of the heat you'd otherwise expect. The {chosenItem.Name} refuses to burn.\nIf you truly believe arson is your only means to escape, then you'll have to deploy some greater ingenuity, and do so before your time runs out...");
                                 }
                                 else if (chosenItem.Name == "magnifying glass") { }
+                                else if ((chosenItem.Name == "healing potion" || chosenItem.Name == "Elixir of Feline Guile" || chosenItem.Name == "Felix Felicis") && binkySkull != null && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "skeleton" && !room.ItemList.Contains(binkySkull) && !Inventory.Contains(binkySkull) && Traits.ContainsKey("friends with fairies"))
+                                {
+                                    Console.WriteLine($"The {chosenItem.Name} works its magic as you gloop the elixir over the skull. You blink and before you know it the skeleton let's loose a string of delightful curses worthy of the most mischievous of pixies.\n" +
+                                        $"\t'I say, capital to meet you, good sir,' it remarks gaily, 'I would doff my hat, if I had one. Sadly all I've got on me is a SKULL CAP!'\n" +
+                                        $"It wheezes a few raspy laughs. \nThe joke flies over your head like a squadron of fairies..." +
+                                        $"\nYou ask if he by any chance knows a way out of this cell." +
+                                        $"\n\t'Well, now. I reckon that broken bowl ought to do the trick.'" +
+                                        $"\nYou interject, wondering how it can be useful when it's shattered in two halves..." +
+                                        $"\n\t'Precisely,' is the skeleton's cryptic reply. 'Besides, if that fails to " +
+                                        $"get the job done, then you could always play a tune. I think that's right...? My ribs make a good xylophone" +
+                                        $"to get you started.'\nYou say you'd love to play a ditty some time but you've got an unknown evil adversary" +
+                                        $" to smite and if you don't do it then who will?\n\t'Well,' the skeleton remarks drily, 'that there's no" +
+                                        $"laughing matter. No. Not HUMERUS at all!" +
+                                        $"\nAgain, this sails whooshing over your head." +
+                                        $"\nPerhaps you can take me with you?' the skeleton says, 'I'm great at advice.'\n" +
+                                        $"You thank him and ask his name. he responds, 'Binky.' you ask where he got such an unusual name. He replies that's the name the developer gave to all his trial characters. \n\t'Hmmm...' You respond.");
+                                    Console.WriteLine("\nYou add Binky to your pack!");
+
+                                    Inventory.Add(binkySkull);
+
+
+                                    
+
+                                }
                                 else
                                 {
                                     Console.WriteLine($"You try using the {chosenItem.Name} on the {room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
@@ -477,8 +539,11 @@ namespace DungeonCrawler
                             try
                             {
                                 success = chosenItem.UseItem(chosenItem, Inventory[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, trialBattle);
-                                
-                                if (!success[0])
+                                if (!success[0] && success[1])
+                                {
+                                    return success;
+                                }
+                                else if (!success[0])
                                 {
                                     Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
                                 }
@@ -495,7 +560,11 @@ namespace DungeonCrawler
                             try
                             {
                                 success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, trialBattle);
-                                if (!success[0])
+                                if (!success[0] && success[1])
+                                {
+                                    return success;
+                                }
+                                else if (!success[0])
                                 {
                                     
                                     Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");

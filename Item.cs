@@ -325,28 +325,7 @@ namespace DungeonCrawler
                             }
                         }
                     }
-                    else if ((item.Name == "healing potion" || item.Name == "Elixir of Feline Guile" || item.Name == "Felix Felicis") && binkySkull != null)
-                    {
-                        Console.WriteLine($"The {item.Name} works its magic as you gloop the elixir over the skull. You blink and before you know it the skeleton let's loose a string of delightful curses worthy of the most mischievous of pixies.\n" +
-                            $"\t'I say, capital to meet you, good sir,' it remarks gaily, 'I would doff my hat, if I had one. Sadly all I've got on me is a SKULL CAP!'\n" +
-                            $"It wheezes a few raspy laughs. \nThe joke flies over your head like a squadron of fairies..." +
-                            $"\nYou ask if he by any chance knows a way out of this cell." +
-                            $"\n\t'Well, now. I reckon that broken bowl ought to do the trick.'" +
-                            $"\nYou interject, wondering how it can be useful when it's shattered in two halves..." +
-                            $"\n\t'Precisely,' is the skeleton's cryptic reply. 'Besides, if that fails to " +
-                            $"get the job done, then you could always play a tune. I think that's right...? My ribs make a good xylophone" +
-                            $"to get you started.'\nYou say you'd love to play a ditty some time but you've got an unknown evil adversary" +
-                            $" to smite and if you don't do it then who will?\n\t'Well,' the skeleton remarks drily, 'that there's no" +
-                            $"laughing matter. No. Not HUMERUS at all!" +
-                            $"\nAgain, this sails whooshing over your head." +
-                            $"\nPerhaps you can take me with you?' the skeleton says, 'I'm great at advice.'\n" +
-                            $"You thank him and ask his name. he responds, 'Binky.' you ask where he got such an unusual name. He replies that's the name the developer gave to all his trial characters. \n\t'Hmmm...' You respond.");
-                        Console.WriteLine("\nYou add Binky to your pack!");
-
-                        inventory.Add(binkySkull);
-                        return true;
-
-                    }
+                    
                     else if (item.Name == "rusty chain-flail" && feature.Name == "bookcase")
                     {
                         room.FeatureList.Remove(feature);
@@ -368,11 +347,11 @@ namespace DungeonCrawler
                 else
                 {
                     feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
-                    if (feature.Name == "skeleton")
+                    if (feature.Name == "skeleton" && item.Name =="rusty chain-flail")
                     {
                         feature.ItemList.Add(binkySkull);//binkySkull in this instance is steel key
                         feature.Description = "Its empty sockets fasten you with a stern gaze. It serves as a macabre reminder of what might yet befall you...";
-                        Console.WriteLine($"Using your weapon you smash the skeleton's bones from the constricting chains. You succeed, but in the process your {item.Name} shatters into pieces. Finally you can move the {feature.SpecificAttribute} skeleton, piece by piece, out of the way, revealing something glimmering underneath...");
+                        Console.WriteLine($"Using your weapon you smash the skeleton's bones from the constricting chains. You succeed, but in the process your {item.Name} shatters into pieces. Finally you can move the shattered skeleton, piece by piece, out of the way, revealing something glimmering underneath...");
                         List<Item> weaponList = new List<Item> { item };
                         List<Weapon> weaponSplice = weaponList.Cast<Weapon>().ToList();
 
@@ -403,6 +382,7 @@ namespace DungeonCrawler
                             }
                         }
                     }
+                    
                     return true; }
             }
             else 
@@ -472,6 +452,30 @@ namespace DungeonCrawler
                     
                     else { Console.WriteLine($"You inspect the {feature.Name} with your magnifying glass. Were you expecting to find something?"); }
                 }
+                else if ((item.Name == "healing potion" || item.Name == "Elixir of Feline Guile" || item.Name == "Felix Felicis") && binkySkull != null && feature.Name == "skeleton" && !room.ItemList.Contains(binkySkull) && !player.Inventory.Contains(binkySkull) && player.Traits.ContainsKey("friends with fairies"))
+                {
+                    Console.WriteLine($"The {item.Name} works its magic as you gloop the elixir over the skull. You blink and before you know it the skeleton let's loose a string of delightful curses worthy of the most mischievous of pixies.\n" +
+                        $"\t'I say, capital to meet you, good sir,' it remarks gaily, 'I would doff my hat, if I had one. Sadly all I've got on me is a SKULL CAP!'\n" +
+                        $"It wheezes a few raspy laughs. \nThe joke flies over your head like a squadron of fairies..." +
+                        $"\nYou ask if he by any chance knows a way out of this cell." +
+                        $"\n\t'Well, now. I reckon that broken bowl ought to do the trick.'" +
+                        $"\nYou interject, wondering how it can be useful when it's shattered in two halves..." +
+                        $"\n\t'Precisely,' is the skeleton's cryptic reply. 'Besides, if that fails to " +
+                        $"get the job done, then you could always play a tune. I think that's right...? My ribs make a good xylophone" +
+                        $"to get you started.'\nYou say you'd love to play a ditty some time but you've got an unknown evil adversary" +
+                        $" to smite and if you don't do it then who will?\n\t'Well,' the skeleton remarks drily, 'that there's no" +
+                        $"laughing matter. No. Not HUMERUS at all!" +
+                        $"\nAgain, this sails whooshing over your head." +
+                        $"\nPerhaps you can take me with you?' the skeleton says, 'I'm great at advice.'\n" +
+                        $"You thank him and ask his name. he responds, 'Binky.' you ask where he got such an unusual name. He replies that's the name the developer gave to all his trial characters. \n\t'Hmmm...' You respond.");
+                    Console.WriteLine("\nYou add Binky to your pack!");
+
+                    inventory.Add(binkySkull);
+
+
+                    return true;
+
+                }
                 return false; 
             }
         }
@@ -505,7 +509,7 @@ namespace DungeonCrawler
                         }
 
                         
-                        else { Console.ReadKey(true); System.Environment.Exit(0); }
+                        else { Console.ReadKey(true); tlist[1] = true; return tlist; }
                     }
                     else if(item1.Name == "magnifying glass" && item2.Name == "garment")
                     {
@@ -530,7 +534,7 @@ namespace DungeonCrawler
                             tlist[1] = true;
                             return tlist;
                         }
-                        else { Console.ReadKey(true); System.Environment.Exit(0); }
+                        else { Console.ReadKey(true); tlist[1] = true; return tlist; }
                     }
                     else if (item2.Name == "note" && item1.Name == "magnifying glass")
                     {
