@@ -10,6 +10,7 @@ namespace DungeonExplorer
     {
         public static void Main(string[] args)
         {
+            Tests.RunTests();
             Game game = new Game();
             game.Start();
             Console.WriteLine("Waiting for your Implementation");
