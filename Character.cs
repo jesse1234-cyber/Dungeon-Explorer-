@@ -26,7 +26,7 @@ namespace DungeonCrawler
             Inventory = inventory;
 
         }
-        public void equip(Weapon weapon, List<Weapon> inventory, Player player)
+        public void Equip(Weapon weapon, List<Weapon> inventory, Player player)
         {
             foreach (Weapon x in inventory)
             {
@@ -35,7 +35,7 @@ namespace DungeonCrawler
             if (player.Traits.ContainsKey("jinxed")) { weapon.Boon = 6; }
             weapon.Equipped = true;
         }
-        public void unequip(List<Weapon> inventory)
+        public void Unequip(List<Weapon> inventory)
         {
             foreach (Weapon x in inventory)
             {
@@ -65,10 +65,10 @@ namespace DungeonCrawler
             Traits = traits;
 
         }
-        public string displayName() { return Name; }
-        public int displaySkill() { return Skill; }
-        public int displayStamina() { return Stamina; }
-        public string describeSkill()
+        public string DisplayName() { return Name; }
+        public int DisplaySkill() { return Skill; }
+        public int DisplayStamina() { return Stamina; }
+        public string DescribeSkill()
         {
             if (Skill > 9)
             {
@@ -103,7 +103,7 @@ namespace DungeonCrawler
                 return "One-legged elephants can tip-toe quieter than you can. \nThey're more likely to do it without toppling over too...";
             }
         }
-        public string describeStamina()
+        public string DescribeStamina()
         {
             if (Stamina < InitialStamina / 8)
             {
@@ -138,7 +138,7 @@ namespace DungeonCrawler
                 return "You're as fit and lively as you've ever been. You've a spring in your step as you bound ever forward in your quest.";
             }
         }
-        public string describeInitialStamina()
+        public string DescribeInitialStamina()
         {
             if (InitialStamina < 70)
             {
@@ -176,7 +176,7 @@ namespace DungeonCrawler
         /// the formula for this code is very similar to searchfeature.
         /// </summary>
         /// <param name="roomItems"></param>
-        public void searchPack(List<Item> roomItems)
+        public void SearchPack(List<Item> roomItems)
         {
             Console.WriteLine("Rummaging through your effects you find the following;");
             int r = 1;
@@ -224,8 +224,8 @@ namespace DungeonCrawler
                             bool success = false;
                             string objName = message.Substring(message.IndexOf(reply1.ToString()) + 3, message.IndexOf((reply1 + 1).ToString()) - 2 - (message.IndexOf(reply1.ToString()) + 3)).Trim();
                             Console.WriteLine(objName);
-                            foreach (Item i in Inventory) { if (i.Name == objName) { i.pickUpItem(Inventory, WeaponInventory, 5, 0, i, null, null, roomItems); success = true; break; } }
-                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.pickUpItem(Inventory, WeaponInventory, 5, 0, null, w, null, roomItems); success = true; break; } }
+                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(Inventory, WeaponInventory, 5, 0, i, null, null, roomItems); success = true; break; } }
+                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(Inventory, WeaponInventory, 5, 0, null, w, null, roomItems); success = true; break; } }
                             if (!success) { Console.WriteLine($"You threw your {objName} away!"); }
 
                         }
@@ -234,8 +234,8 @@ namespace DungeonCrawler
                             bool success = false;
                             string objName = message.Substring(message.IndexOf((r - 1).ToString()) + 3, message.Length - 1 - (message.IndexOf((r - 1).ToString()) + 3)).Trim();
                             Console.WriteLine(objName);
-                            foreach (Item i in Inventory) { if (i.Name == objName) { i.pickUpItem(Inventory, WeaponInventory, 5, 0, i, null, null, roomItems); success = true; break; } }
-                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.pickUpItem(Inventory, WeaponInventory, 5, 0, null, w, null, roomItems); success = true; break; } }
+                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(Inventory, WeaponInventory, 5, 0, i, null, null, roomItems); success = true; break; } }
+                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(Inventory, WeaponInventory, 5, 0, null, w, null, roomItems); success = true; break; } }
                             if (!success) { Console.WriteLine($"You threw your {objName} away!"); }
                         }
                     }
@@ -389,7 +389,7 @@ namespace DungeonCrawler
                         {
                             try
                             {
-                                success[0] = chosenItem.useItem3(chosenItem, this, usesDictionaryItemChar);
+                                success[0] = chosenItem.UseItem3(chosenItem, this, usesDictionaryItemChar);
 
                                 if (chosenItem.Name.Trim().ToLower() == "healing potion")
                                 {
@@ -418,11 +418,11 @@ namespace DungeonCrawler
                             {
                                 if (chosenItem.Name == "rusty chain-flail")
                                 {
-                                    success[0] = chosenItem.useItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, steelKey);
+                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, steelKey);
                                 }
                                 else
                                 {
-                                    success[0] = chosenItem.useItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, binkySkull);
+                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, binkySkull);
                                 }
                                 if (!success[0])
                                 {
@@ -436,9 +436,9 @@ namespace DungeonCrawler
                                             Console.WriteLine("As you oafishly attempt to jostle the key free from the lock, you hear something snap!\nThe steel key has broken inside the lock. It's pieces tinkle as they fall to the bottom of the tumblers...\nOops.");
                                         }
                                     }
-                                    else if (chosenItem.Name == "garment" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "brazier")
+                                    else if ((chosenItem.Name == "garment" || chosenItem.Name == "note") && (room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "left brazier" || room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "right brazier"))
                                     {
-                                        Console.WriteLine($"You rack your brains trying to come up with an escape from your prison. With a tincture of desperation you conclude the only way is to start a fire. Maybe, just maybe, you can ambush the guard when they try to put it out...\nIf they come to put it out.\nWith not a small number of misgivings winching around your tight chest, you feverishly begin trying to light the garment you picked up on fire with the brazier. However, the low flickering flame seems to burn with an unnatural frostiness. This is no ordinary flame but something magical, casting only chilly light into the room and sharing none of the heat you'd otherwise expect. The garment refuses to burn.\nIf you truly believe arson is your only means to escape, then you'll have to deploy some greater ingenuity, and do so before your time runs out...");
+                                        Console.WriteLine($"You rack your brains trying to come up with an escape from your prison. With a tincture of desperation you conclude the only way is to start a fire. Maybe, just maybe, you can ambush the guard when they try to put it out...\nIf they come to put it out.\nWith not a small number of misgivings winching around your tight chest, you feverishly begin trying to light the {chosenItem.Name} on fire with the brazier. However, the low flickering flame seems to burn with an unnatural frostiness. This is no ordinary flame but something magical, casting only chilly light into the room and sharing none of the heat you'd otherwise expect. The {chosenItem.Name} refuses to burn.\nIf you truly believe arson is your only means to escape, then you'll have to deploy some greater ingenuity, and do so before your time runs out...");
                                     }
                                     else
                                     {
@@ -454,9 +454,9 @@ namespace DungeonCrawler
                                 {
                                     Console.WriteLine("This key clearly doesn't open this door.");
                                 }
-                                else if (chosenItem.Name == "garment" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "brazier")
+                                else if ((chosenItem.Name == "garment" || chosenItem.Name == "note") && (room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "left brazier" || room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "right brazier"))
                                 {
-                                    Console.WriteLine($"You rack your brains trying to come up with an escape from your prison. With a tincture of desperation you conclude the only way is to start a fire. Maybe, just maybe, you can ambush the guard when they try to put it out...\nIf they come to put it out.\nWith not a small number of misgivings winching around your tight chest, you feverishly begin trying to light the garment you picked up on fire with the brazier. However, the low flickering flame seems to burn with an unnatural frostiness. This is no ordinary flame but something magical, casting only chilly light into the room and sharing none of the heat you'd otherwise expect. The garment refuses to burn.\nIf you truly believe arson is your only means to escape, then you'll have to deploy some greater ingenuity, and do so before your time runs out...");
+                                    Console.WriteLine($"You rack your brains trying to come up with an escape from your prison. With a tincture of desperation you conclude the only way is to start a fire. Maybe, just maybe, you can ambush the guard when they try to put it out...\nIf they come to put it out.\nWith not a small number of misgivings winching around your tight chest, you feverishly begin trying to light the {chosenItem.Name} on fire with the brazier. However, the low flickering flame seems to burn with an unnatural frostiness. This is no ordinary flame but something magical, casting only chilly light into the room and sharing none of the heat you'd otherwise expect. The {chosenItem.Name} refuses to burn.\nIf you truly believe arson is your only means to escape, then you'll have to deploy some greater ingenuity, and do so before your time runs out...");
                                 }
                                 else
                                 {
@@ -474,7 +474,7 @@ namespace DungeonCrawler
                             }
                             try
                             {
-                                success = chosenItem.useItem(chosenItem, Inventory[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, trialBattle);
+                                success = chosenItem.UseItem(chosenItem, Inventory[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, trialBattle);
                                 
                                 if (!success[0])
                                 {
@@ -492,7 +492,7 @@ namespace DungeonCrawler
                         {
                             try
                             {
-                                success = chosenItem.useItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, trialBattle);
+                                success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, trialBattle);
                                 if (!success[0])
                                 {
                                     
@@ -637,7 +637,7 @@ namespace DungeonCrawler
                     else if (x.Name.Trim().ToLower() == answer)
                     {
 
-                        x.pickUpItem(inventory, weaponInventory, 3, 0, null, x);
+                        x.PickUpItem(inventory, weaponInventory, 3, 0, null, x);
                         answer = "";
                         skip = true;
 
@@ -674,7 +674,7 @@ namespace DungeonCrawler
 
                     else if (x.Name.Trim().ToLower() == answer)
                     {
-                        x.pickUpItem(inventory, weaponInventory, 3, 0, x);
+                        x.PickUpItem(inventory, weaponInventory, 3, 0, x);
                         try
                         {
                             if (weaponInventory.Contains(x))
