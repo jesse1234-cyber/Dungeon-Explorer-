@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// MUST add "debug.assert" as part of the CRG (to the other files?)
 // Need to include: explanation on encapuslation (within video; making things private to a specific class- get and set methods)
 // Item ideas; torch, exit key, knife (max four items? key should always be availble in one room)
 
