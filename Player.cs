@@ -31,7 +31,7 @@ namespace DungeonExplorer
         {
             return string.Join(", ", this.inventory);
         }
-        public string PickUpItem(string item)
+        public void PickUpItem(string item)
         {
             this.inventory.Add(item);
         }
