@@ -132,7 +132,7 @@ namespace DungeonExplorer
             if (choice)
             {
                 _Game_commands.ClearTerminal();
-                return false;
+                return true;
             }
             else
             {
@@ -142,7 +142,8 @@ namespace DungeonExplorer
                 PrintLetterByLetter("did you win or lose? that is up to your own philosophy of the term 'winning'.\n\n", 50);
                 PrintLetterByLetter("The End.\n\n", 300);
                 PrintLetterByLetter("Your trait: 'The Reluctant Adventurer'", 50);
-                return _Game_commands.Endgame();
+                _Game_commands.Endgame();
+                return false;
             }
         }
     }
@@ -161,6 +162,7 @@ namespace DungeonExplorer
             currentRoom = new Room();
         }
 
+        // Recieving a random room intro, using PrintLetterByLetter method for a consistant game flow
         public void NewAreaIntro()
         {
             intro.PrintLetterByLetter(currentRoom.GetRoomIntro(), 50);
@@ -168,6 +170,7 @@ namespace DungeonExplorer
             Console.Clear();
         }
 
+        // Method to introduce the player to the Room they have entered
         public void IntroduceNewRoom()
         {
             intro.PrintLetterByLetter("You have entered:", 50);
@@ -175,7 +178,8 @@ namespace DungeonExplorer
             Thread.Sleep(2000);
             Console.Clear();
         }
-        
+
+        // Explore function utilising _game_Commands.Choice
         public bool Explore()
         {
             intro.PrintLetterByLetter("(1). Study this room\n", 50);
@@ -183,49 +187,73 @@ namespace DungeonExplorer
             return _game_Commands.Choice("Make your choice: ", "1", "2");
         }
 
+        // Rather than a description, a study feature gives a more realistic "Dungeon Explorer" feel
         public void StudyRoom()
         {
             Console.Clear();
             intro.PrintLetterByLetter($"{currentRoom.GetDescription()}", 50);
             Thread.Sleep(2000);
         }
-
-        public bool SearchRoom()
+        // a function to check if items exist within a room and if they do these items can be found, better items take more luck to find with the rng feature
+        public string SearchRoom()
         {
-            return false;
+            {
+                if (RoomRng.ContainsItems())
+                {
+                    return RoomRng.GetRandomItem();
+                }
+                else
+                {
+                    return "No item";
+                }
+            }
         }
 
         public void Start()
         {
-            bool RoomLoop = true;
-            bool playing = true;
-            bool RoomStudied = false;
-            bool RoomSearched = false;
-
-            while (playing)
+            bool replay = true;
+            while (replay)
             {
-                Console.Clear();
-                intro.DisplayintroGetUsername(); // Void function only shows text for intro
-                playing = intro.HandleYouHaveAChoice(); // possible end to the game, see intro.HandleYouHaveAChoice();
-                while (RoomLoop)
+                bool playing = true;
+                while (playing)
                 {
-                    currentRoom = new Room();
-                    NewAreaIntro();
-                    IntroduceNewRoom();
-                    while (!RoomStudied || !RoomSearched)
+                    Console.Clear();
+                    //intro.DisplayintroGetUsername(); // Void function only shows text for intro
+                    //bool choice = intro.HandleYouHaveAChoice(); // possible end to the game, see intro.HandleYouHaveAChoice();
+                    while (true)
                     {
-                        bool action = Explore();
-                        
-                        if (action && !RoomStudied)
-                        {
-                            StudyRoom();
-                            RoomStudied = true;
+                        Console.WriteLine(SearchRoom());
+                        Thread.Sleep(1000);
+                    }
+                    //if (!choice)
+                    //{
+                    //    break;
+                    //}
 
-                        }
-                        else if (!action && !RoomSearched)
+                    bool RoomLoop = true;
+                    bool RoomStudied = false;
+                    bool RoomSearched = false;
+
+                    while (RoomLoop) // create a loop in which the player can now explore through the different rooms
+                    {
+                        currentRoom = new Room(); // Get a new room along with description
+                        NewAreaIntro(); // Random intro to the new room
+                        IntroduceNewRoom(); // Tell the player which room they have entered
+                        while (!RoomStudied || !RoomSearched)
                         {
-                            SearchRoom();
-                            RoomSearched = true;
+                            bool action = Explore();
+
+                            if (action && !RoomStudied)
+                            {
+                                StudyRoom();
+                                RoomStudied = true;
+
+                            }
+                            else if (!action && !RoomSearched)
+                            {
+                                SearchRoom();
+                                RoomSearched = true;
+                            }
                         }
                     }
                 }

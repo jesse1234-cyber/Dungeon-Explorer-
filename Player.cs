@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
-    public class Player
+    public class Player : Intro
     {
         public string Name { get; private set; }
         public int Health { get; private set; }
@@ -14,9 +14,14 @@ namespace DungeonExplorer
             Name = name;
             Health = health;
         }
+
+        public void DisplayUsername()
+        {
+            PrintLetterByLetter($"{Name}", 50);
+        }
         public void PickUpItem(string item)
         {
-            Console.WriteLine($"Picked up: {item}");
+            PrintLetterByLetter($"Picked up: {item}", 50);
         }
         public string InventoryContents()
         {

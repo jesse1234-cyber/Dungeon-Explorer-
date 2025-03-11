@@ -87,7 +87,7 @@ namespace DungeonExplorer
         }
 
         // return false for 1 != 1 and all other outcomes are true, the chance of any room containing an item is 66%
-        public bool ContainsItems()
+        public static bool ContainsItems()
         {
             return Rng(1, 3) != 1;
         }
@@ -106,22 +106,27 @@ namespace DungeonExplorer
             {"Gravity glove", 2},
         };
 
+        private static List<string> recievedItems = new List<string>();
+
         public static string GetRandomItem()
         {
-            int Weighting = 0;
-            foreach(var item in Items.Values)
+            var availableItems = Items.Where(item => !recievedItems.Contains(item.Key)).ToDictionary(item => item.Key, item => item.Value);
+
+            if (availableItems.Count == 0)
             {
-                Weighting += item;
+                return "null";
             }
 
-            int randomNum = Rng(1, Weighting + 1);
-            int TotalWeight = 0;
+            int WeightingTotal = availableItems.Values.Sum();
+            int randomNum = Rng(1, WeightingTotal + 1);
+            int AddedWeight = 0;
 
-            foreach (var item in Items)
+            foreach (var item in availableItems)
             {
-                TotalWeight += item.Value;
-                if (randomNum <= TotalWeight)
+                AddedWeight += item.Value;
+                if (randomNum <= AddedWeight)
                 {
+                    recievedItems.Add(item.Key);
                     return item.Key;
                 }
             }
