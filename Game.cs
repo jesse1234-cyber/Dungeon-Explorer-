@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Media;
-using System.Security.Cryptography.X509Certificates;
+using System.Collections.Generic;
+
 
 namespace DungeonExplorer
 {
@@ -8,7 +8,7 @@ namespace DungeonExplorer
     {
         private Player player;
         private Room currentRoom;
-        Room room = new Room();
+        public Room room = new Room();
         // bool playing = false;
 
         public Game()
@@ -22,25 +22,25 @@ namespace DungeonExplorer
         }
         public void Start()
         {
-            Console.WriteLine("");
-            Console.WriteLine("Your chosen name is now: " + Player.Name);
+            Console.WriteLine($"\nYour chosen name is now: {Player.Name}");
             Console.WriteLine("You have " + Player.Health + " health points.");
-            Console.WriteLine("You can move to the next room and make desicions when prompted");
-            Console.WriteLine("");
+            Console.WriteLine("You can move to the next room and make desicions when prompted\n");
 
-
+            Program.ClearConsole();
 
             Console.WriteLine("You, " +Player.Name+ " begin your adventure facing down an a dark open mineshaft. A cool breeze washes over you as you try to peer into the darkness. It was a exhausting 3 day hike here and your not turning back now. You take a deep breath and step into the darkness.");
-            Console.WriteLine("Press any key to continue...");
-            Console.WriteLine("");
+            Console.WriteLine("Press any key to continue...\n");
+
             Console.ReadKey();
             bool playing = true;
             // Console.WriteLine("playing = true");
+
+            Program.ClearConsole();
+
             MoveToNextRoom();
 
             void MoveToNextRoom()
             {
-                Console.WriteLine("ROOM DESCRIPTION PRINTED");
                 string roomDescription = room.GetDescription();
                 PlayerInput();
             }
@@ -49,24 +49,39 @@ namespace DungeonExplorer
             void PlayerInput()
             {
                 Console.WriteLine("What do you wish to do?.");
+                Console.WriteLine(Player.Health + " health points.");
                 Console.WriteLine("Press Q for control scheme");
+
                 Console.WriteLine("");
 
                 var playerKey = Console.ReadKey().Key;
 
+                Program.ClearConsole();
+
                 if (playerKey == ConsoleKey.C)
                 {
                     // Check the room for items
-                    Console.WriteLine("You check the room for items");
-                    // Console.WriteLine(string.Join(", ", Room.room1Items));
-                    string roomItems = room.GetItems();
+                    List<string> roomItems = room.GetItems();
+
+                    Console.WriteLine(string.Join(", ", roomItems));
+                    Console.WriteLine("Input the item you wish to interact with...");
+
+                    var inputItem = Console.ReadLine();
+
+                    if (roomItems.Contains(inputItem.ToLower()))
+                    {
+                        Console.WriteLine($"You have picked up {inputItem}");
+                        player.PickUpItem(inputItem);
+                    }
+
                     PlayerInput();
 
                 }
                 else if (playerKey == ConsoleKey.I)
                 {
-                    // Check the player's inventory
-                    Console.WriteLine("You check your inventory");
+                    // Write the player's inventory
+                    Player.InventoryContents();
+
                     // Console.WriteLine(player.InventoryContents());
                     PlayerInput();
                 }
@@ -75,12 +90,8 @@ namespace DungeonExplorer
                     // Move to the next room
                     Console.WriteLine("You move to the next room");
                     room.GetDescription();
+                    PlayerInput();
                     //currentRoom = 2;
-                }
-                else if (playerKey == ConsoleKey.S)
-                {
-                    // Move to the other next room
-                    Console.WriteLine("You move to the other next room");
                 }
 
                 else if (playerKey == ConsoleKey.Q)
@@ -89,7 +100,6 @@ namespace DungeonExplorer
                     Console.WriteLine("Press (C) to check the room for items");
                     Console.WriteLine("Press (I) to check your inventory");
                     Console.WriteLine("Press (F) to move to the next room");
-                    Console.WriteLine("Press (S) to move to the other next room");
                     PlayerInput();
                 }
                 else
