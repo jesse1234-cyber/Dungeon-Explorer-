@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using System.Threading;
+using System.Linq;
 
 namespace DungeonExplorer
 {
@@ -14,7 +15,7 @@ namespace DungeonExplorer
         public Player(string name, int health)
         {
             this.name = name;
-            this.health = 5;
+            this.health = health;
         }
 
         public string GetName()
@@ -28,25 +29,21 @@ namespace DungeonExplorer
         }
         public string GetInventoryContents()
         {
-            return string.Join(", ", inventory);
+            return string.Join(", ", this.inventory);
         }
         public string PickUpItem(string item)
         {
-            inventory.Add(item);
-            return item;
+            this.inventory.Add(item);
         }
 
         public bool TryOpenDoor()
         {
-            bool keyInInv = inventory.Contains("Bone Key");
-            if (keyInInv == true) 
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return (this.inventory.Contains("Bone Key"));
+        }
+
+        public bool IsInvEmpty()
+        {
+            return !this.inventory.Any();
         }
     }
 }

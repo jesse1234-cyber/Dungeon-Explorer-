@@ -1,10 +1,13 @@
 ﻿using System;
 
-namespace DungeonExplorer {
-    internal class Program {
-        static void Main(string[] args) {
+namespace DungeonExplorer
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
             Game currentGame = new Game();
-            currentGame.Start(            currentGame.GetPlayer());
+            currentGame.Start();
             Console.WriteLine("\nStopped the game!");
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
