@@ -10,11 +10,7 @@ namespace DungeonExplorer
 {
     class Testing
     {
-
         // Creates a test player, test room and test entity.
-
-        // Creates a test player and a test room
-
         private Player testPlayer = new Player();
         private Room testRoom = new Room();
         private Enemy testEnemy = new Enemy();
@@ -30,16 +26,11 @@ namespace DungeonExplorer
             Debug.Assert(!string.IsNullOrEmpty(testPlayer.Name), "Player name cannot be empty.");
         }
 
-
         // Method tests testRoom values.
-
-        // Method tests testRoom values
-
         public void RoomTest()
         {
             testRoom.Description = File.ReadAllText(@"Descriptions/testroom.txt");
             Debug.Assert(!string.IsNullOrEmpty(testRoom.Description), "Room description cannot be empty.");
-
         }
 
         // Method tests testEnemy values.
@@ -52,7 +43,6 @@ namespace DungeonExplorer
 
             Debug.Assert(testEnemy.Health > 0, "Enemy health cannot be 0.");
             Debug.Assert(!string.IsNullOrEmpty(testEnemy.Name), "Enemy name cannot be empty.");
-
         }
     }
 }
