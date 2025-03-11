@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer.Room
 {
-    public enum RoomType
+    public enum RoomT
     {
-        Safe,
-        Normal,
-        Boss,
-        Shop,
-        Event
+        passive,
+        encounter,
+        normal,
+        Event,
+        Store
     }
 }
