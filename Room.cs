@@ -30,7 +30,8 @@ namespace DungeonExplorer
 
 
         private List<string> roomItems = new List<string>(); // List of items within the room.
-        private List<string> roomPaths = new List<string>();
+        private List<string> roomPaths = new List<string>(); // List of paths to other rooms.
+        private List<Enemy> roomEnemies = new List<Enemy>(); // List of enemies in the room.
 
 
         // Method used to add paths to the room.
@@ -72,6 +73,15 @@ namespace DungeonExplorer
             return roomPaths;
         }
 
+        public void AddEnemy(Enemy enemy)
+        {
+            roomEnemies.Add(enemy);
+        }
+
+        public List<Enemy> GetEnemies()
+        {
+            return roomEnemies;
+        }
 
         // Method that returns the description of the room along with what items are inside of it.
         public void GetDescription(Room currentRoom)

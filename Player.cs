@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 
@@ -77,6 +78,71 @@ namespace DungeonExplorer
             }
         }
 
+        // Method for player attacking.
+        public void Attack(Enemy target, string weapon)
+        {
+            int damage = 0;
+            if (inventory.Any(item => item.Equals(weapon, StringComparison.OrdinalIgnoreCase)))
+            {
+                if (weapon.ToLower() == "sword") // If player has a sword they do 10 damage, if they don't then they do 5.
+                {
+                    Console.WriteLine("You used a sword!");
+                    damage = 10;
+                }
+                else if (weapon.ToLower() == "healing potion")
+                {
+                    Console.WriteLine("You used a .... healing potion?");
+                    RemoveItem("Healing Potion");
+                    damage = -10;
+                }
+            }
+            else
+            {
+                Console.WriteLine("You used your fist!");
+                damage = 5;
+            }
+
+            target.Health -= damage;
+
+            if (target.Health <= 0)
+            {
+                target.Health = 0;
+                Console.WriteLine($"{target.Name} defeated!"); // If enemy health is 0 then the defeated message is displayed.
+            }
+            else
+            {
+                if (damage > 0)
+                {
+                    Console.WriteLine($"You attacked {target.Name} for {damage} damage!"); // Attack enemy message.
+                }
+                else
+                {
+                    Console.WriteLine($"You healed {target.Name} for {-damage} health!"); // Heal enemy message.
+                }
+                Console.WriteLine($"{target.Name} remaining health: {target.Health}");
+            }
+
+        }
+
+
+        // Method for using items.
+        public void UseItem(string item)
+        {
+            if (item.ToLower() == "healing potion" && inventory.Contains(item))
+            {
+                health += 10;
+                Console.WriteLine($"Used {item} and healed for 10 health!");
+                RemoveItem("Healing Potion");
+            }
+            else if (!inventory.Contains(item))
+            {
+                Console.WriteLine("You don't have that item.");
+            }
+            else
+            {
+                Console.WriteLine("Can't use this item.");
+            }
+        }
 
         // Method used to remove items.
         public void RemoveItem(string item)
@@ -112,3 +178,4 @@ namespace DungeonExplorer
         }
     }
 }
+
