@@ -26,6 +26,9 @@ namespace DungeonExplorer
                     value = Console.ReadLine();
                 }
                 name = value; // Sets the name.
+                Console.WriteLine($"That's it! {new_name} was your name!");
+                Console.WriteLine("After getting your strength back, you stand up wondering where you are, not knowing what awaits you next.");
+                Console.WriteLine("=============================================================================================================");
             }
         }
         // Property used to set the player's health.
