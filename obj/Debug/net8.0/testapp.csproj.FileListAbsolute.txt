@@ -1,0 +1,14 @@
+/home/lucas/Documents/coding/testapp/bin/Debug/net8.0/testapp
+/home/lucas/Documents/coding/testapp/bin/Debug/net8.0/testapp.deps.json
+/home/lucas/Documents/coding/testapp/bin/Debug/net8.0/testapp.runtimeconfig.json
+/home/lucas/Documents/coding/testapp/bin/Debug/net8.0/testapp.dll
+/home/lucas/Documents/coding/testapp/bin/Debug/net8.0/testapp.pdb
+/home/lucas/Documents/coding/testapp/obj/Debug/net8.0/testapp.GeneratedMSBuildEditorConfig.editorconfig
+/home/lucas/Documents/coding/testapp/obj/Debug/net8.0/testapp.AssemblyInfoInputs.cache
+/home/lucas/Documents/coding/testapp/obj/Debug/net8.0/testapp.AssemblyInfo.cs
+/home/lucas/Documents/coding/testapp/obj/Debug/net8.0/testapp.csproj.CoreCompileInputs.cache
+/home/lucas/Documents/coding/testapp/obj/Debug/net8.0/testapp.dll
+/home/lucas/Documents/coding/testapp/obj/Debug/net8.0/refint/testapp.dll
+/home/lucas/Documents/coding/testapp/obj/Debug/net8.0/testapp.pdb
+/home/lucas/Documents/coding/testapp/obj/Debug/net8.0/testapp.genruntimeconfig.cache
+/home/lucas/Documents/coding/testapp/obj/Debug/net8.0/ref/testapp.dll
