@@ -24,7 +24,7 @@ namespace DungeonExplorer
         {
             
 
-            this.description = description;
+            this.description = description;   // the class for the room description
 
         }
        

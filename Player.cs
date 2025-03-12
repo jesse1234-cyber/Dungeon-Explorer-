@@ -13,18 +13,18 @@ namespace DungeonExplorer
             Name = name;
         }
         public int Health { get; set; }
-        public const int maxhealth = 100;
+        public const int maxhealth = 100; //sets max player health to be 100
        
         private List<string> inventory = new List<string>();
 
         public void displayhealth ()
         {
-            Console.WriteLine ("current health is" +Health);
+            Console.WriteLine ("current health is" +Health); //shows the players current health when they want to ask for it
         }
 
         public void takeDamage(int dmg)
         {
-            Health = Health - dmg;
+            Health = Health - dmg;                  // calculates damage and the health remaining after damage has been taken
          
         }
         public Player(string name, int health) 
@@ -46,14 +46,14 @@ namespace DungeonExplorer
         {
             if (inventory.Count == 0)
             {
-                Console.WriteLine("your inventory is empty");
+                Console.WriteLine("your inventory is empty");  //shows that the players inventory is empty 
             }
             else
             {
-                Console.WriteLine("currently in your inventory is:");
+                Console.WriteLine("currently in your inventory is:");   // shows the players current inventory 
                 foreach (string item in inventory)
                 {
-                    Console.WriteLine($"-{item}");
+                    Console.WriteLine($"-{item}");     //displays the current item in the players inventory
                 }
             }
         }

@@ -12,27 +12,27 @@ namespace DungeonExplorer
 
         public void Level1()
         {
-            Console.WriteLine("you make your way towards the gates of a dragon dungeon...");
+            Console.WriteLine("you make your way towards the gates of a dragon dungeon...");  //story description
             Console.WriteLine("the gates rip open and you venture on in side");
             Console.WriteLine("the gates slam closed and you come to look at your new surroundings");
 
             Room room1descrip = new Room("the room fills with a cold and sharp air, lava flows down the walls and the floor is covered in bones and skulls");
 
-            Console.WriteLine(room1descrip.GetDescription());
+            Console.WriteLine(room1descrip.GetDescription());  // gives thr room description
 
             Console.WriteLine("you find a health potion on the floor of the first room. do you want to pick it up? (yes/no)");
             string answer = Console.ReadLine().ToLower();
 
-            if (answer == "yes")
+            if (answer == "yes")     //picks up item if answer is "yes" and they dont if the answer is "no"
             {
-                player.PickUpItem("sausage");
+                player.PickUpItem("health potion");   
             }
             player.showinventory();
 
             Console.WriteLine("You take damage!!!");
-            player.takeDamage(20);
+            player.takeDamage(20);    //shows amount of damage taken
 
-            Console.WriteLine("your health is now" + player.Health);
+            Console.WriteLine("your health is now" + player.Health); //shows new health
         }
 
         public Game()
