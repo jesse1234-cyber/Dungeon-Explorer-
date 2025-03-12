@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Media;
 using System.Security.Cryptography.X509Certificates;
@@ -242,6 +243,12 @@ namespace DungeonExplorer
 
                 player1.Inventory = new List<string>();
 
+                //Calling test class to test the player creation
+                Test playerTest = new Test(player1);
+                playerTest.TestPlayer(); //Testing that the player's
+                                        //attributes are the desired values
+
+
                 //Displaying the game rules
                 Console.WriteLine("Game rules: \nYou have been stranded in" +
                     " a dungeon. To escape you must pass through 10" +
@@ -410,6 +417,8 @@ namespace DungeonExplorer
                         }
                     }
                 }
+                Test testRoom = new Test(currentRoom);
+                testRoom.TestRoom();
             }
         }
     }
