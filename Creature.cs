@@ -90,6 +90,8 @@ namespace DungeonExplorer
         {
             while (true)
             {
+                Console.WriteLine("\n========Menu========");
+                Console.WriteLine("Name: " + Name);
                 // Displays stats.
                 Console.WriteLine("\nStats:");
                 Console.WriteLine($"Health: {CurrentHealth}");
