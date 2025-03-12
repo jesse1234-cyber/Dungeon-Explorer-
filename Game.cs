@@ -49,7 +49,7 @@ namespace DungeonExplorer
                         string item = "Mysterious Potion";
                         Console.WriteLine($"\nThe glistening turned out to be a {item}! You try to grab it off the shelf...");
                         Thread.Sleep(1000);
-                        Console.WriteLine("Rolling dice...");
+                        Console.WriteLine("Rolling dice... Roll a number that is smaller than 8 to pick up the item!");
                         Thread.Sleep(1000);
                         Console.WriteLine("You rolled...\n");
                         Thread.Sleep(1000);
@@ -95,7 +95,7 @@ namespace DungeonExplorer
                         string item = "Bone Key";
                         Console.WriteLine($"\nThe glistening turned out to be a {item}! You try to grab it off the shelf...");
                         Thread.Sleep(1000);
-                        Console.WriteLine("Rolling dice...");
+                        Console.WriteLine("Rolling dice... Roll a number that is smaller than 8 to pick up the item!");
                         Thread.Sleep(1000);
                         Console.WriteLine("You rolled...\n");
                         invalidChoice = false;
