@@ -7,6 +7,9 @@ namespace DungeonExplorer
         private Player _player;
         private static bool _playing = true;
         
+        /// <summary>
+        /// Starts the Game Flow
+        /// </summary>
         public void Start()
         {
             Console.WriteLine("Welcome to the Dungeon Game.");
@@ -19,6 +22,9 @@ namespace DungeonExplorer
                 ProcessCommand();
         }
 
+        /// <summary>
+        /// Prompts & Processes command entered by the player
+        /// </summary>
         private void ProcessCommand()
         {
             bool processed = true;
@@ -57,6 +63,9 @@ namespace DungeonExplorer
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Moves player to the next room. Rooms are linear and they can only progress to new rooms.
+        /// </summary>
         public void NextRoom()
         {
             Room room = new Room(_player);
@@ -76,6 +85,9 @@ namespace DungeonExplorer
             _player.HasBadLuck = false;
         }
         
+        /// <summary>
+        /// Use item if that item exists in the player's inventory. Multiple choice dialogue is triggered to select an item type.
+        /// </summary>
         private void UseItem()
         {
             string[] itemTypes = Enum.GetNames(typeof(ItemType));
@@ -90,16 +102,25 @@ namespace DungeonExplorer
             _player.UseItem(itemChoice);
         }
 
+        /// <summary>
+        /// Displays all items in the player's inventory as well as the number of items in there.s
+        /// </summary>
         private void DisplayInventory()
         {
             Console.WriteLine($"Inventory: {_player.InventoryContents()}");
         }
         
+        /// <summary>
+        /// Displays player's health
+        /// </summary>
         private void DisplayHealth()
         {
             Console.WriteLine($"Health: {_player.Health}%");
         }
 
+        /// <summary>
+        /// Displays list of commands
+        /// </summary>
         private void Help()
         {
             Console.WriteLine(@"
@@ -115,6 +136,11 @@ Utility:
 ");
         }
 
+        /// <summary>
+        /// Reads text input from the player. Repeats prompt until non-empty string is entered.
+        /// </summary>
+        /// <param name="message">Message that is displayed when player is prompted.</param>
+        /// <returns>Input entered by player.</returns>
         private string ReadInput(string message)
         {
             string input = null;
@@ -128,6 +154,12 @@ Utility:
             return input;
         }
 
+        /// <summary>
+        /// Prompts multiple choice input based on array provided.
+        /// </summary>
+        /// <param name="message">Message that displays when prompting player for choice input</param>
+        /// <param name="choices">List of choices that are displayed numerically with respective strings</param>
+        /// <returns>Returns index of array player chose</returns>
         private int ReadMultiChoiceInt(String message, string[] choices)
         {
             string choiceDisplay = "";
@@ -161,6 +193,9 @@ Utility:
             return numberChoice - 1;
         }
         
+        /// <summary>
+        /// Quits the game and waits for keyboard input to exit process
+        /// </summary>
         public static void Quit()
         {
             _playing = false;

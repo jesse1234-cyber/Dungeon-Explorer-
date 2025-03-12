@@ -6,9 +6,19 @@ namespace DungeonExplorer
 {
     public class Player
     {
+        /// <summary>
+        /// Name entered by player at start of the program.
+        /// </summary>
         public string Name { get; private set; }
+        
+        /// <summary>
+        /// Amount of health the player has. By default is 100.
+        /// </summary>
         public int Health { get; private set; }
 
+        /// <summary>
+        /// Items in the player's inventory and their amounts.
+        /// </summary>
         public Dictionary<ItemType, int> Inventory { get; } = new Dictionary<ItemType, int>();
         
         private bool _shieldEquipped = false;
@@ -20,6 +30,10 @@ namespace DungeonExplorer
             Health = 100;
         }
         
+        /// <summary>
+        /// Returns contents of player's inventory and number of each item they have.
+        /// </summary>
+        /// <returns>The display string</returns>
         public string InventoryContents()
         {
             List<string> items = new List<string>();
@@ -36,6 +50,10 @@ namespace DungeonExplorer
             return string.Join(", ", items);
         }
         
+        /// <summary>
+        /// Picks up item and adds it to player's inventoryu
+        /// </summary>
+        /// <param name="item">Type of item being added to player's inventory.</param>
         public void PickUpItem(ItemType item)
         {
             if (Inventory.ContainsKey(item))
@@ -47,11 +65,16 @@ namespace DungeonExplorer
             Inventory.Add(item, 1);
         }
 
+        /// <returns>True if the player has the item type in their inventory</returns>
         public bool HasItem(ItemType item)
         {
             return Inventory.ContainsKey(item) && Inventory[item] != 0;
         }
 
+        /// <summary>
+        /// Use a particular item in the player's inventory
+        /// </summary>
+        /// <param name="item">The type of item being used</param>
         public void UseItem(ItemType item)
         {
             switch (item)
@@ -77,6 +100,10 @@ namespace DungeonExplorer
             Inventory[item] -= 1;
         }
         
+        /// <summary>
+        /// Removes health from player
+        /// </summary>
+        /// <param name="amount">Amount of health to remove</param>
         private void RemoveHealth(int amount)
         {
             if (Health - amount < 0)
@@ -93,6 +120,10 @@ namespace DungeonExplorer
             }
         }
 
+        /// <summary>
+        /// Adds health to player
+        /// </summary>
+        /// <param name="amount">Amount of health to add</param>
         private void AddHealth(int amount)
         {
             if (Health + amount > 100)
@@ -103,6 +134,10 @@ namespace DungeonExplorer
             Console.WriteLine($"Your health is now {Health}%.");
         }
 
+        /// <summary>
+        /// Get health removed due to attack from monster. Only removed if player does not have shield equipped. Otherwise, player is notified about this.
+        /// </summary>
+        /// <param name="healthLoss">Health loss as a result of the attack</param>
         public void GetAttacked(int healthLoss)
         {
             if (_shieldEquipped)
@@ -115,12 +150,18 @@ namespace DungeonExplorer
             RemoveHealth(healthLoss);
         }
 
+        /// <summary>
+        /// Gives player higher odds of encountering a monster in the next room
+        /// </summary>
         public void GiveBadLuck()
         {
             HasBadLuck = true;
             Console.WriteLine($"You have been given bad luck.");
         }
         
+        /// <summary>
+        /// Removes an item from the player's inventory if they have one and notifies them
+        /// </summary>
         public void StealItem()
         {
             ItemType? stolenItem = null;

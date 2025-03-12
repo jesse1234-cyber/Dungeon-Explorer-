@@ -11,7 +11,10 @@ namespace DungeonExplorer
         public MonsterType? Monster { get; }
         public ItemType? Item { get; }
 
-        // Player is the player entering the Room
+        /// <summary>
+        /// Uses random to generate items/monsters that are found in this particular room
+        /// </summary>
+        /// <param name="player">Player entering the room</param>
         public Room(Player player)
         {
             Random random = new Random();

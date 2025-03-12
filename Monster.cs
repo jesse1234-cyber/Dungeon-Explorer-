@@ -4,6 +4,11 @@ namespace DungeonExplorer
 {
     public static class Monster
     {
+        /// <summary>
+        /// Makes attacks on player depending on monster type and its abilities
+        /// </summary>
+        /// <param name="player">The player attacked by the monster</param>
+        /// <param name="monsterType">The type of monster that is attacking the player</param>
         public static void AttackPlayer(Player player, MonsterType monsterType)
         {
             switch (monsterType)
