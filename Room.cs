@@ -7,7 +7,7 @@ namespace DungeonExplorer
     /// </summary>
     public class Room
     {
-        private string description = "";
+        private readonly string description = "";
         private List<string> items = new List<string>();
         private readonly string name = "";
 

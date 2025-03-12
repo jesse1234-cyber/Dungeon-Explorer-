@@ -8,9 +8,9 @@ namespace DungeonExplorer
     /// </summary>
     public class Player
     {
-        private string name;
-        private int health;
-        private List<string> inventory = new List<string>();
+        private readonly string name;
+        private readonly int health;
+        private readonly List<string> inventory = new List<string>();
 
         /// <summary>
         /// Constructs a Player object.

@@ -40,7 +40,7 @@ namespace DungeonExplorer
                 bool invalidChoice = true;
                 while (invalidChoice)
                 {
-                    string userChoice = Console.ReadLine();
+                    string userChoice = Console.ReadLine().ToUpper();
 
                     // Handling the user's choices and playing the corresponding scenario
                     if (userChoice == "A")
@@ -92,6 +92,12 @@ namespace DungeonExplorer
 
                     else if (userChoice == "C")
                     {
+                        string item = "Bone Key";
+                        Console.WriteLine($"\nThe glistening turned out to be a {item}! You try to grab it off the shelf...");
+                        Thread.Sleep(1000);
+                        Console.WriteLine("Rolling dice...");
+                        Thread.Sleep(1000);
+                        Console.WriteLine("You rolled...\n");
                         invalidChoice = false;
                         Thread.Sleep(1000);
                         Random rnd = new Random();
@@ -99,7 +105,6 @@ namespace DungeonExplorer
                         Console.WriteLine(itemRoll + "!");
                         if (itemRoll < 8)
                         {
-                            string item = "Bone Key";
                             this.player.PickUpItem(item);
                             Thread.Sleep(1000);
                             Console.WriteLine($"You carefully put the {item} in your backpack.\n");
