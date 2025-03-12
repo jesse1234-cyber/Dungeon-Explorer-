@@ -14,14 +14,15 @@ namespace DungeonExplorer
             Room room1 = new Room("You are in a dungeon.There is a diamond sword on the ground near by.");
             Room room2 = new Room("You are in a dungeon.There is a gold sword on the ground near by.");
             Room room3 = new Room("You are in a dungeon.There is a wooden sword on the ground near by.");
+            
             currentRoom.AddItem("sword"); // creates a sword.
             room1.AddItem("diamond sword");
             room2.AddItem("gold sword");
             room3.AddItem("wooden sword");
+
             room1.AddConnectedRoom("north", room2);
             room2.AddConnectedRoom("south", room1);
-            room2.AddConnectedRoom("east", room3);
-            room3.AddConnectedRoom("west", room2);
+
 
             //sets starting room.
             currentRoom = room1;
@@ -35,10 +36,9 @@ namespace DungeonExplorer
               // Shows the current room info
               Console.WriteLine(currentRoom.GetDescription());
               Console.WriteLine("Items in room: " + currentRoom.ListItems());
-              // Shows available exits
-              Console.WriteLine("Exits: " + string.Join(", ", currentRoom.GetConnectedRooms()));
-
-              // make the player choose an option
+                // Shows available exits
+              Console.WriteLine("Exits: " + currentRoom.ListConnectedRooms());
+                // make the player choose an option
               Console.WriteLine("Pick one of these options below");
               Console.WriteLine("Options: 1.'pick up {item}', 2.'inventory', 3.'move [direction]', 'exit'");
 
@@ -56,7 +56,7 @@ namespace DungeonExplorer
                     }
                     else
                     {
-                        Console.WriteLine("{item} is not in this room.");
+                        Console.WriteLine($"{item} is not in this room.");
                     }
                 }
                 else if (input == "inventory")
@@ -71,7 +71,7 @@ namespace DungeonExplorer
                     if (nextRoom != null)
                     {
                         currentRoom = nextRoom;
-                        Console.WriteLine("You moved to the {direction}");
+                        Console.WriteLine($"You moved to the {direction}");
                     }
                     else
                     {

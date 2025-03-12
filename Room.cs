@@ -5,18 +5,17 @@ namespace DungeonExplorer
 {
     public class Room
     {
-        
         private string description;
         private List<string> items;
         private Dictionary<string, Room> connectedRooms; // connected rooms
 
-        //initializes the room with a description.
         public Room(string description)
         {
             this.description = description;
             this.items = new List<string>();
             this.connectedRooms = new Dictionary<string, Room>();
         }
+
         public string GetDescription()
         {
             return description;
@@ -31,7 +30,7 @@ namespace DungeonExplorer
         }
         public void RemoveItem(string item)
         {
-         if (items.Contains(item))
+            if (items.Contains(item))
             {
                 items.Remove(item);
                 Console.WriteLine($"{item} has been removed from this room");
@@ -52,5 +51,13 @@ namespace DungeonExplorer
         {
             return connectedRooms.ContainsKey(direction) ? connectedRooms[direction] : null;
         }
+
+        public string ListConnectedRooms()
+        {
+            return connectedRooms.Count > 0
+                ? string.Join(", ", connectedRooms.Keys)
+                : "There are no exits.";
+        }
+
     }
 }
