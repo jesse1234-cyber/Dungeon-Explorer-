@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace DungeonExplorer
 {
@@ -10,11 +7,18 @@ namespace DungeonExplorer
     {
         static void Main(string[] args)
         {
+            // Executes tests if the debugger is being used
+            if (Debugger.IsAttached)
+            {
+                Console.WriteLine("Running Tests....");
+                PlayerTests.TestPlayer();
+                Console.WriteLine("Tests Passed.");
+                Console.WriteLine("==============");
+                Console.WriteLine();
+            }
+            
             Game game = new Game();
             game.Start();
-            Console.WriteLine("Waiting for your Implementation");
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
         }
     }
 }
