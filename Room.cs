@@ -3,9 +3,14 @@ using System;
 
 namespace DungeonExplorer
 {
+    /// <summary>
+    /// Represents a room in the game world.
+    /// </summary>
     public class Room
     {
-        // Room's Properties
+        /// <summary>
+        /// Gets and sets for the Room's properties.
+        /// </summary>
         public string RoomID { get; set; }
         public int RoomCount { get; set; }
         public string Description { get; set; }
@@ -13,7 +18,12 @@ namespace DungeonExplorer
         public List<string> Items { get; set; }
         public List<object> Enemies { get; set; }
 
-        // Room's constructor
+        /// <summary>
+        /// Initialises a new instance of the Room class.
+        /// </summary>
+        /// <param name="roomID"> The unique ID for the room.</param>
+        /// <param name="description"> The description of the room.</param>
+        /// <param name="roomCount"> The number of rooms in the dungeon.</param>
         public Room(string roomID, string description, int roomCount)
         {
             RoomID = roomID;
@@ -24,7 +34,9 @@ namespace DungeonExplorer
             Enemies = new List<object>();
         }
 
-        // Method to get the room's description
+        /// <summary>
+        /// Method to get the room's description, including items, enemies, and exits.
+        /// </summary>
         public void GetDescription()
         {
             Console.WriteLine($"\n{RoomID}: {Description}\n");
@@ -58,19 +70,28 @@ namespace DungeonExplorer
             Console.WriteLine("Exits: " + string.Join(", ", Exits) + "\n");
         }
 
-        // Method to add an item to the room
+        /// <summary>
+        /// Method to add an item to the room.
+        /// </summary>
+        /// <param name="item"> The item to be added to the room.</param>
         public void AddItem(string item)
         {
             Items.Add(item);
         }
 
-        // Method to add an enemy to the room
+        /// <summary>
+        /// Method to add an enemy to the room.
+        /// </summary>
+        /// <param name="enemy"> The enemy to be added to the room.</param>
         public void AddEnemy(List<object> enemy)
         {
             Enemies.Add(enemy);
         }
 
-        // Method to add an exit to the room
+        /// <summary>
+        /// Method to add an exit to the room.
+        /// </summary>
+        /// <param name="exit"> The exit to be added to the room.</param>
         public void AddExit(string exit)
         {
             Exits.Add(exit);
