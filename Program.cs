@@ -9,43 +9,45 @@ namespace DungeonExplorer
 {
     internal class Program
     {
-        //creates new player object (The Users Player).
-        public static Player currentPlayer = new Player();
+        //Creates new player object (The User's Player), initialized later after getting the name.
+        public static Player currentPlayer;
+
         static void Main(string[] args)
         {
             //Debug if in Debug mode
-            #if DEBUG
-                GameTests.RunTests();
-            #endif
+#if DEBUG
+            Testing.RunTests();
+#endif
 
             //Calls Start of Game
-            start();
+            Start();
         }
 
         //Start of Game
-
-        static void start()
+        static void Start()
         {
             //Name Enter
             Console.WriteLine("|| THE DUNGEON ||");
-            Console.WriteLine("Hello Adventurer, Brave enough to enter The Dungeon i see...");
+            Console.WriteLine("Hello Adventurer, Brave enough to enter The Dungeon I see...");
             Console.WriteLine("What is your name?: ");
-            currentPlayer.name = Console.ReadLine();
+            string playerName = Console.ReadLine();
 
             //Name Check
-            while (currentPlayer.name == "")
+            while (string.IsNullOrWhiteSpace(playerName))
             {
                 Console.Clear();
                 Console.WriteLine("You must enter a name!");
-                currentPlayer.name = Console.ReadLine();
+                playerName = Console.ReadLine();
             }
             Console.Clear();
 
-            //introduces item system (via potions)
-            Console.WriteLine($"Well GoodLuck {currentPlayer.name}! Take these.... You will need them.");
-            Console.WriteLine(" [+2 Potions] " +
-                "Press Any Key to continue....");
-            currentPlayer.AddPotions(2);
+            //Initialize the player with the given name
+            currentPlayer = new Player(playerName);
+
+            //Introduces item system (via potions)
+            Console.WriteLine($"Well GoodLuck {currentPlayer.Name}! Take these.... You will need them.");
+            currentPlayer.AddPotion(2);
+            Console.WriteLine("Press Any Key to continue....");
             Console.ReadKey();
             Console.Clear();
 
@@ -73,8 +75,6 @@ namespace DungeonExplorer
             {
                 Console.WriteLine("The Lost Hall room could not be found.");
             }
-
-
         }
     }
 }

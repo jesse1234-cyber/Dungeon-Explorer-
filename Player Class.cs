@@ -15,7 +15,7 @@ namespace DungeonExplorer
         private int _health = 100;
         private int _attack = 10;
         private int _defense = 5;
-        private int _potions = 2;
+        private int _potions = 0;
         private int _keys = 0;
         private int _level = 1;
         private int _experience = 0;
@@ -38,7 +38,7 @@ namespace DungeonExplorer
         //Method to view player inventory
         public void ViewInventory()
         {
-            Console.WriteLine($"Name: {_name}\nHealth: {_health}\nPotions: {_potions}\nLevel: {_level}\n");
+            Console.WriteLine($"Name: {Name}\nHealth: {_health}\nPotions: {_potions}\nLevel: {_level}\n");
             Console.WriteLine("Inventory:");
             foreach (string item in _inventory)
             {
@@ -51,7 +51,7 @@ namespace DungeonExplorer
         //Method to add an item to the player's inventory
         public void AddToInventory(string item)
         {
-            if item == "Potion")
+            if (item == "Potion")
             {
                 _potions++;
             }
@@ -64,5 +64,20 @@ namespace DungeonExplorer
                 _inventory.Add(item);
             }
         }
+
+        //Add potion method
+        public void AddPotion(int amount = 1)
+        {
+            if (amount > 0)
+            {
+                _potions += amount;
+                Console.WriteLine($"You have added {amount} potion(s). You now have {_potions} potion(s).");
+            }
+            else
+            {
+                Console.WriteLine("Invalid potion amount.");
+            }
+        }
     }
 }
+
