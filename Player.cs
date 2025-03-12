@@ -6,41 +6,41 @@ namespace DungeonExplorer
 {
     public class Player
     {
-        private string _name;
-        private string _description;
-        private int _inventory;
-        private int _health;
+        private string name;
+        private string description;
+        private int inventory;
+        private int health;
         public string Name
         {
-            get { return _name; }
+            get { return name; }
             set
             {
-                _name = string.IsNullOrEmpty(value) ? "NoName" : value;
+                name = string.IsNullOrEmpty(value) ? "NoName" : value;
             }
         }
 public int Health
         {
-            _health = 100;
-            get { return _health; }
+            health = 100;
+            get { return health; }
             set
             {
-                _health = (value >= 0 && value <= 100) ? value : 0;
+                health = (value >= 0 && value <= 100) ? value : 0;
             }
         }
         public int Inventory
         {
-            get { return _inventory; }
+            get { return inventory; }
             set
             {
-                _inventory = (value >= 0 && value <= 1) ? value : 0;
+                inventory = (value >= 0 && value <= 1) ? value : 0;
             }
         }
 
-        public Player(string _name, int _health, int _inventory) 
+        public Player(string name, int health, int inventory) 
         {
-            Name = _name;
-            Health = _health;
-            Inventory = _inventory;
+            Name = name;
+            Health = health;
+            Inventory = inventory;
         }
         public void PickUpItem(string item)
         {
@@ -61,7 +61,7 @@ public int Health
         }
         public void DisplayStatus()
         {
-            Console.WriteLine($"Player: {Name} | Health: {-health} | Inventory: {_inventory ?? "None"}");
+            Console.WriteLine($"Player: {Name} | Health: {health} | Inventory: {inventory ?? "None"}");
             
         }
     }
