@@ -13,6 +13,11 @@ namespace DungeonExplorer
         public static Player currentPlayer = new Player();
         static void Main(string[] args)
         {
+            //Debug if in Debug mode
+            #if DEBUG
+                GameTests.RunTests();
+            #endif
+
             //Calls Start of Game
             start();
         }
@@ -40,7 +45,7 @@ namespace DungeonExplorer
             Console.WriteLine($"Well GoodLuck {currentPlayer.name}! Take these.... You will need them.");
             Console.WriteLine(" [+2 Potions] " +
                 "Press Any Key to continue....");
-            currentPlayer.potions += 2;
+            currentPlayer.AddPotions(2);
             Console.ReadKey();
             Console.Clear();
 

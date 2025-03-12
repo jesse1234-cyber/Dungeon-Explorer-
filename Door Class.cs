@@ -9,31 +9,24 @@ namespace DungeonExplorer
 {
     public class Door
     {
-        //Door state
-        public bool IsLocked { get; set; }
-        public string DoorDescription { get; set; }
+        //Door State
+        public bool IsLocked { get; private set; }
+        public string DoorDescription { get; private set; }
 
-        //Constructor to initialize the door with a description and its lock state
+        //Constructor to create a door with a description and lock state
         public Door(string description = "A wooden door", bool isLocked = false)
         {
             DoorDescription = description;
             IsLocked = isLocked;
         }
 
-        //Check the status of the door (locked/unlocked)
+        //Display the door's locked status
         public void CheckDoorStatus()
         {
-            if (IsLocked)
-            {
-                Console.WriteLine("The door is locked.");
-            }
-            else
-            {
-                Console.WriteLine("The door is unlocked.");
-            }
+            Console.WriteLine(IsLocked ? "The door is locked." : "The door is unlocked.");
         }
 
-        //Unlock the door (if locked)
+        //Unlock the door
         public void Unlock()
         {
             if (IsLocked)
@@ -47,7 +40,7 @@ namespace DungeonExplorer
             }
         }
 
-        //Lock the door (if unlocked)
+        //Lock the door
         public void Lock()
         {
             if (!IsLocked)

@@ -10,36 +10,37 @@ namespace DungeonExplorer
     //Creates Player Class
     public class Player
     {
-        //Basic information for Player with default values.
-        public string name;
-        public int health = 100;
-        public int attack = 10;
-        public int defense = 5;
-        public int gold = 0;
-        public int potions = 0;
-        public int keys = 0;
-        public int level = 1;
-        public int experience = 0;
-        public int experienceToNextLevel = 100;
-        public List<string> Inventory { get; set; }
+        //Player Stats with default values
+        private string _name;
+        private int _health = 100;
+        private int _attack = 10;
+        private int _defense = 5;
+        private int _potions = 2;
+        private int _keys = 0;
+        private int _level = 1;
+        private int _experience = 0;
+        private int _experienceToNextLevel = 100;
+        private List<string> _inventory;
 
-        public Player()
+        //Getters and Setters
+        public string Name { get => _name; private set => _name = value; }
+        public int Health { get => _health; private set => _health = value; }
+        public int Potions { get => _potions; private set => _potions = value; }
+        public List<string> Inventory { get => _inventory; private set => _inventory = value; }
+
+        //Constructor to create a player with a name and inventory
+        public Player(string name)
         {
-            Inventory = new List<string>();
+            _name = name;
+            _inventory = new List<string>();
         }
 
-        //view player's inventory
+        //Method to view player inventory
         public void ViewInventory()
         {
-            Console.WriteLine("Player Information:");
-            Console.WriteLine("Name: " + name);
-            Console.WriteLine("Health: " + health);
-            Console.WriteLine("Gold: " + gold);
-            Console.WriteLine("Potions: " + potions);
-            Console.WriteLine("Player Level: " + level);
-            Console.WriteLine("");
-            Console.WriteLine("Your Inventory:");
-            foreach (string item in Inventory)
+            Console.WriteLine($"Name: {_name}\nHealth: {_health}\nPotions: {_potions}\nLevel: {_level}\n");
+            Console.WriteLine("Inventory:");
+            foreach (string item in _inventory)
             {
                 Console.WriteLine("- " + item);
             }
@@ -47,10 +48,21 @@ namespace DungeonExplorer
             Console.ReadKey();
         }
 
-        //Add item to player's inventory
+        //Method to add an item to the player's inventory
         public void AddToInventory(string item)
         {
-            Inventory.Add(item);
+            if item == "Potion")
+            {
+                _potions++;
+            }
+            else if (item == "Key")
+            {
+                _keys++;
+            }
+            else
+            {
+                _inventory.Add(item);
+            }
         }
     }
 }
