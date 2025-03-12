@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace DungeonExplorer.Player {
     public class Player {
@@ -12,52 +13,60 @@ namespace DungeonExplorer.Player {
         public int Health { get; set; }
         private List<Item.Item> inventory = new List<Item.Item>();
 
+
         public Player(string name, int health)
         {
             Name = name;
             Health = health;
         }
 
+
         public void PickUpItem(Item.Item item)
         {
             inventory.Add(item);
         }
 
+
         public void UseItem(Item.Item item)
         {
-            // item usage logic here
+            // Item usage logic
             if (InventoryContents().Contains(item))
             {
                 Console.WriteLine($"{Name} uses {item.Name}");
-                // Apply item effects
+                // Items effects added
                 item.Use(this);
             }
             else
             {
-                Console.WriteLine($"{Name} does not have {item.Name}");
+                Console.WriteLine($"{Name} does not possess {item.Name}");
             }
         }
+
 
         public void TakeDamage(int damage)
         {
             Health -= damage;
         }
 
+
         public void AddHealth(int health)
         {
             Health += health;
         }
+
 
         public List<Item.Item> InventoryContents()
         {
             return inventory;
         }
 
+
         public void RemoveItem(Item.Item item)
         {
             inventory.Remove(item);
-            Console.WriteLine($"{item.Name} removed from inventory.");
+            Console.WriteLine($"{item.Name} deleted from inventory.");
         }
+
 
         public int getMaxHealth()
         {
