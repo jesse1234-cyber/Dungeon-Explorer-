@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Media;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
@@ -38,9 +39,9 @@ namespace DungeonExplorer
             string actions = "\nActions: \nM) Menu";
             if (CurrentRoom.Monster == null)
             {
-                if (CurrentRoom.Potion != null)
+                if (CurrentRoom.Potions != null)
                 {
-                    actions += $"\nP) Take {CurrentRoom.Potion.Name}";
+                    actions += "\nP) Take potions.";
                 }
                 if (CurrentRoom.Weapon != null)
                 {
@@ -59,12 +60,34 @@ namespace DungeonExplorer
                 Console.Write(">");
                 // Converts userChoice input to upper to avoid case sensitivity.
                 string userChoice = Console.ReadLine().ToUpper();
-                // The user is only allowed to take a potion if there is one in the room (and if the monster is dead).
-                if (userChoice == "P" && CurrentRoom.Potion != null && CurrentRoom.Monster == null)
+                // The user is only allowed to take a potion if there is one or more in the room (and if the monster is dead).
+                if (userChoice == "P" && CurrentRoom.Potions != null && CurrentRoom.Monster == null)
                 {
-                    Player.PlayerInventory.AddPotion(CurrentRoom.Potion);
-                    Console.WriteLine($"You take the {CurrentRoom.Potion.Name}.");
-                    CurrentRoom.RemovePotion();
+                    Console.WriteLine("Which potion would you like to take?");
+                    // Generates a list of available potions in the room.
+                    string availablePotions = "";
+                    for (int i = 0; i < CurrentRoom.Potions.Count; i++)
+                    {
+                        availablePotions += $"{i + 1}) {CurrentRoom.Potions[i].Name}\n";
+                    }
+                    Console.Write(availablePotions);
+                    // Try catch block to validate user input.
+                    while (true)
+                    {
+                        try
+                        {
+                            Console.Write(">");
+                            int potionChoice = Convert.ToInt32(Console.ReadLine());
+                            Player.PlayerInventory.AddPotion(CurrentRoom.Potions[potionChoice - 1]);
+                            Console.WriteLine($"You take the {CurrentRoom.Potions[potionChoice - 1].Name}.");
+                            CurrentRoom.RemovePotion(potionChoice - 1);
+                            break;
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Please enter a valid input.");
+                        }
+                    }
                     break;
                 }
                 // Similarly to the potion statement,
@@ -125,42 +148,49 @@ namespace DungeonExplorer
             };
             Monster monster = monsters[random.Next(0, monsters.Length)];
             Weapon weapon = weapons[random.Next(0, weapons.Length)];
-            Potion potion = null;
-            // Generates potion stats and name. Stats may be 0.
-            string potionName = "";
-            int potionHealthRestore = 0;
-            int potionHealthBonus = 0;
-            int potionDamageBonus = 0;
-            if (random.Next(0, 2) == 0)
-            {
-                potionHealthRestore = random.Next(5, 16);
-                potionName = $"Health({potionHealthRestore})";
-            }
-            if (random.Next(0, 6) == 0)
-            {
-                potionHealthBonus = random.Next(1, 6);
-                if (potionHealthRestore != 0)
+            List<Potion> potions = new List<Potion>();
+            // Randomly generates between 0 and 2 potions.
+            for (int i = 0; i < random.Next(0, 3); i++)
+            { 
+                // Generates potion stats and name. Stats may be 0.
+
+                Potion potion = null;
+                string potionName = "";
+                int potionHealthRestore = 0;
+                int potionHealthBonus = 0;
+                int potionDamageBonus = 0;
+                if (random.Next(0, 2) == 0)
                 {
-                    potionName += ", ";
+                    potionHealthRestore = random.Next(5, 16);
+                    potionName = $"Health({potionHealthRestore})";
                 }
-                potionName += $"Vitality({potionHealthBonus})";
-            }
-            if (random.Next(0, 11) == 0)
-            {
-                potionDamageBonus = random.Next(1, 6);
-                if (potionHealthRestore != 0 || potionHealthBonus != 0)
+                if (random.Next(0, 6) == 0)
                 {
-                    potionName += ", ";
+                    potionHealthBonus = random.Next(1, 6);
+                    if (potionHealthRestore != 0)
+                    {
+                        potionName += ", ";
+                    }
+                    potionName += $"Vitality({potionHealthBonus})";
                 }
-                potionName += $"Strength({potionDamageBonus})";
+                if (random.Next(0, 11) == 0)
+                {
+                    potionDamageBonus = random.Next(1, 6);
+                    if (potionHealthRestore != 0 || potionHealthBonus != 0)
+                    {
+                        potionName += ", ";
+                    }
+                    potionName += $"Strength({potionDamageBonus})";
+                }
+                // If all stats are 0, the potion remains null.
+                if (!(potionHealthRestore == 0 && potionHealthBonus == 0 && potionDamageBonus == 0))
+                {
+                    potionName += " Potion";
+                    potion = new Potion(potionName, potionDamageBonus, potionHealthRestore, potionHealthBonus);
+                }
+                potions.Add(potion);
             }
-            // If all stats are 0, the potion remains null.
-            if (!(potionHealthRestore == 0 && potionHealthBonus == 0 && potionDamageBonus == 0))
-            {
-                potionName += " Potion";
-                potion = new Potion(potionName, potionDamageBonus, potionHealthRestore, potionHealthBonus);
-            }
-            return new Room(monster, potion, weapon);
+            return new Room(monster, potions, weapon);
         }
         // Method to make player and monster fight.
         private void FightMonster(Monster monster)

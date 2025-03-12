@@ -1,15 +1,17 @@
-﻿namespace DungeonExplorer
+﻿using System.Collections.Generic;
+
+namespace DungeonExplorer
 {
     public class Room
     {
         public Monster Monster { get; private set; }
-        public Potion Potion { get; private set; }
+        public List<Potion> Potions { get; private set; }
         public Weapon Weapon { get; private set; }
         private string Description; // Accessed through methods detailed below.
-        public Room(Monster monster, Potion potion, Weapon weapon)
+        public Room(Monster monster, List<Potion> potions, Weapon weapon)
         {
             Monster = monster;
-            Potion = potion;
+            Potions = potions;
             Weapon = weapon;
             Description = "";
         }
@@ -26,14 +28,21 @@
             {
                 description += Monster.Name;
             }
-            description += "\nPotion: ";
-            if (Potion == null)
+            description += "\nPotions: ";
+            if (Potions == null)
             {
                 description += "There is no potion in the room.";
             }
             else
             {
-                description += Potion.Name;
+                for (int i = 0; i < Potions.Count; i++)
+                {
+                    description += Potions[i].Name;
+                    if (i < Potions.Count - 1)
+                    {
+                        description += ", ";
+                    }
+                }
             }
             description += "\nWeapon: ";
             if (Weapon == null)
@@ -57,9 +66,13 @@
         {
             Weapon = null;
         }
-        public void RemovePotion()
+        public void RemovePotion(int index)
         {
-            Potion = null;
+            Potions.RemoveAt(index);
+            if (Potions.Count == 0)
+            {
+                Potions = null;
+            }
         }
         public void RemoveMonster()
         {
@@ -67,7 +80,7 @@
         }
         public bool IsEmpty()
         {
-            return Monster == null && Potion == null && Weapon == null;
+            return Monster == null && Potions == null && Weapon == null;
         }
     }
 }

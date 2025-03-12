@@ -21,7 +21,7 @@ namespace DungeonExplorer
             }
             Player player = new Player(playerName, 30, 0, 1);
             // Initializing starting room
-            Room startingRoom = new Room(null, new Potion("Health(10) Potion", 0, 10, 0), new Weapon("Sword", 10));
+            Room startingRoom = new Room(null, new List<Potion>(){ new Potion("Health(10) Potion", 0, 10, 0) }, new Weapon("Sword", 10));
             // Initializing and starting game
             Game game = new Game(player, startingRoom);
             /*

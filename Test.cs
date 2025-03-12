@@ -56,16 +56,16 @@ namespace DungeonExplorer
         }
         public void TestRoom()
         {
-            Room room = new Room(new Monster("Monster", 30, 1, 1), new Potion("Potion", 0, 10, 0), new Weapon("Sword", 10));
+            Room room = new Room(new Monster("Monster", 30, 1, 1), new List<Potion>() { new Potion("Potion", 0, 10, 0) }, new Weapon("Sword", 10));
             Debug.Assert(room.Monster.Name == "Monster", "Monster should be in the room.");
-            Debug.Assert(room.Potion.Name == "Potion", "Potion should be in the room.");
+            Debug.Assert(room.Potions[0].Name == "Potion", "Potion should be in the room.");
             Debug.Assert(room.Weapon.Name == "Sword", "Sword should be in the room.");
 
             room.RemoveMonster();
             Debug.Assert(room.Monster == null, "Monster value should be null.");
 
-            room.RemovePotion();
-            Debug.Assert(room.Potion == null, "Potion value should be null.");
+            room.RemovePotion(0);
+            Debug.Assert(room.Potions == null, "Potion value should be null.");
 
             room.RemoveWeapon();
             Debug.Assert(room.Weapon == null, "Weapon value should be null.");
