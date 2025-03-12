@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace DungeonExplorer
 {
@@ -29,6 +30,7 @@ namespace DungeonExplorer
             //Name Check
             while (currentPlayer.name == "")
             {
+                Console.Clear();
                 Console.WriteLine("You must enter a name!");
                 currentPlayer.name = Console.ReadLine();
             }

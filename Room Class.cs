@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -132,7 +133,8 @@ namespace DungeonExplorer
                 Console.WriteLine("3. Interact with a point of interest");
                 Console.WriteLine("4. Pick up an item");
                 Console.WriteLine("5. Go to the door");
-                Console.WriteLine("6. Exit the room");
+                Console.WriteLine("6. Exit the room / end game!");
+
 
                 //Read player input
                 command = Console.ReadLine();
@@ -169,7 +171,9 @@ namespace DungeonExplorer
                         Console.WriteLine("This feature has not been added yet.");  //Check door status (locked/unlocked) Not Implemented yet!
                         break;
                     case "6":
-                        Console.WriteLine("This feature has not been added yet."); //Exit the room Not Implemented yet!
+                        Console.WriteLine("This feature has not been added yet and so you have opted to end the game! Thankyou for playing."); //Exit the room Not Implemented yet so this is the end game button.
+                        Console.WriteLine("Press any key to continue...");
+                        Environment.Exit(0);
                         break;
                     default:
                         Console.WriteLine("Invalid command. Please try again.");
