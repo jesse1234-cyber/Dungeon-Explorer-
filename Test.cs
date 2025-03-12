@@ -46,6 +46,8 @@ namespace DungeonCrawler
         }
         public void RunForCombat()
         {
+            RunForRoom();
+            RunForPlayer();
             System.Diagnostics.Debug.Assert(_combat.Monster.Items.Contains(_combat.Monster.Veapon) || _combat.Monster.Veapon.Name == "gnashing maw" || _combat.Monster.Veapon.Name == "deadly claws", "Monster's weapons should be available upon searching monster after combat unless weapon was innate to the monster.");
         }
     }
