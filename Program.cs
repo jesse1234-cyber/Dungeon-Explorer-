@@ -10,10 +10,28 @@ namespace DungeonExplorer
     {
         static void Main(string[] args)
         {
-            Game game = new Game();
+            Console.WriteLine("========Welcome to DUNGEON EXPLORER!========\n"); // Game title
+            // Initializing player
+            Console.WriteLine("You wake up alone in a dark dungeon. You don't remember who you are or how you got here.");
+            string playerName = "";
+            while (playerName == "")
+            {
+                Console.Write("What will you call yourself?\n>");
+                playerName = Console.ReadLine().Trim();
+            }
+            Player player = new Player(playerName, 30, 0, 1);
+            // Initializing starting room
+            Room startingRoom = new Room(null, new List<Potion>(){ new Potion("Health(10) Potion", 0, 10, 0) }, new Weapon("Sword", 10));
+            // Initializing and starting game
+            Game game = new Game(player, startingRoom);
+            /*
+            Test test = new Test();
+            test.TestHealth();
+            test.TestInventory();
+            test.TestRoom();
+            test.TestItems();
+            */
             game.Start();
-            Console.WriteLine("Waiting for your Implementation");
-            Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }
     }
