@@ -28,7 +28,7 @@ namespace DungeonExplorer
 
             Program.ClearConsole();
 
-            Console.WriteLine("You, " +Player.Name+ " begin your adventure facing down an a dark open mineshaft. A cool breeze washes over you as you try to peer into the darkness. It was a exhausting 3 day hike here and your not turning back now. You take a deep breath and step into the darkness.");
+            Console.WriteLine("You, " +Player.Name+ " begin your adventure facing down an a dark open mineshaft. A cool breeze washes over you as you try to peer into the darkness. It was an exhausting 3 day hike here and you're not turning back now. You take a deep breath and step into the darkness.");
             Console.WriteLine("Press any key to continue...\n");
 
             Console.ReadKey();
