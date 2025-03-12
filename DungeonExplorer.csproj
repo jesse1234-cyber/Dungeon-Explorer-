@@ -1,5 +1,4 @@
-﻿<!-- filepath: /home/janis/_repo/DungeonExplorer/DungeonExplorer.csproj -->
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -13,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="**/*.cs" />
     <EmbeddedResource Include="**/*.resx" />
     <!-- Add other file references here -->
   </ItemGroup>
