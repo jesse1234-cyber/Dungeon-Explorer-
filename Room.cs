@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace DungeonExplorer
 {
@@ -13,11 +15,13 @@ namespace DungeonExplorer
 
         public Room(string description)
         {
+            Debug.Assert(!string.IsNullOrWhiteSpace(description), "Room description cannot be empty;");
             this.description = description;
         }
 
         public void CreateItem(string item)
         {
+            Debug.Assert(!string.IsNullOrWhiteSpace(item), "Item name is empty.");
             RoomItem = item;
         }
 
@@ -28,6 +32,7 @@ namespace DungeonExplorer
 
         public void RemoveItem()
         {
+            Debug.Assert(RoomItem != null, "No item exists in room.");
             RoomItem = null;
         }
     }
