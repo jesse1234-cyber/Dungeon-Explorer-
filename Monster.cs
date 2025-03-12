@@ -13,10 +13,10 @@ namespace DungeonExplorer
                     break;
                 case MonsterType.Thief:
                     player.StealItem();
-                    player.RemoveHealth(5);
+                    player.GetAttacked(10);
                     break;
                 case MonsterType.Zombie:
-                    player.RemoveHealth(15);
+                    player.GetAttacked(20);
                     break;
             }
         }
