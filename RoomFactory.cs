@@ -8,7 +8,7 @@ namespace DungeonExplorer
     public static class RoomFactory
     {
         /// <summary>
-        /// Creates an Instance of <see cref="Room"/> based on a passed room identifier.
+        /// Creates an instance of <see cref="Room"/> based on a passed room identifier.
         /// </summary>
         /// <param name="roomIdentifier"> The identifier to create a <see cref="Room"/> instance from.</param>
         /// <returns>The corresponding instance of <see cref="Room"/>, or null if no room identifier can be matched.</returns>
@@ -25,7 +25,7 @@ namespace DungeonExplorer
                         "A: Investigate the peculiar glistening\nB: Try to open the door\n" +
                         "C: Explore the rest of the library\n" +
                         "S, I, R, exit for other options!\n",
-                        new List<string> { "Spell Book", "Mysterious Potion", "Bone Key" }
+                        new List<string> {"Spell Book", "Mysterious Potion", "Bone Key"}
                     );
                 default:
                     return null;

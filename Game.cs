@@ -4,8 +4,8 @@ using System.Threading;
 namespace DungeonExplorer
 {
     /// <summary>
-    /// A class representing the main Game logic and responsible for creating <see cref="Room"/> instances
-    /// using the <see cref="RoomFactory"/> class and instances of the <see cref="Player"/> class.
+    /// A class representing the main Game logic and responsible for creating instances of the 
+    /// <see cref="Room"/> and <see cref="RoomFactory"/> classes.
     /// </summary>
     internal class Game
     {
@@ -81,7 +81,7 @@ namespace DungeonExplorer
                             Console.WriteLine("You put the key in the lock, and it turns! The door creaks as you push it open...");
                             Console.WriteLine("...");
                             Thread.Sleep(1000);
-                            Console.WriteLine("The end... for now");
+                            Console.WriteLine("The end... for now!");
                             return;
                         }
                         else
@@ -143,8 +143,9 @@ namespace DungeonExplorer
                         Console.WriteLine($"You currently have {hp} health and you are in the {roomName}!");
                     }
 
-                    else if (userChoice == "exit")
+                    else if (userChoice == "EXIT")
                     {
+                        invalidChoice = false;
                         return;
                     }
 

@@ -49,6 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="RoomFactory.cs" />
+    <Compile Include="TestProgram.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
