@@ -1,18 +1,28 @@
 ﻿using System;
-using System.Linq;
-using System.Media;
 using System.Threading;
 
 namespace DungeonExplorer
 {
+    /// <summary>
+    /// Represents the main game class.
+    /// It holds the main game loop that allows the user to interact with the game world.
+    /// </summary>
     internal class Game
     {
-        // Game's Properties
+        /// <summary>
+        /// The Game class's properties. 
+        /// Gets and sets for the Player, IsGameOver, and Grid properties.
+        /// </summary>
         public Player Player { get; set; }
         public static bool IsGameOver { get; set; }
         public Room[,] Grid { get; set; }
 
-        // Game's constructor
+        /// <summary>
+        /// Initialises a new instance of the Game class.
+        /// </summary>
+        /// <param name="player"> The player instance </param>
+        /// <param name="currentRoom"> The starting room for the player </param>
+        /// <param name="grid"> The grid of rooms representing the game world </param>
         public Game(Player player, Room currentRoom, Room[,] grid)
         {
             Player = player;
@@ -20,7 +30,9 @@ namespace DungeonExplorer
             Grid = grid;
         }
 
-        // Method that starts the game
+        /// <summary>
+        /// Starts the game loop.
+        /// </summary>
         public void Start()
         {
             bool DisplayInfo = false;
@@ -81,7 +93,7 @@ namespace DungeonExplorer
                         break;
                     default:
                         Console.WriteLine("\nInvalid choice. Try again.\n");
-                        Thread.Sleep(400);
+                        Thread.Sleep(600);
                         break;
                 }
             }

@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
+    /// <summary>
+    /// Class to hold the game data, such as weapons, potions, enemies, and room descriptions.
+    /// </summary>
     class GameData
     {
         private static Random random = new Random();
 
-        // Dictionary of weapons and their damage
+        /// <summary>
+        /// Dictionary of weapons and their damage.
+        /// </summary>
         private static Dictionary<string, int> weapons = new Dictionary<string, int>()
         {
             { "Rusty Dagger", 5 },
@@ -30,7 +33,9 @@ namespace DungeonExplorer
             { "Godslayer Blade", 60 }
         };
 
-        // Dictionary of potions and their health
+        /// <summary>
+        /// Dictionary of potions and their health recovery values.
+        /// </summary>
         private static Dictionary<string, int> potions = new Dictionary<string, int>()
         {
             {"Lesser Health Potion", 10 },
@@ -38,7 +43,9 @@ namespace DungeonExplorer
             {"Greater Health Potion", 30 }
         };
 
-        // Dictionary of enemies and their damage, health and speed
+        /// <summary>
+        /// A list of enemies with their names, damage, health, and speed.
+        /// </summary>
         private static List<List<object>> enemies = new List<List<object>>()
         {
             new List<object> { "Goblin", 10, 50, 1 },
@@ -49,7 +56,9 @@ namespace DungeonExplorer
             new List<object> { "Dragon", 50, 120, 4 }
         };
 
-        // List of room descriptions
+        /// <summary>
+        /// A list of room descriptions.
+        /// </summary>
         private static List<string> roomDescriptions = new List<string>()
         {
             "A damp, moss-covered chamber with a faint dripping sound echoing from the walls.",
@@ -78,21 +87,36 @@ namespace DungeonExplorer
             "A room with a massive, iron gate that creaks open as you approach.",
         };
 
-        // Method to return a random weapon
+        /// <summary>
+        /// Method to return a random weapon from the weapons dictionary within a specific range.
+        /// </summary>
+        /// <param name="min"> The minimum index in the weapons dictionary.</param>
+        /// <param name="max"> The maximum index in the weapons dictionary.</param>
+        /// <returns> A key value pair holding the weapon's name and damage value.</returns>
         public static KeyValuePair<string, int> GetRandomWeapon(int min, int max)
         {
             int index = random.Next(min, max);
             return weapons.ElementAt(index);
         }
 
-        // Method to return a random potion
+        /// <summary>
+        /// Method to return a random potion from the potions dictionary within a specific range.
+        /// </summary>
+        /// <param name="min"> The minimum index in the weapons dictionary.</param>
+        /// <param name="max"> The maximum index in the weapons dictionary.</param>
+        /// <returns> A Key value pair holding the potion's name and health recovery value.</returns>
         public static KeyValuePair<string, int> GetRandomPotion(int min, int max)
         {
             int index = random.Next(min, max);
             return potions.ElementAt(index);
         }
 
-        // Method to return a random enemy
+        /// <summary>
+        /// Method to return a random enemy from the enemies list within a specific range.
+        /// </summary>
+        /// <param name="min"> The minimum index in the weapons dictionary.</param>
+        /// <param name="max"> The maximum index in the weapons dictionary.</param>
+        /// <returns> A list containing the enemies name, damage, health and speed.</returns>
         public static List<object> GetRandomEnemy(int min, int max)
         {
             int index = random.Next(min, max);
@@ -100,20 +124,29 @@ namespace DungeonExplorer
             return new List<object> { enemyTemplate[0], enemyTemplate[1], enemyTemplate[2], enemyTemplate[3] };
         }
 
-        // Method to return a random room description
+        /// <summary>
+        /// Method to return a random room description from the roomDescriptions list.
+        /// </summary>
+        /// <returns> A string that holds a random room description.</returns>
         public static string GetRandomRoomDescription()
         {
             int index = random.Next(roomDescriptions.Count);
             return roomDescriptions[index];
         }
 
-        // Gets the weapons dictionary
+        /// <summary>
+        /// A get method for the weapons dictionary.
+        /// </summary>
+        /// <returns> A dictionary of weapons and their damage.</returns>
         public static Dictionary<string, int> GetWeapons()
         {
             return weapons;
         }
 
-        // Gets the potions dictionary
+        /// <summary>
+        /// A get method for the potions dictionary.
+        /// </summary>
+        /// <returns> A dictionary of potions and their health recovery values.</returns>
         public static Dictionary<string, int> GetPotions()
         {
             return potions;
