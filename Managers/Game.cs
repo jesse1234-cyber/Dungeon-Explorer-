@@ -1,16 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using DungeonExplorer.Item.Items;
 using Microsoft.Win32;
+using System.Text;
+using DungeonExplorer.Item.Items;
+
+
 
 namespace DungeonExplorer.Managers.Game {
     internal class Game {
-        private Player.Player Player { get; set; }
+        private Player.Player Player { get; set; } // Properties
         private Room.Room CurrentRoom { get; set; }
+
 
         public Game()
         {
@@ -26,7 +29,7 @@ namespace DungeonExplorer.Managers.Game {
             // Change the playing logic into true and populate the while loop
             bool playing = true;
             while (playing)
-            {
+            { // Code your playing logic here
                 DisplayGameStatus();
                 RoomManager.DisplayMap();
                 string action = GetPlayerAction();
@@ -35,36 +38,38 @@ namespace DungeonExplorer.Managers.Game {
             }
         }
 
+
         private void DisplayGameStatus()
         {
             // Method to display the player's health and inventory
-            Console.WriteLine("===== GAME STATUS =====");
-            Console.WriteLine($"Player Health: {Player.Health}/{Player.getMaxHealth()}");
+            Console.WriteLine("--- GAME STATS ---");
+            Console.WriteLine($"Players Current Health: {Player.Health}/{Player.getMaxHealth()}");
             Console.WriteLine();
-            Console.WriteLine("Player Inventory:");
+            Console.WriteLine("Players Current Inventory:");
             foreach (var item in Player.InventoryContents())
             {
                 Console.WriteLine($"- {item.Name} (ID: {item.Id})");
             }
             Console.WriteLine();
             Console.WriteLine($"Current Room: {CurrentRoom.GetDescription()}");
-            Console.WriteLine("=======================");
+            Console.WriteLine("----------------");
             Console.WriteLine();
         }
 
         private string GetPlayerAction()
         {
-            // Method to display the available actions and get the player's choice
-            Console.WriteLine("What would you like to do?");
+            // A method to show the actions that are possible, and get the player's decision
+            Console.WriteLine("What action would you like to do?");
             DisplayPlayerActions();
             Console.Write("> ");
             return Console.ReadLine();
         }
 
+
         private void DisplayPlayerActions()
         {
             // Method to display all the actions the player has
-            Console.WriteLine("Available Actions:");
+            Console.WriteLine("Actions available:");
             foreach (var item in Player.InventoryContents())
             {
                 if (item.Useable)
@@ -92,7 +97,7 @@ namespace DungeonExplorer.Managers.Game {
                 }
                 else
                 {
-                    Console.WriteLine("Invalid action. Please try again.");
+                    Console.WriteLine("Input was invalid. Try again.");
                 }
             }
             else if (action.Equals("move up", StringComparison.OrdinalIgnoreCase) ||
@@ -103,7 +108,7 @@ namespace DungeonExplorer.Managers.Game {
                 string direction = action.Split(' ')[1];
                 if (!RoomManager.MovePlayer(direction, Player))
                 {
-                    Console.WriteLine("You can't move in that direction.");
+                    Console.WriteLine("You can not move that way.");
                 }
             }
             else if (action.Equals("exit", StringComparison.OrdinalIgnoreCase))
@@ -112,7 +117,7 @@ namespace DungeonExplorer.Managers.Game {
             }
             else
             {
-                Console.WriteLine("Invalid action. Please try again.");
+                Console.WriteLine("Input was invalid. Try again.");
             }
             return true;
         }
