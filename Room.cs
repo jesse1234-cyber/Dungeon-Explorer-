@@ -1,4 +1,7 @@
-﻿namespace DungeonExplorer
+﻿using System;
+using System.Collections.Generic; // lets us use the list<> and dictionary<>.
+
+namespace DungeonExplorer
 {
     public class Room
     {
