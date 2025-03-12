@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DungeonExplorer.Player;
 using DungeonExplorer.Room;
 
+
 namespace DungeonExplorer.Managers {
     public class RoomManager {
         private Room.Room[,] rooms;
@@ -14,15 +15,16 @@ namespace DungeonExplorer.Managers {
         private int currentCol;
         private string[,] levelLayout;
 
-        // Creating the first level of the dungeon
+        // Creating the first level 
         public RoomManager()
         {
             InitializeRooms();
         }
 
+
         private void InitializeRooms()
         {
-            // Initialize rooms for the first level using a 2D array
+            // Initialize rooms for the first level of the dungeon using a 2D structure
             levelLayout = new string[,]
             {
                     { "S", "B", "N" },
@@ -30,10 +32,12 @@ namespace DungeonExplorer.Managers {
                     { "N", "T", "N" }
             };
 
+
             int rows = levelLayout.GetLength(0);
             int cols = levelLayout.GetLength(1);
             rooms = new Room.Room[rows, cols];
             visitedRooms = new bool[rows, cols];
+
 
             for (int row = 0; row < rows; row++)
             {
@@ -48,11 +52,12 @@ namespace DungeonExplorer.Managers {
                 }
             }
 
-            // Start the player in the first room (0,0)
+            // Starts Player in the first room  at (0,0)
             currentRow = 0;
             currentCol = 0;
             visitedRooms[currentRow, currentCol] = true;
         }
+
 
         private RoomType GetRoomTypeFromChar(string cell)
         {
@@ -69,7 +74,7 @@ namespace DungeonExplorer.Managers {
                 case "E":
                     return RoomType.Event;
                 case "#":
-                    return RoomType.None; // Wall
+                    return RoomType.None; // Wall hit
                 default:
                     return RoomType.None;
             }
@@ -80,10 +85,12 @@ namespace DungeonExplorer.Managers {
             return rooms[currentRow, currentCol];
         }
 
+
         public bool MovePlayer(string direction, Player.Player player)
         {
             int newRow = currentRow;
             int newCol = currentCol;
+
 
             switch (direction.ToLower())
             {
@@ -100,43 +107,44 @@ namespace DungeonExplorer.Managers {
                     newCol++;
                     break;
                 default:
-                    Console.WriteLine("Invalid direction. Use 'up', 'down', 'left', or 'right'.");
+                    Console.WriteLine("Invalid input. Enter 'up', 'down', 'left', or 'right'.");
                     return false;
             }
+
 
             if (newRow >= 0 && newRow < rooms.GetLength(0) && newCol >= 0 && newCol < rooms.GetLength(1) && rooms[newRow, newCol] != null)
             {
                 currentRow = newRow;
                 currentCol = newCol;
                 visitedRooms[currentRow, currentCol] = true;
-                rooms[currentRow, currentCol].EnterRoom(player); // Trigger room behavior
+                rooms[currentRow, currentCol].EnterRoom(player);  // Triggers room behavior
                 return true;
             }
             else
             {
-                Console.WriteLine("You can't move in that direction.");
+                Console.WriteLine("You can not move that way.");
                 return false;
             }
         }
 
-        // Display map using 2D array and current player position (P)
+        // Display map  using 2D structure and current player position (P)
         public void DisplayMap()
         {
             int rows = levelLayout.GetLength(0);
             int cols = levelLayout.GetLength(1);
 
-            // Print top border
-            Console.WriteLine(" "); // Spacing
+            // Print top border of map
+            Console.WriteLine(" "); // For spacing
             Console.WriteLine("+" + new string('-', cols * 2) + "+");
 
             for (int row = 0; row < rows; row++)
             {
-                Console.Write("|"); // Left border
+                Console.Write("|"); // Left border of map
                 for (int col = 0; col < cols; col++)
                 {
                     if (row == currentRow && col == currentCol)
                     {
-                        Console.Write("P "); // Player's current position
+                        Console.Write("P "); // Current position of PLayer
                     }
                     else if (levelLayout[row, col] == "#")
                     {
@@ -151,12 +159,12 @@ namespace DungeonExplorer.Managers {
                         Console.Write("? ");
                     }
                 }
-                Console.WriteLine("|"); // Right border
+                Console.WriteLine("|"); // Right border of map
             }
 
-            // Print bottom border
+            // Print bottom border of map
             Console.WriteLine("+" + new string('-', cols * 2) + "+");
-            Console.WriteLine(" "); // Spacing
+            Console.WriteLine(" "); // For spacing
         }
     }
 }
