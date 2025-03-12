@@ -389,7 +389,7 @@ namespace DungeonExplorer
 
                         }
                         if (roomsPassed >= 11)
-                        {
+                        { 
                             //game ends if player has passed 10 rooms
                             Console.WriteLine($"CONGRATULATIONS " +
                                 $"{player1.Name} YOU HAVE ESCAPED THE " +
