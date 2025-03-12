@@ -11,17 +11,19 @@ namespace DungeonExplorer
         {
             // Initialize the game with one room and one player
             player = new Player("Player", 100);
+
             Room room1 = new Room("You are in a dungeon.There is a diamond sword on the ground near by.");
             Room room2 = new Room("You are in a dungeon.There is a gold sword on the ground near by.");
             Room room3 = new Room("You are in a dungeon.There is a wooden sword on the ground near by.");
             
-            currentRoom.AddItem("sword"); // creates a sword.
             room1.AddItem("diamond sword");
             room2.AddItem("gold sword");
             room3.AddItem("wooden sword");
 
             room1.AddConnectedRoom("north", room2);
             room2.AddConnectedRoom("south", room1);
+            room2.AddConnectedRoom("east", room3);
+            room3.AddConnectedRoom("west", room2);
 
 
             //sets starting room.

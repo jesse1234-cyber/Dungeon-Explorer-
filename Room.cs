@@ -51,13 +51,11 @@ namespace DungeonExplorer
         {
             return connectedRooms.ContainsKey(direction) ? connectedRooms[direction] : null;
         }
-
         public string ListConnectedRooms()
         {
             return connectedRooms.Count > 0
                 ? string.Join(", ", connectedRooms.Keys)
                 : "There are no exits.";
         }
-
     }
 }
