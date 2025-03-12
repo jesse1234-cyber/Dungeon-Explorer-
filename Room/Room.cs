@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DungeonExplorer.Item.Items;
 
+
 namespace DungeonExplorer.Room
 {
     public class Room
@@ -12,28 +13,32 @@ namespace DungeonExplorer.Room
         private string description;
         private RoomType roomType;
 
+
         public Room(string description, RoomType roomType) {
             // Implement additional text formatting for the type of room
             switch (roomType)
         {
 
                 case RoomType.Safe:
-                    description += " | SAFE ZONE |";
+                    description += " [ SAFE ZONE ]";
                     break;
+
                 case RoomType.Normal:
-                    description += " | NORMAL ROOM |";
+                    description += " [ NORMAL ROOM ]";
                     break;
+
                 case RoomType.Boss:
-                    description += " | BOSS ROOM |";
+                    description += " [ BOSS ROOM ]";
                     break;
 
                 case RoomType.Shop:
-                    description += " | SHOP ROOM |";
+                    description += " [ SHOP ROOM ]";
                     break;
 
                 case RoomType.Event:
-                    description += " | EVENT ROOM |";
+                    description += " [ EVENT ROOM ]";
                     break;
+
                 default:
                     break;
 
@@ -60,11 +65,13 @@ namespace DungeonExplorer.Room
             {
                 case RoomType.Event:
                     player.PickUpItem(new HealthPotion());
-                    Console.WriteLine("You found a treasure room! You receive a health potion.");
+                    Console.WriteLine("You discovered a treasure room. Obtained a health potion!");
                     break;
+                    
                 case RoomType.None:
                     Console.WriteLine("You hit a wall.");
                     break;
+
                 default:
                     Console.WriteLine("You entered a " + roomType.ToString().ToLower() + " room.");
                     break;
@@ -72,3 +79,4 @@ namespace DungeonExplorer.Room
         }
     }
 }
+
