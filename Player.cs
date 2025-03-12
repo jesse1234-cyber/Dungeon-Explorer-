@@ -22,7 +22,7 @@ namespace DungeonExplorer
         public int weaponValue = 1;
 
         //Pick up item function where the item type name is handed into the function
-        public static void puckUpItem(string itemType)
+        public static void pickUpItem(string itemType)
         {
             if (itemType == "Potion") //method for picking up a potion
             {

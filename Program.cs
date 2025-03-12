@@ -10,7 +10,7 @@ namespace DungeonExplorer
 {
     internal class Program
     {
-        public static Player currentPlayer = new Player(); // creat new player instence
+        public static Player currentPlayer = new Player(); // creat new player instance
         static void Main(string[] args)
         {
             bool victory = false; //the player has not yet won

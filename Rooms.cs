@@ -102,7 +102,7 @@ namespace DungeonExplorer
 
             ////if there us a potion trigger pickUpItem function (player class)
             if (isPotion == true)
-                Player.puckUpItem("Potion");
+                Player.pickUpItem("Potion");
 
             //if there us a monster trigger combat function (encounter class)
             if (isMonster == true)
@@ -125,4 +125,3 @@ namespace DungeonExplorer
         }
     }
 }
-
