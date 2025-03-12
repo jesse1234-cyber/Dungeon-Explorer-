@@ -1,4 +1,4 @@
-﻿﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -16,7 +16,7 @@ namespace DungeonExplorer.Managers.Game {
         {
             // Initialize the game with one room and one player
             Player = new Player.Player("Player", 100);
-            Player.PickUpItem(new HealthPotion());
+            Player.PickUpItem(new DamageBooster());
 
             CurrentRoom = new Room.Room($"Starting Room", Room.RoomType.Normal);
         }
