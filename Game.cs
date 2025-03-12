@@ -5,9 +5,16 @@ using System.Media;
 
 namespace DungeonExplorer
 {
-    public class NewPlayer // New class to allow for player to enter their own name
+    /// <summary>
+    /// New class to allow for player to enter their own name
+    /// </summary>
+    public class NewPlayer
     {
         private static Player player;
+        /// <summary>
+        /// True while loop to ensure the code does throw an exception 
+        // if a player enters a name. "player" is initialised
+        /// </summary>
         public static void InputName()
         {
            string playerName;
@@ -23,7 +30,12 @@ namespace DungeonExplorer
            
            player = new Player(playerName, 100); // Setting and initialising Player name and health
         }
-        public static Player GetPlayer() // Function allows for Game class to access player name to display it
+        /// <summary>
+        /// Function allows for Game class to access player name to display it,
+        /// one method of circumventing a previous bug I ran into.
+        /// </summary>
+        /// <returns>player</returns>
+        public static Player GetPlayer() 
         {
             return player;
         }
@@ -31,8 +43,15 @@ namespace DungeonExplorer
 
     internal class Game
     {   
+        /// <summary>
+        /// Attribute is set to the first room to later be changed
+        /// in the code if the player moves rooms
+        /// </summary>
         private Room currentRoom = Room.room1; // Class attribute (within the class Game)
-
+        
+        /// <summary>
+        /// For "startMessage" to be used within Start()
+        /// </summary>
         public string startMessage; // attribute for Game()
 
         private Room.Items items; // Adding Items as an instance here. "items" is unused here. Remove?
@@ -44,13 +63,21 @@ namespace DungeonExplorer
             currentRoom = Room.room1; // To update variable later in the code when the user turns. Instead of GetDescription(), I'm using the implementation in a different way, as at this time it's easier for me to understand
             player = NewPlayer.GetPlayer();
         }
-    
-        private void StatusCheck() // Displays player's name, health, and their inventory
+
+
+        /// <summary>
+        /// Displays player's name, health, and their inventory for when they type "status."
+        /// See function within Start()
+        /// </summary>
+        private void StatusCheck()
         {
-            Console.WriteLine($"Name: {player.Name}, Health: {player.Health}"); // Player name displayed
+            Console.WriteLine($"Name: {player.Name}, Health: {player.Health}"); // Player name + health displayed
             Console.WriteLine($"Inventory: {player.InventoryContents()}");
         }
-
+        
+        /// <summary>
+        /// Contains all the functions and features for running the game currently.
+        /// </summary>
         public void Start()
         {
             bool playing = true; // Changed to true (away from example). Return to false to end program (condition; if false, end game)
@@ -71,6 +98,9 @@ namespace DungeonExplorer
                 Debug.Assert(currentRoom.SelectItem() != null, "This should not return null!"); // Debugging to check if the item is null or not
                 string item = currentRoom.SelectItem(); // Calls function via the object (instance of the class Items) items where an item randomly gets selected. Function changed to SelectItem() to be a failsafe if "items" returns null.
 
+                /// <summary>
+                /// Another while loop to gurantee only accepted inputs.
+                /// </summary.
                 string askPickUp;
                 while (true)
                 {
@@ -92,7 +122,6 @@ namespace DungeonExplorer
                     else
                     {
                         Console.Write("You must enter either yes or no.");
-                        playing = false;
                     }
                 }
                 
