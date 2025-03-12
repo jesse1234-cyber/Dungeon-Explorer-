@@ -3,11 +3,18 @@ using System.Threading;
 
 namespace DungeonExplorer
 {
+    /// <summary>
+    /// A class representing the main Game logic and responsible for creating <see cref="Room"/> instances
+    /// using the <see cref="RoomFactory"/> class and instances of the <see cref="Player"/> class.
+    /// </summary>
     internal class Game
     {
         private Player player;
         private readonly Room currentRoom = RoomFactory.CreateRoomInstance("Library");
 
+        /// <summary>
+        /// Begins the game and all the logic and text that follows.
+        /// </summary>
         public void Start()
         {
             Console.WriteLine("Welcome to the Dungeon Explorer!\n");
@@ -18,26 +25,33 @@ namespace DungeonExplorer
             bool playing = true;
             Console.WriteLine("You finally wake up. Your head is pounding, and the suffocating air, thick with dust, " +
                 "clings to your lungs. Where are you? How did you get here? \n" +
-                "\n(When prompted for a choice, you may type S, I or R into the console to see info about your" +
-                "Status, Inventory, or the Room you are in! Or exit... :()\n");
+                "\n(When prompted for a choice, you may type S, I or R into the console to see info about your " +
+                "Status, Inventory, or the Room you are in, and if you wish to leave the game, type exit!)\n");
 
             while (playing)
             {
                 Thread.Sleep(3000);
                 string desc = currentRoom.GetDescription();
-                string roomName = currentRoom.GetRoomName();
+                string roomName = currentRoom.GetName();
+
                 Console.WriteLine($"You look around: {desc}");
+                Console.WriteLine("What do you do next?");
 
                 bool invalidChoice = true;
                 while (invalidChoice)
                 {
                     string userChoice = Console.ReadLine();
 
+                    // Handling the user's choices and playing the corresponding scenario
                     if (userChoice == "A")
                     {
+                        invalidChoice = false;
                         string item = "Mysterious Potion";
-                        Console.WriteLine($"The glistening turned out to be a {item}! You try to pick it up...");
-                        Console.WriteLine("Rolling dice...\nYou rolled...\n");
+                        Console.WriteLine($"\nThe glistening turned out to be a {item}! You try to grab it off the shelf...");
+                        Thread.Sleep(1000);
+                        Console.WriteLine("Rolling dice...");
+                        Thread.Sleep(1000);
+                        Console.WriteLine("You rolled...\n");
                         Thread.Sleep(1000);
                         Random rnd = new Random();
                         int itemRoll = rnd.Next(1, 10);
@@ -55,8 +69,7 @@ namespace DungeonExplorer
                         }
                         if (!this.player.IsInvEmpty())
                         {
-                            string inv = this.player.GetInventoryContents();
-                            Console.WriteLine($"Your inventory contents are now: {inv}");
+                            Console.WriteLine($"Your inventory contents are now: {this.player.GetInventoryContents()}\n");
                         }
                     }
 
@@ -116,8 +129,6 @@ namespace DungeonExplorer
                     {
                         invalidChoice = false;
                         Console.WriteLine(desc);
-                        //int noItemsLeft = currentRoom.GetRoomContents();
-                        //Console.WriteLine("There are " + noItemsLeft + " items left in the room!");
                     }
 
                     else if (userChoice == "S")
