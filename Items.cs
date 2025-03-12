@@ -28,8 +28,11 @@ namespace DungeonExplorer
     }
     public class Potion : Item
     {
+        // HealthRestore is the amount of health restored by the potion (cannot exceed max health).
         public int HealthRestore { get; private set; }
+        // HealthBonus is the amount of health added to the player's max health.
         public int HealthBonus { get; private set; }
+        // Damage is inherited from the Item class. It is the amount of damage the potion adds to the player's attack.
         public Potion(string name, int damage, int healthRestore, int healthBonus) : base(name, damage)
         {
             HealthRestore = healthRestore;
