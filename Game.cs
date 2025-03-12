@@ -59,7 +59,7 @@ namespace DungeonExplorer
             {
                 Console.Write(">");
                 // Converts userChoice input to upper to avoid case sensitivity.
-                string userChoice = Console.ReadLine().ToUpper();
+                string userChoice = Console.ReadLine().ToUpper().Trim();
                 // The user is only allowed to take a potion if there is one or more in the room (and if the monster is dead).
                 if (userChoice == "P" && CurrentRoom.Potions != null && CurrentRoom.Monster == null)
                 {

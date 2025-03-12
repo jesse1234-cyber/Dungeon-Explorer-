@@ -17,7 +17,7 @@ namespace DungeonExplorer
             while (playerName == "")
             {
                 Console.Write("What will you call yourself?\n>");
-                playerName = Console.ReadLine();
+                playerName = Console.ReadLine().Trim();
             }
             Player player = new Player(playerName, 30, 0, 1);
             // Initializing starting room

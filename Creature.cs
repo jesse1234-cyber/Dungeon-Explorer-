@@ -126,14 +126,14 @@ namespace DungeonExplorer
                 Console.WriteLine(actions);
                 Console.Write(">");
                 // Takes and validates user input, breaks from while true loop when a valid input is given.
-                string userChoice = Console.ReadLine().ToUpper();
+                string userChoice = Console.ReadLine().ToUpper().Trim();
                 if (userChoice == "W" && PlayerInventory.WeaponCount() > 0)
                 {
                     // While loop until user enters a valid input.
                     while (true)
                     { 
                         Console.Write("Select the weapon you want to equip, or enter Q to exit: ");
-                        userChoice = Console.ReadLine().ToUpper();
+                        userChoice = Console.ReadLine().ToUpper().Trim();
                         if (userChoice == "Q")
                         {
                             break;
@@ -173,7 +173,7 @@ namespace DungeonExplorer
                     while (true)
                     {
                         Console.Write("Select the potion you want to drink, or enter Q to exit: ");
-                        userChoice = Console.ReadLine().ToUpper();
+                        userChoice = Console.ReadLine().ToUpper().Trim();
                         if (userChoice == "Q")
                         {
                             break;
