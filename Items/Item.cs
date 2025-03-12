@@ -1,5 +1,3 @@
-
-
 namespace DungeonExplorer.Item {
     public abstract class Item {
         private static int nextId = 1;
@@ -9,6 +7,7 @@ namespace DungeonExplorer.Item {
         public int Id { get; }
         public bool Useable { get; }
 
+
         protected Item(string name, string description, bool useable)
         {
             Name = name;
@@ -17,7 +16,8 @@ namespace DungeonExplorer.Item {
             Id = nextId++;
         }
 
+
         public abstract void Use(Player.Player player);
-        // Planning public abstract void Use(Mob.Mob mob);
+        // For public abstract void. Use(Mob.Mob mob);
     }
 }
