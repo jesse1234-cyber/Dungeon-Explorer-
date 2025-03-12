@@ -40,7 +40,7 @@
         }
 
         // adds a connected room in a specificed direction
-        publci void AddConnectedRoom(string direction, Room room)
+        public void AddConnectedRoom(string direction, Room room)
         {
             connectedRooms[direction] = room;
         }

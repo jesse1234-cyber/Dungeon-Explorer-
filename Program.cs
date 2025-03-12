@@ -24,6 +24,8 @@ namespace DungeonExplorer
                 Console.WriteLine("thanks for playing!");
                 Console.WriteLine("Press any key to exit...");
                 Console.ReadKey();
+            }
         }
     }
 }
+
