@@ -11,7 +11,6 @@ namespace DungeonExplorer
     //Creates Room Class
     public class Room
     {
-        //variables for Room Class
         public string Name { get; set; }
         public string Description { get; set; }
         public List<string> Items { get; set; }
@@ -20,29 +19,17 @@ namespace DungeonExplorer
         public Dictionary<string, string> Exits { get; set; }
         public Door RoomDoor { get; set; }
 
-        //Used to create rooms with basic variables, including points of interest
         public Room(string name, string description, List<string> items = null, Dictionary<string, PointOfInterest> pointsOfInterest = null, Door door = null)
         {
             Name = name;
             Description = description;
-            Items = items ?? new List<string>();  //Default empty list if no items passed
-            PointsOfInterest = pointsOfInterest ?? new Dictionary<string, PointOfInterest>();  //Default empty dictionary if no points of interest passed
-            Exits = new Dictionary<string, string>();  //Default empty dictionary for exits
-            RoomDoor = door ?? new Door();  //Default a new door if no door passed
+            Items = items ?? new List<string>();
+            PointsOfInterest = pointsOfInterest ?? new Dictionary<string, PointOfInterest>(StringComparer.OrdinalIgnoreCase);
+            Exits = new Dictionary<string, string>();
+            RoomDoor = door ?? new Door();
             BeenHere = false;
         }
 
-        //Add an item to the room
-        public void AddItem(string item)
-        {
-            Items.Add(item);
-        }
-
-        //Remove an item from the room
-        public void RemoveItem(string item)
-        {
-            Items.Remove(item);
-        }
 
         //When the player enters the room
         public void Enter()
@@ -75,50 +62,6 @@ namespace DungeonExplorer
             ProcessRoomActions(Program.currentPlayer);
         }
 
-        //Display the items in the room
-        public void DisplayItems()
-        {
-            //Check if there is exactly one item in the list
-            if (Items.Count == 1)
-            {
-                //If that item is empty, display "Items: N/A"
-                if (string.IsNullOrEmpty(Items[0]))
-                {
-                    Console.WriteLine("Items: N/A");
-                }
-                else
-                {
-                    Console.WriteLine("Item in the room: " + Items[0]);
-                }
-            }
-            //If there are more than one item
-            else if (Items.Count > 1)
-            {
-                Console.WriteLine("Items in the room:");
-                foreach (string item in Items)
-                {
-                    Console.WriteLine("- " + item);
-                }
-            }
-            //If there are no items in the room
-            else
-            {
-                Console.WriteLine("No items in the room.");
-            }
-        }
-
-        //Display points of interest (like Desk, Bookshelf, etc)
-        public void DisplayPointsOfInterest()
-        {
-            if (PointsOfInterest.Count > 0)
-            {
-                Console.WriteLine("Points of interest in the room:");
-                foreach (var poi in PointsOfInterest)
-                {
-                    Console.WriteLine($"- {poi.Key}: {poi.Value.Description}");
-                }
-            }
-        }
 
         //Process actions for the room
         public void ProcessRoomActions(Player currentPlayer)
@@ -168,7 +111,7 @@ namespace DungeonExplorer
                         PickUpItem(item, currentPlayer);  //Pick up an item
                         break;
                     case "5":
-                        Console.WriteLine("This feature has not been added yet.");  //Check door status (locked/unlocked) Not Implemented yet!
+                        Console.WriteLine("You try the door but its broken, you are going to have to find another way out.");  //Check door status (locked/unlocked) Not Implemented yet!
                         break;
                     case "6":
                         Console.WriteLine("This feature has not been added yet and so you have opted to end the game! Thankyou for playing."); //Exit the room Not Implemented yet so this is the end game button.
@@ -182,32 +125,93 @@ namespace DungeonExplorer
             } while (command != "6");  //Exit the room loop when the player chooses to leave
         }
 
-        //Interact with points of interest
-        private void InteractWithPointOfInterest(string poiName, Player currentPlayer)
+
+        //Add an item to the room
+        public void AddItem(string item)
         {
-            if (PointsOfInterest.ContainsKey(poiName))
+            Items.Add(item);
+        }
+
+        //Remove an item from the room
+        public void RemoveItem(string item)
+        {
+            Items.Remove(item);
+        }
+
+
+        //Display the items in the room
+        public void DisplayItems()
+        {
+            //Check if there is exactly one item in the list
+            if (Items.Count == 1)
             {
-                PointOfInterest point = PointsOfInterest[poiName];
-                Console.WriteLine($"You interact with the {poiName}. {point.Description}");
-                Console.WriteLine("Items here:");
-                foreach (var item in point.Items)
+                //If that item is empty, display "Items: N/A"
+                if (string.IsNullOrEmpty(Items[0]))
+                {
+                    Console.WriteLine("Items: N/A");
+                }
+                else
+                {
+                    Console.WriteLine("Item in the room: " + Items[0]);
+                }
+            }
+            //If there are more than one item
+            else if (Items.Count > 1)
+            {
+                Console.WriteLine("Items in the room:");
+                foreach (string item in Items)
                 {
                     Console.WriteLine("- " + item);
                 }
+            }
+            //If there are no items in the room
+            else
+            {
+                Console.WriteLine("No items in the room.");
+            }
+        }
 
-                //Option to pick up an item from this point of interest
+
+        //Display points of interest (like Desk, Bookshelf, etc)
+        public void DisplayPointsOfInterest()
+        {
+            if (PointsOfInterest.Count > 0)
+            {
+                Console.WriteLine("Points of interest in the room:");
+                foreach (var poi in PointsOfInterest)
+                {
+                    Console.WriteLine($"- {poi.Key}: {poi.Value.Description}");  //Display the point of interest and its description
+                }
+            }
+        }
+
+
+        //Interact with points of interest
+        private void InteractWithPointOfInterest(string poiName, Player currentPlayer)
+        {
+            string matchedPoiKey = PointsOfInterest.Keys.FirstOrDefault(k => k.Equals(poiName, StringComparison.OrdinalIgnoreCase));
+            if (matchedPoiKey != null && PointsOfInterest.TryGetValue(matchedPoiKey, out PointOfInterest point))
+            {
+                Console.WriteLine($"You interact with the {matchedPoiKey}. {point.Description}"); //If the point of interest exists in the room
+                Console.WriteLine("Items here:");
+                foreach (var item in point.Items)
+                {
+                    Console.WriteLine("- " + item);  //Display items in the point of interest
+                }
+
                 Console.WriteLine("Would you like to pick up an item from here? (yes/no)");
                 string choice = Console.ReadLine().ToLower();
                 if (choice == "yes")
                 {
                     Console.WriteLine("Which item would you like to pick up?");
                     string itemToPick = Console.ReadLine();
+                    string foundItem = point.Items.FirstOrDefault(i => i.Equals(itemToPick, StringComparison.OrdinalIgnoreCase)); //Ignores case when comparing
 
-                    if (point.Items.Contains(itemToPick))
+                    if (!string.IsNullOrEmpty(foundItem)) //If the item is in the point of interest
                     {
-                        Console.WriteLine($"You pick up the {itemToPick}.");
-                        point.RemoveItem(itemToPick);  //Remove item from the point of interest
-                        currentPlayer.AddToInventory(itemToPick);  //Add the item to the player's inventory
+                        Console.WriteLine($"You pick up the {foundItem}.");
+                        point.RemoveItem(foundItem);
+                        currentPlayer.AddToInventory(foundItem);  
                     }
                     else
                     {
@@ -217,30 +221,28 @@ namespace DungeonExplorer
             }
             else
             {
-                Console.WriteLine("That point of interest doesn't exist in this room.");
+                Console.WriteLine("That point of interest doesn't exist in this room.");    
             }
         }
 
-        //Pick up an item from the room
-        private void PickUpItem(string item, Player currentPlayer)
-        {
-            if (Items.Contains(item))
-            {
-                if (item == "")
-                    Console.WriteLine("That item does not Exist.");
-                else
-                    Console.WriteLine($"You pick up the {item}.");
-                    Items.Remove(item);
-                    currentPlayer.AddToInventory(item);
-            }
 
+        //Pick up an item from the room
+        public void PickUpItem(string item, Player currentPlayer)
+        {
+            string foundItem = Items.FirstOrDefault(i => i.Equals(item, StringComparison.OrdinalIgnoreCase));  //Ignores case when comparing
+            if (!string.IsNullOrEmpty(foundItem))
+            {
+                Console.WriteLine($"You pick up the {foundItem}."); //If the item is in the room
+                Items.Remove(foundItem);
+                currentPlayer.AddToInventory(foundItem);
+            }
             else
             {
-                Console.WriteLine("That item is not in the room.");
+                Console.WriteLine("That item is not in the room."); //If the item is not in the room
                 Console.ReadKey();
                 Console.Clear();
             }
         }
     }
-    // end of code
+
 }

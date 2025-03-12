@@ -38,7 +38,7 @@ namespace DungeonExplorer
         //Method to view player inventory
         public void ViewInventory()
         {
-            Console.WriteLine($"Name: {Name}\nHealth: {_health}\nPotions: {_potions}\nLevel: {_level}\n");
+            Console.WriteLine($"Name: {Name}\nHealth: {_health}\nPotions: {_potions}\nLevel: {_level}\nKeys: {_keys}");
             Console.WriteLine("Inventory:");
             foreach (string item in _inventory)
             {
