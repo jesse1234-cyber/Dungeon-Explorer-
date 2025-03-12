@@ -18,7 +18,7 @@ namespace DungeonExplorer
         public void PickUpItem(string item)
         {
             inventory.Add(item);
-            Console.WriteLine($"[item] added to your inventory.");
+            Console.WriteLine($"{item} added to your inventory.");
         }
         public string InventoryContents()
         {

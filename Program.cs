@@ -21,7 +21,7 @@ namespace DungeonExplorer
             }
             finally
             {
-                Console.WriteLine("thanks for playing!");
+                Console.WriteLine("thanks for playing Dungeon Explorer!");
                 Console.WriteLine("Press any key to exit...");
                 Console.ReadKey();
             }

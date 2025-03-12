@@ -12,9 +12,9 @@ namespace DungeonExplorer
             // Initialize the game with one room and one player
             player = new Player("Player", 100);
 
-            Room room1 = new Room("You are in a dungeon.There is a diamond sword on the ground near by.");
-            Room room2 = new Room("You are in a dungeon.There is a gold sword on the ground near by.");
-            Room room3 = new Room("You are in a dungeon.There is a wooden sword on the ground near by.");
+            Room room1 = new Room("You are in a messy dungeon.There is a diamond sword on the ground near by.");
+            Room room2 = new Room("You are in a unlit dungeon.There is a gold sword on the ground near by.");
+            Room room3 = new Room("You are in a dark dungeon.There is a wooden sword on the ground near by.");
             
             room1.AddItem("diamond sword");
             room2.AddItem("gold sword");
@@ -42,7 +42,7 @@ namespace DungeonExplorer
               Console.WriteLine("Exits: " + currentRoom.ListConnectedRooms());
                 // make the player choose an option
               Console.WriteLine("Pick one of these options below");
-              Console.WriteLine("Options: 1.'pick up {item}', 2.'inventory', 3.'move [direction]', 'exit'");
+              Console.WriteLine("Options: 1.'pick up [item]', 2.'inventory', 3.'move [direction]', 'exit'");
 
                 // player input
                 string input = Console.ReadLine().ToLower();
