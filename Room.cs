@@ -1,17 +1,20 @@
-﻿namespace DungeonExplorer
+﻿using System;
+
+namespace DungeonExplorer
 {
     public class Room
     {
-        private string description;
+        public string Description { get; }
+        
+        // Only monster or item will be populated, not both
+        public MonsterType Monster { get; }
+        public ItemType Item { get; }
 
-        public Room(string description)
+        // Player is the player entering the Room
+        public Room(Player player)
         {
-            this.description = description;
-        }
-
-        public string GetDescription()
-        {
-            return description;
+            // Assign random description
+            // Random item/monster depending on player luck
         }
     }
 }
