@@ -46,9 +46,11 @@ namespace DungeonExplorer
             {
                 target.CurrentHealth -= damage;
             }
+            // If the target's (current health - damage) <= 0, the target's health is set to 0
+            // and the IsAlive bool is set to false (effectively 'killing' the target.
             else
             {
-                target.CurrentHealth = 0;
+                target.CurrentHealth = 0; 
                 target.IsAlive = false;
             }
 
@@ -64,12 +66,15 @@ namespace DungeonExplorer
         // Constructor for the Player class.
         public Player(string name, int health, int attack, int level) : base(name, health, attack, level)
         {
-            EquippedWeapon = null;
         }
         public override void UsePotion(Potion potion)
         {
+            // Potion is removed from the player's inventory.
             PlayerInventory.RemovePotion(potion);
+            // Potion effects are applied to the player's stats.
             SetMaxHealth(MaxHealth + potion.HealthBonus);
+            // If the player's (CurrentHealth + potion.HealthRestore) > MaxHealth, the player's health is set to MaxHealth.
+            // This is done to avoid the player's health exceeding their max health.
             if (CurrentHealth + potion.HealthRestore > MaxHealth)
             {
                 SetCurrentHealth(MaxHealth);
@@ -133,9 +138,10 @@ namespace DungeonExplorer
                         }
                         else
                         {
-                            // Try catch to handle invalid inputs.
+                            // Try catch to handle invalid inputs, as a type conversion from string to int is used.
                             try
                             {
+                                // Only accepts inputs that are within the range of the player's inventory.
                                 int weaponChoice = Convert.ToInt32(userChoice) - 1;
                                 if (0 <= weaponChoice && weaponChoice <= PlayerInventory.WeaponCount())
                                 {
@@ -154,10 +160,12 @@ namespace DungeonExplorer
                         }
                     }
                 }
+                // The player is only able to unequip a weapon if they have one equipped.
                 else if (userChoice == "U" && EquippedWeapon != null)
                 {
                     UnequipWeapon();
                 }
+                // Same concept as above, except for potions instead of weapons.
                 else if (userChoice == "P" && PlayerInventory.PotionCount() > 0)
                 {
                     while (true)
@@ -220,6 +228,7 @@ namespace DungeonExplorer
         }
         public void UnequipWeapon()
         {
+            // The player's equipped weapon is checked again to avoid exceptions.
             if (EquippedWeapon != null)
             {
                 PlayerInventory.AddWeapon(EquippedWeapon);
@@ -234,6 +243,8 @@ namespace DungeonExplorer
         public Monster(string name, int health, int attack, int level) : base(name, health, attack, level)
         {
         }
+        // Same as Player's UsePotion method, except the potion is not removed from inventory.
+        // This is because Monsters do not have an inventory.
         public override void UsePotion(Potion potion)
         {
             SetMaxHealth(MaxHealth + potion.HealthBonus);
