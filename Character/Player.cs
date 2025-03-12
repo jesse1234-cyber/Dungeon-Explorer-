@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,14 +8,17 @@ namespace DungeonExplorer.Player {
     public class Player {
 
         public const int MAX_HEALTH = 100;
+        public const int MAX_DAMAGE = 40;
         public string Name { get; set; }
         public int Health { get; set; }
+        public int Damage { get; set; }
         private List<Item.Item> inventory = new List<Item.Item>();
 
-        public Player(string name, int health)
+        public Player(string name, int health, int damage)
         {
             Name = name;
             Health = health;
+            Damage = damage;
         }
 
         public void PickUpItem(Item.Item item)
@@ -62,6 +65,11 @@ namespace DungeonExplorer.Player {
         public int getMaxHealth()
         {
             return MAX_HEALTH;
+        }
+
+        public int getMaxDamage()
+        {
+            return MAX_DAMAGE;
         }
 
     }
