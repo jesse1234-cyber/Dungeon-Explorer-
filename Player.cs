@@ -9,10 +9,10 @@ namespace DungeonExplorer
         
         private List<ItemType> _inventory = new List<ItemType>();
 
-        public Player(string name, int health) 
+        public Player(string name) 
         {
             Name = name;
-            Health = health;
+            Health = 100;
         }
         
         public string InventoryContents()
