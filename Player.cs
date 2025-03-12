@@ -4,25 +4,25 @@ namespace DungeonExplorer
 {
     public class Player
     {
-        public string Name { get; private set; }
-        public int Health { get; private set; }
+        public string Name { get; private set; } // Declaring name variable
+        public int Health { get; private set; } // Declaring health variable
         private List<string> inventory = new List<string>();
 
         public Player(string name, int health) 
         {
-            Name = name;
-            Health = health;
+            Name = name; // Setting the player name
+            Health = health; // Setting the health
         }
-        public void PickUpItem(string item)
+        public void PickUpItem(string item) // Method to add item to inventory
         {
             inventory.Add(item);
         }
-        public string InventoryContents()
+        public string InventoryContents() // Get Method to return the inventory contents
         {
             return string.Join(", ", inventory);
         }
 
-        public int GetHealth()
+        public int GetHealth() // Get Method to retun the Health
         {
             return Health;
         }
