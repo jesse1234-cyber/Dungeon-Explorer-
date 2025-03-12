@@ -28,6 +28,8 @@ namespace DungeonExplorer
                 "\n(When prompted for a choice, you may type S, I or R into the console to see info about your " +
                 "Status, Inventory, or the Room you are in, and if you wish to leave the game, type exit!)\n");
 
+
+            // Main game loop
             while (playing)
             {
                 Thread.Sleep(3000);
@@ -43,6 +45,7 @@ namespace DungeonExplorer
                     string userChoice = Console.ReadLine().ToUpper();
 
                     // Handling the user's choices and playing the corresponding scenario
+                    // Also handles erroneous user input
                     if (userChoice == "A")
                     {
                         invalidChoice = false;

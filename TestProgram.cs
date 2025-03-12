@@ -4,6 +4,9 @@ using System.Diagnostics;
 
 namespace DungeonExplorer
 {
+    /// <summary>
+    ///  A class used for testing the main program.
+    /// </summary>
     class TestProgram
     {
         public TestProgram()
@@ -12,7 +15,10 @@ namespace DungeonExplorer
             this.TestPlayer();
             this.TestRoom();
         }
-
+        /// <summary>
+        /// Test each of the main classes and the main methods in them. Flag up errors if any of the
+        /// values are not expected.
+        /// </summary>
         public void TestRoomFactory()
         {
             Debug.Assert(RoomFactory.CreateRoomInstance("invalidIdentifier") == null);
