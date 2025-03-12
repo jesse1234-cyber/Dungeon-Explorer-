@@ -57,31 +57,38 @@ namespace DungeonExplorer
             while (true)
             {
                 Console.Write(">");
+                // Converts userChoice input to upper to avoid case sensitivity.
                 string userChoice = Console.ReadLine().ToUpper();
-                if (userChoice == "P" && CurrentRoom.Potion != null)
+                // The user is only allowed to take a potion if there is one in the room (and if the monster is dead).
+                if (userChoice == "P" && CurrentRoom.Potion != null && CurrentRoom.Monster == null)
                 {
                     Player.PlayerInventory.AddPotion(CurrentRoom.Potion);
                     Console.WriteLine($"You take the {CurrentRoom.Potion.Name}.");
                     CurrentRoom.RemovePotion();
                     break;
                 }
-                else if (userChoice == "W" && CurrentRoom.Weapon != null)
+                // Similarly to the potion statement,
+                // the user is only allowed to take a weapon if one is present in the room (and if the monster is dead).
+                else if (userChoice == "W" && CurrentRoom.Weapon != null && CurrentRoom.Monster == null)
                 {
                     Player.PlayerInventory.AddWeapon(CurrentRoom.Weapon);
                     Console.WriteLine($"You take the {CurrentRoom.Weapon.Name}.");
                     CurrentRoom.RemoveWeapon();
                     break;
                 }
+                // The user is only allowed to attack the Monster if it is present in the room.
                 else if (userChoice == "A" && CurrentRoom.Monster != null)
                 {
                     FightMonster(CurrentRoom.Monster);
                     break;
                 }
+                // Opens the player menu, where inventory and stats can be viewed.
                 else if (userChoice == "M")
                 {
                     Player.Menu();
                     break;
                 }
+                // Generates a new room and assigns it to CurrentRoom.
                 else if (userChoice == "R")
                 {
                     CurrentRoom = NewRoom();
@@ -92,6 +99,7 @@ namespace DungeonExplorer
                     Console.WriteLine("Please enter a valid input.");
                 }
             }
+            // Asks for user input as to not overwhelm the player with text on screen.
             Console.Write("Press Enter to continue.");
             Console.ReadLine();
         }
@@ -99,6 +107,7 @@ namespace DungeonExplorer
         private Room NewRoom()
         {
             Random random = new Random();
+            // A list of monsters and weapons to be randomly selected from.
             Monster[] monsters = new Monster[]
             {
                 new Monster("Goblin", 10, 5, 1),
@@ -171,12 +180,14 @@ namespace DungeonExplorer
                 Console.WriteLine($"\nYou attack the {monster.Name} with {weapon}!");
                 Player.AttackTarget(CurrentRoom.Monster);
                 Console.ReadKey(); //ReadKey used to segment fight sequence.
+                // If the monster is alive, it attacks the player.
                 if (CurrentRoom.Monster.IsAlive)
                 {
                     Console.WriteLine($"\nThe {monster.Name} attacks you!");
                     CurrentRoom.Monster.AttackTarget(Player);
                     Console.ReadKey();
                 }
+                // If the monster is dead, the monster is removed from the room.
                 else
                 {
                     Console.WriteLine($"\nYou defeat the {monster.Name}!");
@@ -184,6 +195,7 @@ namespace DungeonExplorer
                     break;
                 }
             }
+            // Checks to see if the player is still alive after the fight sequence.
             if (!Player.IsAlive)
             {
                 Console.WriteLine("\nYou have died.");
