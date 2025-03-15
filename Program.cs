@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
@@ -10,9 +6,13 @@ namespace DungeonExplorer
     {
         static void Main(string[] args)
         {
+            // Create an instance of the Game and start it
             Game game = new Game();
             game.Start();
-            Console.WriteLine("Waiting for your Implementation");
+
+            // Informing the player that the game has ended
+            Console.Clear();
+            Console.WriteLine("Game Over! Thank you for playing.");
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }
